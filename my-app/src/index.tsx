@@ -7,6 +7,7 @@ import { MantineProvider } from '@mantine/core';
 import { BrowserRouter, Route, Routes } from 'react-router-dom';
 import FriendsBar from './components/FriendsBar';
 import ChatWindow from './components/ChatWindow';
+import Channel from './components/Channel';
 const root = ReactDOM.createRoot(
   document.getElementById('root') as HTMLElement
 );
@@ -23,6 +24,7 @@ root.render(
             <Route element={<FriendsBar />}>
               <Route index element={<ChatWindow />} />
             </Route>
+            <Route path='/channel' element={<Channel />} />
           </Route>
         </Routes>
       </BrowserRouter>
