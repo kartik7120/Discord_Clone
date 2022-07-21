@@ -12,15 +12,21 @@ const root = ReactDOM.createRoot(
 );
 root.render(
   <React.StrictMode>
-    <BrowserRouter >
-      <Routes>
-        <Route path='/' element={<App />}>
-          <Route element={<FriendsBar />}>
-            <Route index element={<ChatWindow />} />
+    <MantineProvider theme={{
+      colors: {
+        'discord_dark': ["#282b30", "#36393e", "#424549"]
+      }
+    }}>
+      <BrowserRouter >
+        <Routes>
+          <Route path='/' element={<App />}>
+            <Route element={<FriendsBar />}>
+              <Route index element={<ChatWindow />} />
+            </Route>
           </Route>
-        </Route>
-      </Routes>
-    </BrowserRouter>
+        </Routes>
+      </BrowserRouter>
+    </MantineProvider>
   </React.StrictMode>
 );
 
