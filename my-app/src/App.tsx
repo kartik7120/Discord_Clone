@@ -1,17 +1,11 @@
 import './App.css';
-import ChatWindow from './components/ChatWindow';
-import FriendsBar from './components/FriendsBar';
-import ActiveNow from './components/ActiveNow';
 import SideBar from "./components/SideBar";
+import { Outlet } from 'react-router-dom';
 function App() {
   return (
     <div className="App">
       <SideBar />
-      <div className='Main-Tabs'>
-        <FriendsBar />
-        <ChatWindow />
-        <ActiveNow />
-      </div>
+      <Outlet />
     </div>
   );
 }
