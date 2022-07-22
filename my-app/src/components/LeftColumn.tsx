@@ -6,7 +6,7 @@
 // }))
 function LeftColumn() {
     // const { classes } = useStyles();
-    return <>
+    return <div>
         <span>Lorem, ipsum dolor sit amet consectetur adipisicing elit. Culpa voluptatum
             blanditiis itaque quod obcaecati nesciunt iste facere provident error. Pariatur ipsa
             quidem cupiditate, earum porro iure exercitationem nulla sapiente ea.
@@ -15,7 +15,7 @@ function LeftColumn() {
             fugit atque amet accusantium, facilis nihil. Error maiores veritatis voluptatum id
             aliquam quos molestias, quia eius.
         </span>
-    </>
+    </div>
 
 }
 export default LeftColumn;

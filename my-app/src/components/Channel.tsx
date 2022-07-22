@@ -8,6 +8,7 @@ const useStyles = createStyles((theme, _params, getRef) => ({
     grid_wrapper: {
         display: "grid",
         gridTemplateColumns: "1fr 2fr 1fr",
+        width: "100%"
     }
 }))
 function Channel() {
