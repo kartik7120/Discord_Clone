@@ -14,6 +14,7 @@ const root = ReactDOM.createRoot(
 root.render(
   <React.StrictMode>
     <MantineProvider theme={{
+      colorScheme: "dark",
       colors: {
         'discord_dark': ["#282b30", "#36393e", "#424549"],
         'discord_palette': ["#7289da", "#424549", "#36393e", "#282b30", "#1e2124"]
