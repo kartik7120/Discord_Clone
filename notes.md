@@ -12,3 +12,10 @@
 - [ ] Make three columns
 - [ ] Make a user bar in the first column
 - [ ] Ability to send messages , images and videos
+
+Components to be used in creating the first column
+- Menu for upper half - options to be noted from discord
+- Accolodian
+- hash icon
+- Indicator for profile
+- 
