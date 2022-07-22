@@ -5,13 +5,18 @@ const useStyles = createStyles((theme, _params, getRef) => ({
         backgroundColor: theme.colors.discord_palette[2],
         padding: "2em",
         position: "relative"
+    },
+    TextAreaClass: {
+        position: "absolute",
+        bottom: 23,
+        width: "100%"
     }
 }))
 function MiddleColumn() {
     const { classes } = useStyles();
     return <div className={classes.middle_column_class}>
         <span >I am a middle column</span>
-        <Textarea placeholder="Enter your message" autosize minRows={1} />
+        <Textarea className={classes.TextAreaClass} placeholder="Enter your message" autosize minRows={1} size={"lg"} />
     </div>
 
 }
