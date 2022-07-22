@@ -1,6 +1,7 @@
 .App {
   display: flex;
-  margin: 0;
+  /* margin: 0; */
+  justify-content: space-between;
 }
 .sidebar {
   display: fixed;
