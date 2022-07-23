@@ -18,4 +18,8 @@ Components to be used in creating the first column
 - Accolodian
 - hash icon
 - Indicator for profile
-- 
+
+### Stepes to taken to make the middle column scrollable
+- Make a ordered list
+- Make is scrollable
+- Add li along with other messages inside the widget
