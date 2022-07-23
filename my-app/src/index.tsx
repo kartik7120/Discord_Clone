@@ -8,6 +8,7 @@ import { BrowserRouter, Route, Routes } from 'react-router-dom';
 import FriendsBar from './components/FriendsBar';
 import ChatWindow from './components/ChatWindow';
 import Channel from './components/Channel';
+import { Global } from '@mantine/core';
 const root = ReactDOM.createRoot(
   document.getElementById('root') as HTMLElement
 );

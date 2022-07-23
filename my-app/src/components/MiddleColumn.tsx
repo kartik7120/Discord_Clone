@@ -6,6 +6,7 @@ const useStyles = createStyles((theme, _params, getRef) => ({
         backgroundColor: theme.colors.discord_palette[2],
         padding: "1em",
         position: "relative",
+        fontFamily: 'Nunito'
     },
     TextAreaClass: {
         position: "absolute",
@@ -22,7 +23,9 @@ function MiddleColumn() {
                 <li>I am a list 1</li>
             </ol>
         </ScrollArea>
-        <Textarea className={classes.TextAreaClass} placeholder="Enter your message" autosize minRows={1} size={"md"} />
+        <form action="" method="get">
+            <Textarea className={classes.TextAreaClass} placeholder="Enter your message" autosize minRows={1} size={"md"} />
+        </form>
     </div>
 }
 export default MiddleColumn;
