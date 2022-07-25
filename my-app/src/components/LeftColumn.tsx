@@ -1,7 +1,7 @@
 import { createStyles } from "@mantine/core";
 const useStyles = createStyles((theme, _params, getRef) => ({
     left_column_class: {
-        backgroundColor: theme.colors.discord_palette[3]
+        backgroundColor: theme.colors.discord_palette[2]
     }
 }))
 function LeftColumn() {

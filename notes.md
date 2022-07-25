@@ -23,3 +23,7 @@ Components to be used in creating the first column
 - Make a ordered list
 - Make is scrollable
 - Add li along with other messages inside the widget
+
+### Adding rooms to a particular server
+- Users will be able to create rooms for a particular server
+- Each room will be seperate from other one

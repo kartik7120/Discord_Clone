@@ -1,11 +1,12 @@
 import { createStyles } from "@mantine/core";
 import { Textarea } from "@mantine/core";
 import { ScrollArea } from "@mantine/core";
+import socket from "../globalImports";
 import { useLocalStorage, getHotkeyHandler } from "@mantine/hooks";
 import React, { useState } from "react";
 const useStyles = createStyles((theme, _params, getRef) => ({
     middle_column_class: {
-        backgroundColor: theme.colors.discord_palette[2],
+        backgroundColor: theme.colors.discord_palette[1],
         padding: "1em",
         position: "relative",
         fontFamily: 'Nunito',
@@ -24,12 +25,21 @@ const useStyles = createStyles((theme, _params, getRef) => ({
 function MiddleColumn() {
     const { classes } = useStyles();
     const [state, setState] = useState("");
-    const [message, setMessageState] = useLocalStorage({ key: "messages", defaultValue: [""] });
+    const [message, setMessageState] = useState([""]);
+    React.useEffect(() => {
+        socket.on("messages", (message) => {
+            console.log("Message revieved from backend = ", message);
+            setMessageState(function (oldMessages) {
+                return [...oldMessages, message];
+            })
+        })
+    }, [])
     function handleChange(e: any) {
         const message: string = e.target.value;
         setState(message);
     }
     function handleMessageSubmit(e: any) {
+        socket.emit("message", state);
         setMessageState(function (oldMessages) {
             return [...oldMessages, state];
         })
