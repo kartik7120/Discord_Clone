@@ -8,6 +8,13 @@ import ModalCreateChannel from "./CreateChannelModal";
 const useStyles = createStyles((theme, _params, getRef) => ({
     left_column_class: {
         backgroundColor: theme.colors.discord_palette[2],
+        display: "flex",
+        flexDirection: "column",
+        // justifyContent: "space-around",
+        alignItems: "center"
+    },
+    center_button: {
+        margin: "0 auto"
     }
 }))
 function LeftColumn() {
