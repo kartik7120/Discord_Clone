@@ -1,7 +1,5 @@
-// import { Grid, SimpleGrid } from "@mantine/core";
 import LeftColumn from "./LeftColumn";
 import { createStyles } from "@mantine/core";
-// import { ScrollArea } from "@mantine/core";
 import { Outlet } from "react-router-dom";
 const useStyles = createStyles((theme, _params, getRef) => ({
     grid_wrapper: {
@@ -16,7 +14,6 @@ function Channel() {
     return <div className={classes.grid_wrapper}>
         <LeftColumn />
         <Outlet />
-        {/* <RightColumn /> */}
     </div>
 }
 export default Channel;
