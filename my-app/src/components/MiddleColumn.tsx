@@ -2,8 +2,9 @@ import { createStyles } from "@mantine/core";
 import { Textarea } from "@mantine/core";
 import { ScrollArea } from "@mantine/core";
 import socket from "../globalImports";
-import { useLocalStorage, getHotkeyHandler } from "@mantine/hooks";
+import { getHotkeyHandler } from "@mantine/hooks";
 import React, { useState } from "react";
+import { Outlet } from "react-router-dom";
 const useStyles = createStyles((theme, _params, getRef) => ({
     middle_column_class: {
         backgroundColor: theme.colors.discord_palette[1],
@@ -45,21 +46,26 @@ function MiddleColumn() {
         })
         setState("");
     }
-    return <div className={classes.middle_column_class}>
-        <ScrollArea type="hover" style={{ height: "40rem" }}>
-            <ol>
-                {message.map((ele: string, index: number) => (
-                    <li key={Math.random() * index * 54239} className={classes.listClass}>{ele}</li>
-                ))}
-            </ol>
-        </ScrollArea>
-        <form action="" method="get">
-            <Textarea className={classes.TextAreaClass} value={state} onChange={handleChange}
-                placeholder="Enter your message"
-                autosize minRows={1} size={"md"} onKeyDown={getHotkeyHandler([
-                    ["Enter", handleMessageSubmit]
-                ])} />
-        </form>
-    </div>
+    return (
+        <>
+            <div className={classes.middle_column_class}>
+                <ScrollArea type="hover" style={{ height: "40rem" }}>
+                    <ol>
+                        {message.map((ele: string, index: number) => (
+                            <li key={Math.random() * index * 54239} className={classes.listClass}>{ele}</li>
+                        ))}
+                    </ol>
+                </ScrollArea>
+                <form action="" method="get">
+                    <Textarea className={classes.TextAreaClass} value={state} onChange={handleChange}
+                        placeholder="Enter your message"
+                        autosize minRows={1} size={"md"} onKeyDown={getHotkeyHandler([
+                            ["Enter", handleMessageSubmit]
+                        ])} />
+                </form>
+            </div>
+            <Outlet />
+        </>
+    )
 }
 export default MiddleColumn;

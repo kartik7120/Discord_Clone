@@ -8,6 +8,8 @@ import { BrowserRouter, Route, Routes } from 'react-router-dom';
 import FriendsBar from './components/FriendsBar';
 import ChatWindow from './components/ChatWindow';
 import Channel from './components/Channel';
+import MiddleColumn from './components/MiddleColumn';
+import RightColumn from './components/RightColumn';
 // import { Global } from '@mantine/core';
 const root = ReactDOM.createRoot(
   document.getElementById('root') as HTMLElement
@@ -26,7 +28,11 @@ root.render(
           <Route element={<FriendsBar />}>
             <Route index element={<ChatWindow />} />
           </Route>
-          <Route path='/channel' element={<Channel />} />
+          <Route path='/channel' element={<Channel />} >
+            <Route path=':channelName' element={<MiddleColumn />}>
+              <Route index element={<RightColumn />} />
+            </Route>
+          </Route>
         </Route>
       </Routes>
     </BrowserRouter>
