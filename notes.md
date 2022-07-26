@@ -27,3 +27,6 @@ Components to be used in creating the first column
 ### Adding rooms to a particular server
 - Users will be able to create rooms for a particular server
 - Each room will be seperate from other one
+
+### Feature idea for right column
+All the people who are connect to a particular room will be shown in that column
