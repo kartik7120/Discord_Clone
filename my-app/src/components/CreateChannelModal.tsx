@@ -3,6 +3,7 @@ import { Button } from "@mantine/core";
 import { FaHashtag } from "react-icons/fa";
 import { useMantineTheme } from "@mantine/core";
 import { createStyles } from "@mantine/core";
+import { useNavigate } from "react-router-dom";
 import React from "react";
 interface createProps {
     setChannels: any,
@@ -17,6 +18,7 @@ const useStyles = createStyles((theme, _params, getRef) => ({
     }
 }))
 function ModalCreateChannel(props: createProps) {
+    const navigate = useNavigate();
     const { classes } = useStyles();
     const theme = useMantineTheme();
     const [inputState, setInputState] = React.useState("");
@@ -28,6 +30,7 @@ function ModalCreateChannel(props: createProps) {
         props.setChannels(function (oldChannels: string[]) {
             return [...oldChannels, inputState];
         })
+        navigate(`./${inputState}`, { replace: true });
         props.setOpened(false);
         setInputState("");
     }

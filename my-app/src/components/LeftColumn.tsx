@@ -6,7 +6,6 @@ import { Button } from "@mantine/core";
 import { Stack } from "@mantine/core";
 import { useLocalStorage } from "@mantine/hooks";
 import ModalCreateChannel from "./CreateChannelModal";
-// import { useFocusReturn } from "@mantine/hooks";
 import { Anchor } from "@mantine/core";
 import { Link } from "react-router-dom";
 const useStyles = createStyles((theme, _params, getRef) => ({
@@ -25,9 +24,7 @@ function LeftColumn() {
     const { classes } = useStyles();
     const theme = useMantineTheme();
     const [channels, setChannels] = useLocalStorage({ key: "channels", defaultValue: ["general"] });
-    // const returnFocus = useFocusReturn({
-    //     opened: false, transitionDuration: 300
-    // });
+
     const [opended, setOpened] = React.useState(false);
     return <div className={classes.left_column_class}>
         <Modal overlayOpacity={0.4} title={<Title order={2}>Create Channel</Title>} radius="md" styles={{
