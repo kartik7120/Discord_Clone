@@ -4,6 +4,7 @@ import { FaHashtag } from "react-icons/fa";
 import { useMantineTheme } from "@mantine/core";
 import { createStyles } from "@mantine/core";
 import { useNavigate } from "react-router-dom";
+import socket from "../globalImports";
 import React from "react";
 interface createProps {
     setChannels: any,
@@ -29,6 +30,9 @@ function ModalCreateChannel(props: createProps) {
     function handleClick(e: React.MouseEvent<HTMLElement>) {
         props.setChannels(function (oldChannels: string[]) {
             return [...oldChannels, inputState];
+        })
+        socket.emit("joinRoom", { roomName: inputState }, (response: string) => {
+            console.log("Response on joining room = ", response);
         })
         navigate(`./${inputState}`, { replace: true });
         props.setOpened(false);

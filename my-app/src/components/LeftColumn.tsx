@@ -8,6 +8,7 @@ import { useLocalStorage } from "@mantine/hooks";
 import ModalCreateChannel from "./CreateChannelModal";
 import { Anchor } from "@mantine/core";
 import { Link } from "react-router-dom";
+import socket from "../globalImports";
 const useStyles = createStyles((theme, _params, getRef) => ({
     left_column_class: {
         backgroundColor: theme.colors.discord_palette[2],
@@ -26,6 +27,11 @@ function LeftColumn() {
     const [channels, setChannels] = useLocalStorage({ key: "channels", defaultValue: ["general"] });
 
     const [opended, setOpened] = React.useState(false);
+    function handleClick(e: React.MouseEvent<HTMLButtonElement>, channel: string) {
+        socket.emit("joinRoom", { roomName: channel }, (response: string) => {
+            console.log("Response on joining room = ", response);
+        })
+    }
     return <div className={classes.left_column_class}>
         <Modal overlayOpacity={0.4} title={<Title order={2}>Create Channel</Title>} radius="md" styles={{
             modal: {
@@ -33,16 +39,16 @@ function LeftColumn() {
             }
         }}
             overlayBlur={1} centered onClose={() => setOpened(false)} opened={opended}>
-            <ModalCreateChannel setChannels={setChannels} setOpened={setOpened}/>
+            <ModalCreateChannel setChannels={setChannels} setOpened={setOpened} />
         </Modal>
         <Button type="button" variant="outline" onClick={() => setOpened(true)}>Create Channel</Button>
         <Stack justify="center">
             {channels.map((channel, index) => (
-                <Anchor component={Link} to={channel}>
-                    <Button variant="filled" color={"violet"}>{channel}</Button>
+                <Anchor key={Math.random() * index * 5487} component={Link} to={channel} >
+                    <Button variant="filled" color={"violet"} onClick={(e: any) => handleClick(e, channel)}>{channel}</Button>
                 </Anchor>
             ))}
         </Stack>
-    </div>
+    </div >
 }
 export default LeftColumn;
