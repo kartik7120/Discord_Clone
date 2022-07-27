@@ -4,6 +4,7 @@ import { ScrollArea } from "@mantine/core";
 import socket from "../globalImports";
 import { getHotkeyHandler } from "@mantine/hooks";
 import React, { useState } from "react";
+import { useParams } from "react-router-dom";
 import { Outlet } from "react-router-dom";
 const useStyles = createStyles((theme, _params, getRef) => ({
     middle_column_class: {
@@ -24,6 +25,7 @@ const useStyles = createStyles((theme, _params, getRef) => ({
     }
 }))
 function MiddleColumn() {
+    const { channelName } = useParams();
     const { classes } = useStyles();
     const [state, setState] = useState("");
     const [message, setMessageState] = useState([""]);
@@ -40,7 +42,7 @@ function MiddleColumn() {
         setState(message);
     }
     function handleMessageSubmit(e: any) {
-        socket.emit("message", state);
+        socket.emit("message", state, channelName);
         setMessageState(function (oldMessages) {
             return [...oldMessages, state];
         })
