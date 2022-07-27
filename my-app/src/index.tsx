@@ -19,7 +19,7 @@ root.render(
     colorScheme: "dark",
     colors: {
       'discord_dark': ["#282b30", "#36393e", "#424549"],
-      'discord_palette': ["#7289da", "#424549", "#36393e", "#282b30", "#1e2124"]
+      'discord_palette': ["#7289da", "#424549", "#36393e", "#282b30", "#1e2124", "#42464d", "#f2f3f5"]
     }
   }}>
     <BrowserRouter >

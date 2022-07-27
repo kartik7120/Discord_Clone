@@ -9,6 +9,7 @@ import ModalCreateChannel from "./CreateChannelModal";
 import { Anchor } from "@mantine/core";
 import { Link } from "react-router-dom";
 import socket from "../globalImports";
+import { HiHashtag } from "react-icons/hi"
 const useStyles = createStyles((theme, _params, getRef) => ({
     left_column_class: {
         backgroundColor: theme.colors.discord_palette[2],
@@ -19,6 +20,13 @@ const useStyles = createStyles((theme, _params, getRef) => ({
     },
     center_button: {
         margin: "0 auto"
+    },
+    leftColumn_channel_button: {
+        width: "100%",
+        backgroundColor: theme.colorScheme === "dark" ? "#42464d" : "#f2f3f5",
+        '&:hover': {
+            backgroundColor: theme.fn.darken("#42464d", 0.3)
+        }
     }
 }))
 function LeftColumn() {
@@ -45,7 +53,9 @@ function LeftColumn() {
         <Stack justify="center">
             {channels.map((channel, index) => (
                 <Anchor key={Math.random() * index * 5487} component={Link} to={channel} >
-                    <Button variant="filled" color={"violet"} onClick={(e: any) => handleClick(e, channel)}>{channel}</Button>
+                    <Button variant="filled" size="sm" leftIcon={<HiHashtag size={20} />}
+                        className={classes.leftColumn_channel_button}
+                        onClick={(e: any) => handleClick(e, channel)}>{channel}</Button>
                 </Anchor>
             ))}
         </Stack>
