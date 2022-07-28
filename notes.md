@@ -30,3 +30,8 @@ Components to be used in creating the first column
 
 ### Feature idea for right column
 All the people who are connect to a particular room will be shown in that column
+
+#### Left column
+- [x] Make the navLink 
+- [ ] Add ability to group items in a category
+- [ ] Settigs of a channel

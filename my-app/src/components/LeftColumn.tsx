@@ -9,7 +9,7 @@ import ModalCreateChannel from "./CreateChannelModal";
 import { Anchor } from "@mantine/core";
 import { Link } from "react-router-dom";
 import socket from "../globalImports";
-import { HiHashtag } from "react-icons/hi"
+import { HiHashtag } from "react-icons/hi";
 const useStyles = createStyles((theme, _params, getRef) => ({
     left_column_class: {
         backgroundColor: theme.colors.discord_palette[2],
@@ -19,14 +19,21 @@ const useStyles = createStyles((theme, _params, getRef) => ({
         alignItems: "center"
     },
     center_button: {
-        margin: "0 auto"
+        // margin: "0 auto"
     },
     leftColumn_channel_button: {
         width: "100%",
         backgroundColor: theme.colorScheme === "dark" ? "#42464d" : "#f2f3f5",
         '&:hover': {
             backgroundColor: theme.fn.darken("#42464d", 0.3)
-        }
+        },
+        textDecoration: "none",
+        borderRadius: theme.radius.md,
+        color: theme.colorScheme === "dark" ? theme.white : theme.colors.dark[5],
+        padding: "0.4em",
+    },
+    stack_class: {
+        width: "80%"
     }
 }))
 function LeftColumn() {
@@ -50,12 +57,12 @@ function LeftColumn() {
             <ModalCreateChannel setChannels={setChannels} setOpened={setOpened} />
         </Modal>
         <Button type="button" variant="outline" onClick={() => setOpened(true)}>Create Channel</Button>
-        <Stack justify="center">
+        <Stack justify="center" align="stretch" className={classes.stack_class}>
             {channels.map((channel, index) => (
-                <Anchor key={Math.random() * index * 5487} component={Link} to={channel} >
-                    <Button variant="filled" size="sm" leftIcon={<HiHashtag size={20} />}
-                        className={classes.leftColumn_channel_button}
-                        onClick={(e: any) => handleClick(e, channel)}>{channel}</Button>
+                <Anchor key={Math.random() * index * 5487} className={classes.leftColumn_channel_button}
+                    component={Link} to={channel} align="left" variant="text" size="md"
+                    onClick={(e: any) => handleClick(e, channel)}>
+                    <HiHashtag color={theme.colors.discord_palette[6]} /> {channel}
                 </Anchor>
             ))}
         </Stack>
