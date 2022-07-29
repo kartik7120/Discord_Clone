@@ -1,5 +1,6 @@
 import { createStyles, Text } from "@mantine/core";
 import { Accordion } from "@mantine/core";
+import { AiOutlinePlus } from "react-icons/ai";
 import { useMantineTheme } from "@mantine/core";
 const useStyles = createStyles((theme, _param, getRef) => ({
     accordian_class: {
@@ -13,7 +14,7 @@ function GroupChannel() {
     const theme = useMantineTheme();
     const { classes } = useStyles();
     return <Accordion order={4} className={classes.accordian_class}>
-        <Accordion.Item label={<Text color={theme.colors.discord_palette[6]}>Anime</Text>} >
+        <Accordion.Item label={<><Text color={theme.colors.discord_palette[6]}>Anime</Text> <AiOutlinePlus /></>} >
             All anime category
         </Accordion.Item>
     </Accordion>

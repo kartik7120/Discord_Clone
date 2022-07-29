@@ -3,9 +3,10 @@ import { SiMyanimelist } from "react-icons/si";
 import { FaCompass } from "react-icons/fa";
 import { BsPlus, BsFillLightningFill } from "react-icons/bs";
 import { useNavigate } from "react-router-dom";
-import { Box } from "@mantine/core";
+import { Box, Text, Title, TextInput } from "@mantine/core";
 import { Tooltip } from "@mantine/core";
 import { useMantineTheme } from "@mantine/core";
+import { Modal } from '@mantine/core';
 import React from "react";
 function SideBar() {
     const theme = useMantineTheme();
@@ -22,7 +23,7 @@ function SideBar() {
                 body: { color: theme.colors.gray[0], fontSize: theme.fontSizes.md, fontWeight: "bold" }
             }}
         >
-            <SidebarIcon icon={<BsPlus size={32} />} />
+            <SideBarAddIcon icon={<BsPlus size={32} />} />
         </Tooltip>
         <Tooltip label="Home" position="right" placement="center" gutter={7} withArrow arrowSize={5}
             styles={{
@@ -59,5 +60,32 @@ function SidebarIcon({ icon, label }: any) {
     return <Box component="div" className="sidebar-icon" onClick={handleClick}>
         {icon}
     </Box>
+}
+
+function SideBarAddIcon({ icon, label }: any) {
+    const navigate = useNavigate();
+    const [opened, setOpened] = React.useState(false);
+    const [value, setValue] = React.useState("");
+    function handleClick() {
+        setOpened(function (oldState) {
+            return !oldState;
+        })
+    }
+    function handleChange(e: React.ChangeEvent<HTMLInputElement>) {
+        const textInput = e.target.value;
+        setValue(textInput);
+    }
+    return <>
+        <Modal opened={opened} onClose={() => setOpened(false)} centered size="lg"
+            title={<Title order={3}>Create Server</Title>}>
+            <Text weight="normal" size="xl" align="center">
+                Your server is a place where you talk with your friends. Make yours and start talking
+            </Text>
+            <TextInput label="SERVER NAME" placeholder="Enter your server name" value={value} onChange={handleChange} />
+        </Modal>
+        <Box component="div" className="sidebar-icon" onClick={handleClick}>
+            {icon}
+        </Box>
+    </>
 }
 export default SideBar;
