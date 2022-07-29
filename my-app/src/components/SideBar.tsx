@@ -1,13 +1,23 @@
+import React from "react";
 import { SiDiscord } from "react-icons/si";
 import { SiMyanimelist } from "react-icons/si";
 import { FaCompass } from "react-icons/fa";
 import { BsPlus, BsFillLightningFill } from "react-icons/bs";
 import { useNavigate } from "react-router-dom";
-import { Box, Text, Title, TextInput } from "@mantine/core";
+import { Box, Text, Title, TextInput, Button } from "@mantine/core";
 import { Tooltip } from "@mantine/core";
 import { useMantineTheme } from "@mantine/core";
 import { Modal } from '@mantine/core';
-import React from "react";
+import { createStyles } from "@mantine/core";
+const useStyles = createStyles((theme, _params, getRef) => ({
+    createServerButton: {
+        marginTop: "2rem",
+        backgroundColor: theme.colors.discord_palette[0],
+        '&:hover': {
+            backgroundColor: theme.fn.darken(theme.colors.discord_palette[0], 0.2)
+        }
+    }
+}))
 function SideBar() {
     const theme = useMantineTheme();
     return <div className="sidebar">
@@ -64,6 +74,7 @@ function SidebarIcon({ icon, label }: any) {
 
 function SideBarAddIcon({ icon, label }: any) {
     const navigate = useNavigate();
+    const { classes } = useStyles();
     const [opened, setOpened] = React.useState(false);
     const [value, setValue] = React.useState("");
     function handleClick() {
@@ -82,6 +93,9 @@ function SideBarAddIcon({ icon, label }: any) {
                 Your server is a place where you talk with your friends. Make yours and start talking
             </Text>
             <TextInput label="SERVER NAME" placeholder="Enter your server name" value={value} onChange={handleChange} />
+            <Button size="md" fullWidth variant="filled" className={classes.createServerButton}>
+                Create Server
+            </Button>
         </Modal>
         <Box component="div" className="sidebar-icon" onClick={handleClick}>
             {icon}
