@@ -10,6 +10,7 @@ import { Anchor } from "@mantine/core";
 import { Link } from "react-router-dom";
 import socket from "../globalImports";
 import { HiHashtag } from "react-icons/hi";
+import GroupChannel from "./GroupChannel";
 const useStyles = createStyles((theme, _params, getRef) => ({
     left_column_class: {
         backgroundColor: theme.colors.discord_palette[2],
@@ -57,6 +58,8 @@ function LeftColumn() {
             <ModalCreateChannel setChannels={setChannels} setOpened={setOpened} />
         </Modal>
         <Button type="button" variant="outline" onClick={() => setOpened(true)}>Create Channel</Button>
+        {/* <Button type="button" variant="outline" onClick={() => setOpened(true)}>Create Group</Button> */}
+        <GroupChannel />
         <Stack justify="center" align="stretch" className={classes.stack_class}>
             {channels.map((channel, index) => (
                 <Anchor key={Math.random() * index * 5487} className={classes.leftColumn_channel_button}
@@ -66,6 +69,6 @@ function LeftColumn() {
                 </Anchor>
             ))}
         </Stack>
-    </div >
+    </div>
 }
 export default LeftColumn;

@@ -12,7 +12,7 @@ const useStyles = createStyles((theme, _params, getRef) => ({
         padding: "1em",
         position: "relative",
         fontFamily: 'Nunito',
-        color: theme.colorScheme === "dark" ? "white" : "black"
+        color: theme.colorScheme === "dark" ? "white" : "black",
     },
     TextAreaClass: {
         position: "absolute",
