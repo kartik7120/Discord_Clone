@@ -11,33 +11,40 @@ import Channel from './components/Channel';
 import MiddleColumn from './components/MiddleColumn';
 import RightColumn from './components/RightColumn';
 // import { Global } from '@mantine/core';
+import { QueryClientProvider, QueryClient } from '@tanstack/react-query';
+import { ReactQueryDevtools } from '@tanstack/react-query-devtools';
+const queryClient = new QueryClient();
+
 const root = ReactDOM.createRoot(
   document.getElementById('root') as HTMLElement
 );
 root.render(
-  <MantineProvider theme={{
-    colorScheme: "dark",
-    colors: {
-      'discord_dark': ["#282b30", "#36393e", "#424549"],
-      'discord_palette': ["#7289da", "#424549", "#36393e", "#282b30", "#1e2124", "#42464d", "#f2f3f5"]
-    },
-  }}
-    withNormalizeCSS>
-    <BrowserRouter >
-      <Routes>
-        <Route path='/' element={<App />}>
-          <Route element={<FriendsBar />}>
-            <Route index element={<ChatWindow />} />
-          </Route>
-          <Route path='/channel' element={<Channel />} >
-            <Route path=':channelName' element={<MiddleColumn />}>
-              <Route index element={<RightColumn />} />
+  <QueryClientProvider client={queryClient}>
+    <MantineProvider theme={{
+      colorScheme: "dark",
+      colors: {
+        'discord_dark': ["#282b30", "#36393e", "#424549"],
+        'discord_palette': ["#7289da", "#424549", "#36393e", "#282b30", "#1e2124", "#42464d", "#f2f3f5"]
+      },
+    }}
+      withNormalizeCSS>
+      <BrowserRouter >
+        <Routes>
+          <Route path='/' element={<App />}>
+            <Route element={<FriendsBar />}>
+              <Route index element={<ChatWindow />} />
+            </Route>
+            <Route path='/channel' element={<Channel />} >
+              <Route path=':channelName' element={<MiddleColumn />}>
+                <Route index element={<RightColumn />} />
+              </Route>
             </Route>
           </Route>
-        </Route>
-      </Routes>
-    </BrowserRouter>
-  </MantineProvider>
+        </Routes>
+      </BrowserRouter>
+    </MantineProvider>
+    <ReactQueryDevtools />
+  </QueryClientProvider>
 );
 
 // If you want to start measuring performance in your app, pass a function
