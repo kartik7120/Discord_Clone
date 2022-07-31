@@ -104,19 +104,22 @@ function SidebarIcon({ icon, label }: any) {
     </Box>
 }
 
-function SideBarAddIcon({ icon, label }: any) {
+function SideBarAddIcon({ icon, label, setChannels }: any) {
     const navigate = useNavigate();
     const { classes } = useStyles();
     const [state, setState] = React.useState(false);
     const [value, setValue] = React.useState("");
-    const { isLoading, isError, error, mutate, isSuccess, data } = useMutation(["namespace"],
+    const { isLoading, isError, error, mutate, isSuccess } = useMutation(["namespace"],
         fetchCreateRoom);
     React.useEffect(function () {
         if (isSuccess) {
             setState(false);
+            setChannels(function (oldChannels: string[]) {
+                return [...oldChannels, value]
+            })
             navigate(`/${value}`, { replace: true });
         }
-    }, [isSuccess, navigate])
+    }, [isSuccess])
     function handleClick() {
         setState(function (oldState) {
             return !oldState;
@@ -131,12 +134,6 @@ function SideBarAddIcon({ icon, label }: any) {
         mutate(value);
     }
 
-    if (isSuccess) {
-        // if (state)
-        //     setState(false);
-        console.log(data);
-        // navigate(`/${value}`);
-    }
     return <>
         <Modal opened={state} onClose={() => setState(false)} centered size="lg"
             title={<Title order={3}>Create Server</Title>}>
