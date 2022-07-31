@@ -34,12 +34,13 @@ root.render(
             <Route element={<FriendsBar />}>
               <Route index element={<ChatWindow />} />
             </Route>
-            <Route path='/channel' element={<Channel />} >
+            <Route path=':channel' element={<Channel />} >
               <Route path=':channelName' element={<MiddleColumn />}>
                 <Route index element={<RightColumn />} />
               </Route>
             </Route>
           </Route>
+          <Route path='*' element={<div>This path does not exist</div>} />
         </Routes>
       </BrowserRouter>
     </MantineProvider>

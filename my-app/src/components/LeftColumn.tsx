@@ -11,6 +11,7 @@ import { Link } from "react-router-dom";
 import socket from "../globalImports";
 import { HiHashtag } from "react-icons/hi";
 import GroupChannel from "./GroupChannel";
+import { useParams } from "react-router-dom";
 const useStyles = createStyles((theme, _params, getRef) => ({
     left_column_class: {
         backgroundColor: theme.colors.discord_palette[2],
@@ -38,9 +39,10 @@ const useStyles = createStyles((theme, _params, getRef) => ({
     }
 }))
 function LeftColumn() {
+    const { channel } = useParams();
     const { classes } = useStyles();
     const theme = useMantineTheme();
-    const [channels, setChannels] = useLocalStorage({ key: "channels", defaultValue: ["general"] });
+    const [channels, setChannels] = useLocalStorage({ key: `${channel}Channels`, defaultValue: ["general"] });
 
     const [opended, setOpened] = React.useState(false);
     function handleClick(e: React.MouseEvent<HTMLButtonElement>, channel: string) {

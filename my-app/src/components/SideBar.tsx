@@ -1,6 +1,7 @@
 import React from "react";
 import { SiDiscord } from "react-icons/si";
 import { SiMyanimelist } from "react-icons/si";
+import { FiAlertTriangle } from "react-icons/fi";
 import { FaCompass } from "react-icons/fa";
 import { BsPlus, BsFillLightningFill } from "react-icons/bs";
 import { useNavigate } from "react-router-dom";
@@ -9,6 +10,9 @@ import { Tooltip } from "@mantine/core";
 import { useMantineTheme } from "@mantine/core";
 import { Modal } from '@mantine/core';
 import { createStyles } from "@mantine/core";
+import { useMutation } from "@tanstack/react-query";
+import { Alert } from "@mantine/core";
+import { useLocalStorage } from "@mantine/hooks";
 const useStyles = createStyles((theme, _params, getRef) => ({
     createServerButton: {
         marginTop: "2rem",
@@ -20,6 +24,7 @@ const useStyles = createStyles((theme, _params, getRef) => ({
 }))
 function SideBar() {
     const theme = useMantineTheme();
+    const [channels, setChannels] = useLocalStorage({ key: "discordChannels", defaultValue: [""] });
     return <div className="sidebar">
         <Tooltip label="Home" position="right" placement="center" gutter={7} withArrow arrowSize={5}
             styles={{
@@ -33,7 +38,7 @@ function SideBar() {
                 body: { color: theme.colors.gray[0], fontSize: theme.fontSizes.md, fontWeight: "bold" }
             }}
         >
-            <SideBarAddIcon icon={<BsPlus size={32} />} />
+            <SideBarAddIcon setChannels={setChannels} icon={<BsPlus size={32} />} />
         </Tooltip>
         <Tooltip label="Home" position="right" placement="center" gutter={7} withArrow arrowSize={5}
             styles={{
@@ -56,7 +61,34 @@ function SideBar() {
         >
             <SidebarIcon icon={<SiMyanimelist size="20" />} label="channel" />
         </Tooltip>
+        {channels.map((channel, index: number) => {
+            if (channel)
+                return <Tooltip key={Math.random() * 10 * index * 52} label="MyAnimeList" position="right"
+                    placement="center" gutter={7} withArrow arrowSize={5}
+                    styles={{
+                        body: { color: theme.colors.gray[0], fontSize: theme.fontSizes.md, fontWeight: "bold" }
+                    }}
+                >
+                    <SidebarIcon icon={<SiMyanimelist size="20" />} label={channel} />
+                </Tooltip>
+            return "";
+        })}
     </div>
+}
+
+async function fetchCreateRoom(value: string) {
+    try {
+        const config = {
+            method: "POST",
+            "Content-Type": "application/json"
+        }
+        const URL = `http://localhost:4000/createNamespace/${value}`;
+        const response = await fetch(URL, config);
+        const result = await response.json();
+        return result;
+    } catch (error) {
+        throw error;
+    }
 }
 
 function SidebarIcon({ icon, label }: any) {
@@ -75,10 +107,18 @@ function SidebarIcon({ icon, label }: any) {
 function SideBarAddIcon({ icon, label }: any) {
     const navigate = useNavigate();
     const { classes } = useStyles();
-    const [opened, setOpened] = React.useState(false);
+    const [state, setState] = React.useState(false);
     const [value, setValue] = React.useState("");
+    const { isLoading, isError, error, mutate, isSuccess, data } = useMutation(["namespace"],
+        fetchCreateRoom);
+    React.useEffect(function () {
+        if (isSuccess) {
+            setState(false);
+            navigate(`/${value}`, { replace: true });
+        }
+    }, [isSuccess, navigate])
     function handleClick() {
-        setOpened(function (oldState) {
+        setState(function (oldState) {
             return !oldState;
         })
     }
@@ -86,16 +126,34 @@ function SideBarAddIcon({ icon, label }: any) {
         const textInput = e.target.value;
         setValue(textInput);
     }
+
+    function handleCreateNamespace() {
+        mutate(value);
+    }
+
+    if (isSuccess) {
+        // if (state)
+        //     setState(false);
+        console.log(data);
+        // navigate(`/${value}`);
+    }
     return <>
-        <Modal opened={opened} onClose={() => setOpened(false)} centered size="lg"
+        <Modal opened={state} onClose={() => setState(false)} centered size="lg"
             title={<Title order={3}>Create Server</Title>}>
+            {isError ? <Alert title="Error while creating namespace" color="red" icon={<FiAlertTriangle />}>
+                {`${error}`}
+            </Alert> : ""}
             <Text weight="normal" size="xl" align="center">
                 Your server is a place where you talk with your friends. Make yours and start talking
             </Text>
             <TextInput label="SERVER NAME" placeholder="Enter your server name" value={value} onChange={handleChange} />
-            <Button size="md" fullWidth variant="filled" className={classes.createServerButton}>
+            {isLoading ? <Button loading size="md" fullWidth variant="filled"
+                className={classes.createServerButton} onClick={handleCreateNamespace}>
                 Create Server
-            </Button>
+            </Button> : <Button size="md" fullWidth variant="filled"
+                className={classes.createServerButton} onClick={handleCreateNamespace}>
+                Create Server
+            </Button>}
         </Modal>
         <Box component="div" className="sidebar-icon" onClick={handleClick}>
             {icon}
