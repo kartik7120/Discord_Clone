@@ -4,7 +4,7 @@ import { FaHashtag } from "react-icons/fa";
 import { useMantineTheme } from "@mantine/core";
 import { createStyles } from "@mantine/core";
 import { useNavigate } from "react-router-dom";
-import socket from "../globalImports";
+import { socketContext } from "../globalImports";
 import React from "react";
 interface createProps {
     setChannels: any,
@@ -19,6 +19,7 @@ const useStyles = createStyles((theme, _params, getRef) => ({
     }
 }))
 function ModalCreateChannel(props: createProps) {
+    const socket = React.useContext(socketContext);
     const navigate = useNavigate();
     const { classes } = useStyles();
     const theme = useMantineTheme();

@@ -8,10 +8,11 @@ import { useLocalStorage } from "@mantine/hooks";
 import ModalCreateChannel from "./CreateChannelModal";
 import { Anchor } from "@mantine/core";
 import { Link } from "react-router-dom";
-import socket from "../globalImports";
 import { HiHashtag } from "react-icons/hi";
 import GroupChannel from "./GroupChannel";
 import { useParams } from "react-router-dom";
+import { useContext } from "react";
+import { socketContext } from "../globalImports";
 const useStyles = createStyles((theme, _params, getRef) => ({
     left_column_class: {
         backgroundColor: theme.colors.discord_palette[2],
@@ -41,12 +42,13 @@ const useStyles = createStyles((theme, _params, getRef) => ({
 function LeftColumn() {
     const { channel } = useParams();
     const { classes } = useStyles();
+    const socket = useContext(socketContext);
     const theme = useMantineTheme();
     const [channels, setChannels] = useLocalStorage({ key: `${channel}Channels`, defaultValue: ["general"] });
 
     const [opended, setOpened] = React.useState(false);
-    function handleClick(e: React.MouseEvent<HTMLButtonElement>, channel: string) {
-        socket.emit("joinRoom", { roomName: channel }, (response: string) => {
+    function handleClick(e: React.MouseEvent<HTMLButtonElement>, currChannel: string) {
+        socket.emit("joinRoom", { roomName: currChannel }, (response: string) => {
             console.log("Response on joining room = ", response);
         })
     }
@@ -60,7 +62,6 @@ function LeftColumn() {
             <ModalCreateChannel setChannels={setChannels} setOpened={setOpened} />
         </Modal>
         <Button type="button" variant="outline" onClick={() => setOpened(true)}>Create Channel</Button>
-        {/* <Button type="button" variant="outline" onClick={() => setOpened(true)}>Create Group</Button> */}
         <GroupChannel />
         <Stack justify="center" align="stretch" className={classes.stack_class}>
             {channels.map((channel, index) => (

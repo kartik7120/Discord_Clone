@@ -2,7 +2,8 @@ import LeftColumn from "./LeftColumn";
 import { createStyles } from "@mantine/core";
 import { Outlet, useParams } from "react-router-dom";
 import React from "react";
-import { io } from "socket.io-client";
+import { connectNamespace, socketContext } from "../globalImports";
+// import { nsp as socket } from "../globalImports";
 const useStyles = createStyles((theme, _params, getRef) => ({
     grid_wrapper: {
         display: "grid",
@@ -14,16 +15,22 @@ const useStyles = createStyles((theme, _params, getRef) => ({
 function Channel() {
     const { classes } = useStyles();
     const { channel } = useParams();
+    const [state, setState] = React.useState(connectNamespace(channel!));
     React.useEffect(function () {
-        const socket = io(`http://localhost:4000/${channel}`);
-        socket.on("connect", () => {
-            console.log(`Connected to ${channel} namespace`);
+        // const socket = connectNamespace(channel!);
+        state.on("connection", () => {
+            console.log(`socket ${state.id} connected`);
         })
-    }, [])
-    console.log(channel);
-    return <div className={classes.grid_wrapper}>
-        <LeftColumn />
-        <Outlet />
-    </div>
+        return () => { // this will run on unmount
+            console.log("disconnecting from namespace");
+            state.emit("disconnect_namespace", state.id);
+        }
+    }, [state])
+    return <socketContext.Provider value={state}>
+        <div className={classes.grid_wrapper}>
+            <LeftColumn />
+            <Outlet />
+        </div>
+    </socketContext.Provider>
 }
 export default Channel;

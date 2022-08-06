@@ -1,7 +1,7 @@
 import { createStyles } from "@mantine/core";
 import { Textarea } from "@mantine/core";
 import { ScrollArea } from "@mantine/core";
-import socket from "../globalImports";
+import { socketContext } from "../globalImports";
 import { getHotkeyHandler } from "@mantine/hooks";
 import React, { useState } from "react";
 import { useParams } from "react-router-dom";
@@ -25,12 +25,13 @@ const useStyles = createStyles((theme, _params, getRef) => ({
     }
 }))
 function MiddleColumn() {
+    const socket = React.useContext(socketContext);
     const { channelName } = useParams();
     const { classes } = useStyles();
     const [state, setState] = useState("");
     const [message, setMessageState] = useState([""]);
     React.useEffect(() => {
-        socket.on("messages", (message) => {
+        socket.on("messages", (message:string) => {
             console.log("Message revieved from backend = ", message);
             setMessageState(function (oldMessages) {
                 return [...oldMessages, message];
