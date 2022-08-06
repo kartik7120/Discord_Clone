@@ -35,3 +35,12 @@ All the people who are connect to a particular room will be shown in that column
 - [x] Make the navLink 
 - [ ] Add ability to group items in a category
 - [ ] Settigs of a channel
+
+#### Idea for passing namespace connection 
+- Create a context and pass it down the channel
+- Try not using a function and use value passed by context api
+
+#### Components where channel socket is referenced
+- Left Column
+- Middle Column
+- Channel
