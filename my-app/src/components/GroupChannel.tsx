@@ -14,9 +14,10 @@ function GroupChannel() {
     const theme = useMantineTheme();
     const { classes } = useStyles();
     return <Accordion order={4} className={classes.accordian_class}>
-        <Accordion.Item label={<><Text color={theme.colors.discord_palette[6]}>Anime</Text> <AiOutlinePlus /></>} >
+        <Accordion.Item value="Anime" >
             All anime category
         </Accordion.Item>
     </Accordion>
 }
 export default GroupChannel;
+// {<><Text color={theme.colors.discord_palette[6]}>Anime</Text> <AiOutlinePlus /></>}

@@ -26,48 +26,35 @@ function SideBar() {
     const theme = useMantineTheme();
     const [channels, setChannels] = useLocalStorage({ key: "discordChannels", defaultValue: [""] });
     return <div className="sidebar">
-        <Tooltip label="Home" position="right" placement="center" gutter={7} withArrow arrowSize={5}
-            styles={{
-                body: { color: theme.colors.gray[0], fontSize: theme.fontSizes.md, fontWeight: "bold" }
-            }}
+        <Tooltip label="Home" position="right" withArrow arrowSize={5}
+
         >
             <SidebarIcon icon={<SiDiscord size={32} color={"#5663F7"} />} label="Home" />
         </Tooltip>
-        <Tooltip label="Add a Server" position="right" placement="center" gutter={7} withArrow arrowSize={5}
-            styles={{
-                body: { color: theme.colors.gray[0], fontSize: theme.fontSizes.md, fontWeight: "bold" }
-            }}
+        <Tooltip label="Add a Server" position="right" withArrow arrowSize={5}
+
         >
             <SideBarAddIcon setChannels={setChannels} icon={<BsPlus size={32} />} />
         </Tooltip>
-        <Tooltip label="Home" position="right" placement="center" gutter={7} withArrow arrowSize={5}
-            styles={{
-                body: { color: theme.colors.gray[0], fontSize: theme.fontSizes.md, fontWeight: "bold" }
-            }}
+        <Tooltip label="Home" position="right" withArrow arrowSize={5}
+
         >
             <SidebarIcon icon={<BsFillLightningFill size={20} />} />
         </Tooltip>
-        <Tooltip label="Explore Servers" position="right" placement="center" gutter={7} withArrow arrowSize={5}
-            styles={{
-                body: { color: theme.colors.gray[0], fontSize: theme.fontSizes.md, fontWeight: "bold" }
-            }}
+        <Tooltip label="Explore Servers" position="right" withArrow arrowSize={5}
+
         >
             <SidebarIcon icon={<FaCompass size="20" />} />
         </Tooltip>
-        <Tooltip label="MyAnimeList" position="right" placement="center" gutter={7} withArrow arrowSize={5}
-            styles={{
-                body: { color: theme.colors.gray[0], fontSize: theme.fontSizes.md, fontWeight: "bold" }
-            }}
+        <Tooltip label="MyAnimeList" position="right" withArrow arrowSize={5}
+
         >
             <SidebarIcon icon={<SiMyanimelist size="20" />} label="channel" />
         </Tooltip>
         {channels.map((channel, index: number) => {
             if (channel)
                 return <Tooltip key={Math.random() * 10 * index * 52} label="MyAnimeList" position="right"
-                    placement="center" gutter={7} withArrow arrowSize={5}
-                    styles={{
-                        body: { color: theme.colors.gray[0], fontSize: theme.fontSizes.md, fontWeight: "bold" }
-                    }}
+                    withArrow arrowSize={5}
                 >
                     <SidebarIcon icon={<SiMyanimelist size="20" />} label={channel} />
                 </Tooltip>

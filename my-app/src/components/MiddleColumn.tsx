@@ -1,4 +1,4 @@
-import { createStyles } from "@mantine/core";
+import { createStyles, ThemeIcon } from "@mantine/core";
 import { Textarea } from "@mantine/core";
 import { ScrollArea } from "@mantine/core";
 import { socketContext } from "../globalImports";
@@ -6,6 +6,10 @@ import { getHotkeyHandler } from "@mantine/hooks";
 import React, { useState } from "react";
 import { useParams } from "react-router-dom";
 import { Outlet } from "react-router-dom";
+import { MdInsertEmoticon } from "react-icons/md";
+import { ActionIcon } from "@mantine/core";
+import EmojiPicker from "emoji-picker-react";
+import { Popover } from '@mantine/core';
 const useStyles = createStyles((theme, _params, getRef) => ({
     middle_column_class: {
         backgroundColor: theme.colors.discord_palette[1],
@@ -29,9 +33,10 @@ function MiddleColumn() {
     const { channelName } = useParams();
     const { classes } = useStyles();
     const [state, setState] = useState("");
+    const [chooseEmoji, setChosenEmoji] = useState(null);
     const [message, setMessageState] = useState([""]);
     React.useEffect(() => {
-        socket.on("messages", (message:string) => {
+        socket.on("messages", (message: string) => {
             console.log("Message revieved from backend = ", message);
             setMessageState(function (oldMessages) {
                 return [...oldMessages, message];
@@ -49,6 +54,13 @@ function MiddleColumn() {
         })
         setState("");
     }
+
+    function handleEmojiClick(e: any, emojiObject: any) {
+        setChosenEmoji(emojiObject);
+        setState(function (oldState) {
+            return oldState += emojiObject.emoji;
+        })
+    }
     return (
         <>
             <div className={classes.middle_column_class}>
@@ -62,9 +74,22 @@ function MiddleColumn() {
                 <form action="" method="get">
                     <Textarea className={classes.TextAreaClass} value={state} onChange={handleChange}
                         placeholder="Enter your message"
-                        autosize minRows={1} size={"md"} onKeyDown={getHotkeyHandler([
+                        autosize minRows={1} size={"lg"} onKeyDown={getHotkeyHandler([
                             ["Enter", handleMessageSubmit]
-                        ])} />
+                        ])} rightSection={
+                            <Popover position="top">
+                                <Popover.Target>
+                                    <ActionIcon variant="outline" color="grape">
+                                        <MdInsertEmoticon />
+                                    </ActionIcon>
+                                </Popover.Target>
+                                <Popover.Dropdown>
+                                    <EmojiPicker onEmojiClick={handleEmojiClick} pickerStyle={{
+                                        width: "100%"
+                                    }} native />
+                                </Popover.Dropdown>
+                            </Popover>
+                        } />
                 </form>
             </div>
             <Outlet />
