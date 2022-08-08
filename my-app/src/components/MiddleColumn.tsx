@@ -1,4 +1,4 @@
-import { createStyles, ThemeIcon } from "@mantine/core";
+import { createStyles } from "@mantine/core";
 import { Textarea } from "@mantine/core";
 import { ScrollArea } from "@mantine/core";
 import { socketContext } from "../globalImports";
@@ -10,6 +10,9 @@ import { MdInsertEmoticon } from "react-icons/md";
 import { ActionIcon } from "@mantine/core";
 import EmojiPicker from "emoji-picker-react";
 import { Popover } from '@mantine/core';
+import { AiOutlineGif } from "react-icons/ai";
+import SearchExperience from "./GiphyComponents/SearchExperience";
+import { GiphyFetch } from '@giphy/js-fetch-api';
 const useStyles = createStyles((theme, _params, getRef) => ({
     middle_column_class: {
         backgroundColor: theme.colors.discord_palette[1],
@@ -21,14 +24,21 @@ const useStyles = createStyles((theme, _params, getRef) => ({
     TextAreaClass: {
         position: "absolute",
         bottom: 23,
-        width: "90%",
+        width: "95%",
     },
     listClass: {
         textDecoration: "none",
         listStyle: "none"
+    },
+    rightSectionClass: {
+        display: "flex",
+        justifyContent: "space-between"
     }
 }))
+
 function MiddleColumn() {
+    const gf = new GiphyFetch("V68YK1MFUoaFnLWe6QY41Fd2FDa5xrUk");
+    const fetchGifs = (offset: number) => gf.trending({ offset, limit: 10 });
     const socket = React.useContext(socketContext);
     const { channelName } = useParams();
     const { classes } = useStyles();
@@ -42,7 +52,7 @@ function MiddleColumn() {
                 return [...oldMessages, message];
             })
         })
-    }, [])
+    }, [socket])
     function handleChange(e: any) {
         const message: string = e.target.value;
         setState(message);
@@ -76,19 +86,33 @@ function MiddleColumn() {
                         placeholder="Enter your message"
                         autosize minRows={1} size={"lg"} onKeyDown={getHotkeyHandler([
                             ["Enter", handleMessageSubmit]
-                        ])} rightSection={
-                            <Popover position="top">
-                                <Popover.Target>
-                                    <ActionIcon variant="outline" color="grape">
-                                        <MdInsertEmoticon />
-                                    </ActionIcon>
-                                </Popover.Target>
-                                <Popover.Dropdown>
-                                    <EmojiPicker onEmojiClick={handleEmojiClick} pickerStyle={{
-                                        width: "100%"
-                                    }} native />
-                                </Popover.Dropdown>
-                            </Popover>
+                        ])} rightSectionWidth={100} rightSection={
+                            <div className={classes.rightSectionClass}>
+                                <Popover position="top">
+                                    <Popover.Target>
+                                        <ActionIcon variant="outline" color="grape">
+                                            <MdInsertEmoticon />
+                                        </ActionIcon>
+                                    </Popover.Target>
+                                    <Popover.Dropdown>
+                                        <EmojiPicker onEmojiClick={handleEmojiClick} pickerStyle={{
+                                            width: "100%"
+                                        }} native />
+                                    </Popover.Dropdown>
+                                </Popover>
+                                <Popover position="top" offset={50}>
+                                    <Popover.Target>
+                                        <ActionIcon variant="outline" color="grape">
+                                            <AiOutlineGif />
+                                        </ActionIcon>
+                                    </Popover.Target>
+                                    <Popover.Dropdown>
+                                        <ScrollArea type="hover" style={{ height: "14em" }}>
+                                            <SearchExperience />
+                                        </ScrollArea>
+                                    </Popover.Dropdown>
+                                </Popover>
+                            </div>
                         } />
                 </form>
             </div>
