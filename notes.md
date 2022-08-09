@@ -45,6 +45,15 @@ All the people who are connect to a particular room will be shown in that column
 - Middle Column
 - Channel
 
+#### Features to be added
+- [ ] Add profile using Auth0 
+- [ ] Fix issue of chat reloading when typying
+- [ ] fix issue for multiple a user sending two or messages at the same time
+- [ ] Add how many users are connected to a single room
+- [ ] Add ability to add videos , images and linkes
+- [ ] Add stickers in the text area
+- [ ] Add grouping chats by category
+
 #### Bonus features
 - [x] The messages will be visible to all the Users that are in the chat app (using WebSockets)
 - [x] When a new User joins the chat, a message is displayed to all the existing Users
