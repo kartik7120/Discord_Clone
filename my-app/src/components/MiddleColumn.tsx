@@ -12,7 +12,6 @@ import EmojiPicker from "emoji-picker-react";
 import { Popover } from '@mantine/core';
 import { AiOutlineGif } from "react-icons/ai";
 import SearchExperience from "./GiphyComponents/SearchExperience";
-import { GiphyFetch } from '@giphy/js-fetch-api';
 const useStyles = createStyles((theme, _params, getRef) => ({
     middle_column_class: {
         backgroundColor: theme.colors.discord_palette[1],
@@ -35,21 +34,25 @@ const useStyles = createStyles((theme, _params, getRef) => ({
         justifyContent: "space-between"
     }
 }))
-
+type message = (string | Element | JSX.Element)[];
+const messageArray: message = [""]
 function MiddleColumn() {
-    const gf = new GiphyFetch("V68YK1MFUoaFnLWe6QY41Fd2FDa5xrUk");
-    const fetchGifs = (offset: number) => gf.trending({ offset, limit: 10 });
     const socket = React.useContext(socketContext);
     const { channelName } = useParams();
     const { classes } = useStyles();
     const [state, setState] = useState("");
-    const [chooseEmoji, setChosenEmoji] = useState(null);
-    const [message, setMessageState] = useState([""]);
+    const [, setChosenEmoji] = useState(null);
+    const [message, setMessageState] = useState(messageArray);
     React.useEffect(() => {
         socket.on("messages", (message: string) => {
             console.log("Message revieved from backend = ", message);
             setMessageState(function (oldMessages) {
                 return [...oldMessages, message];
+            })
+        })
+        socket.on("gif", (gifURL: string) => {
+            setMessageState(function (oldMessages) {
+                return [...oldMessages, <video autoPlay loop muted src={gifURL} />]
             })
         })
     }, [socket])
@@ -76,7 +79,7 @@ function MiddleColumn() {
             <div className={classes.middle_column_class}>
                 <ScrollArea type="hover" style={{ height: "40rem" }}>
                     <ol>
-                        {message.map((ele: string, index: number) => (
+                        {message.map((ele: any, index: number) => (
                             <li key={Math.random() * index * 54239} className={classes.listClass}>{ele}</li>
                         ))}
                     </ol>
@@ -100,7 +103,7 @@ function MiddleColumn() {
                                         }} native />
                                     </Popover.Dropdown>
                                 </Popover>
-                                <Popover position="top" offset={50}>
+                                <Popover position="top" offset={50} width="25em">
                                     <Popover.Target>
                                         <ActionIcon variant="outline" color="grape">
                                             <AiOutlineGif />
@@ -108,7 +111,7 @@ function MiddleColumn() {
                                     </Popover.Target>
                                     <Popover.Dropdown>
                                         <ScrollArea type="hover" style={{ height: "14em" }}>
-                                            <SearchExperience />
+                                            <SearchExperience socket={socket} />
                                         </ScrollArea>
                                     </Popover.Dropdown>
                                 </Popover>

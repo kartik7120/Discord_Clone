@@ -1,13 +1,23 @@
 import { SearchBar, SearchContext, SuggestionBar, Grid } from "@giphy/react-components";
 import { useContext } from "react";
-function Components() {
+interface SearchInterface {
+    socket: any
+}
+function Components(props: SearchInterface) {
     const { fetchGifs, searchKey } = useContext(SearchContext);
+    function handleGifClick(gif: any, e: any) {
+        e.preventDefault();
+        console.log(gif);
+        const gifURL: string = gif.images.looping.mp4;
+        props.socket.emit("gif", gifURL);
+    }
     return (
         <>
+            {/* <div style={{ width: "100%" }}> */}
             <SearchBar />
-            <SuggestionBar />
-
-            <Grid width={400} columns={2} fetchGifs={fetchGifs} key={searchKey} />
+            {/* </div> */}
+            {/* <SuggestionBar /> */}
+            <Grid width={400} columns={2} fetchGifs={fetchGifs} key={searchKey} onGifClick={handleGifClick} />
         </>
     )
 }
