@@ -3,6 +3,7 @@
   "version": "0.1.0",
   "private": true,
   "dependencies": {
+    "@auth0/auth0-react": "^1.10.2",
     "@giphy/js-fetch-api": "^4.4.0",
     "@giphy/react-components": "^6.0.0",
     "@mantine/core": "^5.0.3",
