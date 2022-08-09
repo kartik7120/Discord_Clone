@@ -13,6 +13,9 @@ import { createStyles } from "@mantine/core";
 import { useMutation } from "@tanstack/react-query";
 import { Alert } from "@mantine/core";
 import { useLocalStorage } from "@mantine/hooks";
+import LoginButton from "./Auth/LoginButton";
+import LogoutButton from "./Auth/LogoutButton";
+import { useAuth0 } from "@auth0/auth0-react";
 const useStyles = createStyles((theme, _params, getRef) => ({
     createServerButton: {
         marginTop: "2rem",
@@ -23,6 +26,7 @@ const useStyles = createStyles((theme, _params, getRef) => ({
     }
 }))
 function SideBar() {
+    const { isAuthenticated } = useAuth0();
     const theme = useMantineTheme();
     const [channels, setChannels] = useLocalStorage({ key: "discordChannels", defaultValue: [""] });
     return <div className="sidebar">
@@ -60,6 +64,7 @@ function SideBar() {
                 </Tooltip>
             return "";
         })}
+        {!isAuthenticated ? <LoginButton /> : <LogoutButton />}
     </div>
 }
 
