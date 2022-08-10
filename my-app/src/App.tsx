@@ -1,7 +1,8 @@
 import './App.css';
+import LoadingScreen from './components/LoadingScreen';
 import SideBar from "./components/SideBar";
 import { Outlet } from 'react-router-dom';
-import React from 'react';
+import { withAuthenticationRequired } from '@auth0/auth0-react';
 function App() {
   return (
     <>
@@ -13,4 +14,6 @@ function App() {
   );
 }
 
-export default App;
+export default withAuthenticationRequired(App, {
+  onRedirecting: () => <LoadingScreen />
+});

@@ -19,7 +19,10 @@ const root = ReactDOM.createRoot(
 );
 root.render(
   <Auth0Provider domain='dev-6mnzakh2.us.auth0.com'
-    clientId='TrpH2owRNMhbMYK860wtxBnWYS2ZPnnv' redirectUri='http://localhost:3000'>
+    clientId='TrpH2owRNMhbMYK860wtxBnWYS2ZPnnv' redirectUri='http://localhost:3000'
+    audience='https://dev-6mnzakh2.us.auth0.com/api/v2/'
+    scope='read:current_user update:current_user_metadata'
+  >
     <QueryClientProvider client={queryClient}>
       <MantineProvider theme={{
         colorScheme: "dark",
