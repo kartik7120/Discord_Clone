@@ -13,6 +13,7 @@ import GroupChannel from "./GroupChannel";
 import { useParams } from "react-router-dom";
 import { useContext } from "react";
 import { socketContext } from "../globalImports";
+import ProfileComponent from "./ProfileComponent";
 const useStyles = createStyles((theme, _params, getRef) => ({
     left_column_class: {
         backgroundColor: theme.colors.discord_palette[2],
@@ -72,6 +73,7 @@ function LeftColumn() {
                 </Anchor>
             ))}
         </Stack>
+        <ProfileComponent />
     </div>
 }
 export default LeftColumn;
