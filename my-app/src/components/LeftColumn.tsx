@@ -19,11 +19,8 @@ const useStyles = createStyles((theme, _params, getRef) => ({
         backgroundColor: theme.colors.discord_palette[2],
         display: "flex",
         flexDirection: "column",
-        // justifyContent: "space-around",
-        alignItems: "center"
-    },
-    center_button: {
-        // margin: "0 auto"
+        alignItems: "center",
+        position: "relative"
     },
     leftColumn_channel_button: {
         width: "100%",

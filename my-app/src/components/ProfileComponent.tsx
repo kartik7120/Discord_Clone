@@ -11,7 +11,8 @@ const useStyles = createStyles((theme, _params, getRef) => ({
         display: "flex",
         justifyContent: "space-evenly",
         alignContent: "center",
-        alignSelf: "flex-end"
+        position: "absolute",
+        bottom: 0
     },
     Self_align: {
         alignSelf: "center",

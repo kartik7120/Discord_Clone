@@ -7,7 +7,8 @@ const useStyles = createStyles((theme, _params, getRef) => ({
         display: "flex",
         flexDirection: "column",
         justifyContent: "space-between",
-        alignItems: "center"
+        alignItems: "center",
+        position: "relative"
     },
 }))
 function FriendsBar() {

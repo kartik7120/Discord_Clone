@@ -3,7 +3,6 @@ import { createStyles } from "@mantine/core";
 import { Outlet, useParams } from "react-router-dom";
 import React from "react";
 import { connectNamespace, socketContext } from "../globalImports";
-// import { nsp as socket } from "../globalImports";
 const useStyles = createStyles((theme, _params, getRef) => ({
     grid_wrapper: {
         display: "grid",
@@ -15,9 +14,8 @@ const useStyles = createStyles((theme, _params, getRef) => ({
 function Channel() {
     const { classes } = useStyles();
     const { channel } = useParams();
-    const [state, setState] = React.useState(connectNamespace(channel!));
+    const [state,] = React.useState(connectNamespace(channel!));
     React.useEffect(function () {
-        // const socket = connectNamespace(channel!);
         state.on("connection", () => {
             console.log(`socket ${state.id} connected`);
         })
