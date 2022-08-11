@@ -12,6 +12,7 @@ import EmojiPicker from "emoji-picker-react";
 import { Popover } from '@mantine/core';
 import { AiOutlineGif } from "react-icons/ai";
 import SearchExperience from "./GiphyComponents/SearchExperience";
+import Message from "./Message";
 const useStyles = createStyles((theme, _params, getRef) => ({
     middle_column_class: {
         backgroundColor: theme.colors.discord_palette[1],
@@ -61,11 +62,13 @@ function MiddleColumn() {
         setState(message);
     }
     function handleMessageSubmit(e: any) {
-        socket.emit("message", state, channelName);
-        setMessageState(function (oldMessages) {
-            return [...oldMessages, state];
-        })
-        setState("");
+        if (state !== "") {
+            socket.emit("message", state, channelName);
+            setMessageState(function (oldMessages) {
+                return [...oldMessages, state];
+            })
+            setState("");
+        }
     }
 
     function handleEmojiClick(e: any, emojiObject: any) {
@@ -80,7 +83,7 @@ function MiddleColumn() {
                 <ScrollArea type="hover" style={{ height: "40rem" }}>
                     <ol>
                         {message.map((ele: any, index: number) => (
-                            <li key={Math.random() * index * 54239} className={classes.listClass}>{ele}</li>
+                            <li key={Math.random() * index * 54239} className={classes.listClass}><Message message={ele} /></li>
                         ))}
                     </ol>
                 </ScrollArea>
