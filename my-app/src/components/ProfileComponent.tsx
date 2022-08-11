@@ -1,5 +1,6 @@
 import { createStyles, Avatar, Text, ActionIcon } from "@mantine/core";
 import { Indicator } from "@mantine/core";
+import { useAuth0 } from "@auth0/auth0-react";
 import { BsFillGearFill } from "react-icons/bs";
 const useStyles = createStyles((theme, _params, getRef) => ({
     Profile_wrapper: {
@@ -8,21 +9,22 @@ const useStyles = createStyles((theme, _params, getRef) => ({
         height: "8%",
         color: "white",
         display: "flex",
-        justifyContent: "center",
-        alignContent: "space-evenly"
+        justifyContent: "space-evenly",
+        alignContent: "center"
     },
     Self_align: {
         alignSelf: "center",
     }
 }))
 function ProfileComponent() {
+    const { user } = useAuth0();
     const { classes } = useStyles();
     return <div className={classes.Profile_wrapper}>
-        <Indicator position="bottom-end" inline offset={10} size={9} color="green">
-            <Avatar src={null} alt="No image is here" size="lg" />
+        <Indicator position="bottom-end" inline withBorder size={9} color="green">
+            <Avatar src={user?.picture} alt="username" size="lg" />
         </Indicator>
-        <Text size="sm" className={classes.Self_align}>Username</Text>
-        <ActionIcon variant="outline" className={classes.Self_align}><BsFillGearFill /></ActionIcon>
+        <Text size="sm" className={classes.Self_align}>{user?.name}</Text>
+        <ActionIcon variant="light" className={classes.Self_align}><BsFillGearFill /></ActionIcon>
     </div>
 }
 export default ProfileComponent;
