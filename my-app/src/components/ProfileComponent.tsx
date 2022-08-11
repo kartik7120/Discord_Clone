@@ -10,7 +10,8 @@ const useStyles = createStyles((theme, _params, getRef) => ({
         color: "white",
         display: "flex",
         justifyContent: "space-evenly",
-        alignContent: "center"
+        alignContent: "center",
+        alignSelf: "flex-end"
     },
     Self_align: {
         alignSelf: "center",
@@ -20,8 +21,8 @@ function ProfileComponent() {
     const { user } = useAuth0();
     const { classes } = useStyles();
     return <div className={classes.Profile_wrapper}>
-        <Indicator position="bottom-end" inline withBorder size={9} color="green">
-            <Avatar src={user?.picture} alt="username" size="lg" />
+        <Indicator position="bottom-end" inline withBorder offset={6} size={9} color="green">
+            <Avatar src={user?.picture} alt="username" size="lg" radius="xl" />
         </Indicator>
         <Text size="sm" className={classes.Self_align}>{user?.name}</Text>
         <ActionIcon variant="light" className={classes.Self_align}><BsFillGearFill /></ActionIcon>

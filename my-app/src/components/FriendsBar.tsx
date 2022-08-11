@@ -6,7 +6,7 @@ const useStyles = createStyles((theme, _params, getRef) => ({
         backgroundColor: theme.colors.discord_palette[2],
         display: "flex",
         flexDirection: "column",
-        // justifyContent: "space-around",
+        justifyContent: "space-between",
         alignItems: "center"
     },
 }))
