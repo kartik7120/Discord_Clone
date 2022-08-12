@@ -18,10 +18,7 @@ function Components(props: SearchInterface) {
     }
     return (
         <>
-            {/* <div style={{ width: "100%" }}> */}
             <SearchBar />
-            {/* </div> */}
-            {/* <SuggestionBar /> */}
             <Grid width={400} columns={2} fetchGifs={fetchGifs} key={searchKey} onGifClick={handleGifClick} />
         </>
     )
