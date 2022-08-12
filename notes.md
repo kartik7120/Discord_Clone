@@ -62,3 +62,9 @@ All the people who are connect to a particular room will be shown in that column
 - [x] User can select and send an emoji
 - [ ] Users can chat in private
 - [ ] Users can join channels on specific topics
+
+#### things to do 
+- Fix bug of socket loading same user multiple times
+- connect database and save messages in the database
+- Make a landing page
+- Make a user identify in the backend and store it's information
