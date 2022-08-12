@@ -1,4 +1,4 @@
-import { AspectRatio, createStyles } from "@mantine/core";
+import {  createStyles } from "@mantine/core";
 import { Textarea } from "@mantine/core";
 import { ScrollArea } from "@mantine/core";
 import { socketContext } from "../globalImports";
@@ -53,10 +53,10 @@ function MiddleColumn() {
         })
         socket.on("gif", (gifURL: string) => {
             setMessageState(function (oldMessages) {
-                return [...oldMessages, <AspectRatio ratio={3 / 2}> <video autoPlay loop muted src={gifURL} /></AspectRatio>]
+                return [...oldMessages, <video autoPlay loop style={{ borderRadius: "0.5em" }} muted src={gifURL} />]
             })
         })
-    }, [socket])
+    }, [])
     function handleChange(e: any) {
         const message: string = e.target.value;
         setState(message);
@@ -114,7 +114,7 @@ function MiddleColumn() {
                                     </Popover.Target>
                                     <Popover.Dropdown>
                                         <ScrollArea type="hover" style={{ height: "14em" }}>
-                                            <SearchExperience socket={socket} setMessageState={setMessageState}/>
+                                            <SearchExperience socket={socket} setMessageState={setMessageState} />
                                         </ScrollArea>
                                     </Popover.Dropdown>
                                 </Popover>
