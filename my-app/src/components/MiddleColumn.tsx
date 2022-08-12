@@ -1,4 +1,4 @@
-import { createStyles } from "@mantine/core";
+import { AspectRatio, createStyles } from "@mantine/core";
 import { Textarea } from "@mantine/core";
 import { ScrollArea } from "@mantine/core";
 import { socketContext } from "../globalImports";
@@ -53,7 +53,7 @@ function MiddleColumn() {
         })
         socket.on("gif", (gifURL: string) => {
             setMessageState(function (oldMessages) {
-                return [...oldMessages, <video autoPlay loop muted src={gifURL} />]
+                return [...oldMessages, <AspectRatio ratio={3 / 2}> <video autoPlay loop muted src={gifURL} /></AspectRatio>]
             })
         })
     }, [socket])
