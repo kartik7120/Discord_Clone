@@ -1,7 +1,9 @@
-import { SearchBar, SearchContext, SuggestionBar, Grid } from "@giphy/react-components";
+import { SearchBar, SearchContext, Grid } from "@giphy/react-components";
 import { useContext } from "react";
+type message = (string | Element | JSX.Element)[];
 interface SearchInterface {
-    socket: any
+    socket: any,
+    setMessageState: React.Dispatch<React.SetStateAction<message>>
 }
 function Components(props: SearchInterface) {
     const { fetchGifs, searchKey } = useContext(SearchContext);
@@ -10,6 +12,9 @@ function Components(props: SearchInterface) {
         console.log(gif);
         const gifURL: string = gif.images.looping.mp4;
         props.socket.emit("gif", gifURL);
+        props.setMessageState(function (oldMessages) {
+            return [...oldMessages, <video autoPlay style={{borderRadius:"0.5em"}} loop muted src={gifURL} />]
+        })
     }
     return (
         <>

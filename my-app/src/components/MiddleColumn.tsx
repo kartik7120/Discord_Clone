@@ -114,7 +114,7 @@ function MiddleColumn() {
                                     </Popover.Target>
                                     <Popover.Dropdown>
                                         <ScrollArea type="hover" style={{ height: "14em" }}>
-                                            <SearchExperience socket={socket} />
+                                            <SearchExperience socket={socket} setMessageState={setMessageState}/>
                                         </ScrollArea>
                                     </Popover.Dropdown>
                                 </Popover>
