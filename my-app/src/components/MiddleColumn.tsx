@@ -1,4 +1,4 @@
-import { createStyles } from "@mantine/core";
+import { createStyles, Text } from "@mantine/core";
 import { Textarea } from "@mantine/core";
 import { ScrollArea } from "@mantine/core";
 import { socketContext } from "../globalImports";
@@ -14,6 +14,7 @@ import { AiOutlineGif } from "react-icons/ai";
 import SearchExperience from "./GiphyComponents/SearchExperience";
 import Message from "./Message";
 import Stickers from "./StipopComponents/Stickers";
+import { useScrollIntoView } from "@mantine/hooks";
 import { BsFillStickiesFill } from "react-icons/bs";
 const useStyles = createStyles((theme, _params, getRef) => ({
     middle_column_class: {
@@ -40,6 +41,7 @@ const useStyles = createStyles((theme, _params, getRef) => ({
 type message = (string | Element | JSX.Element)[];
 const messageArray: message = [""]
 function MiddleColumn() {
+    const { scrollIntoView, targetRef, scrollableRef } = useScrollIntoView<HTMLDivElement>({ axis: "y" });
     const socket = React.useContext(socketContext);
     const { channelName } = useParams();
     const { classes } = useStyles();
@@ -47,6 +49,7 @@ function MiddleColumn() {
     const [, setChosenEmoji] = useState(null);
     const [message, setMessageState] = useState(messageArray);
     React.useEffect(() => {
+        scrollIntoView({ alignment: "end" });
         socket.on("messages", (message: string) => {
             console.log("Message revieved from backend = ", message);
             setMessageState(function (oldMessages) {
@@ -74,6 +77,7 @@ function MiddleColumn() {
             setMessageState(function (oldMessages) {
                 return [...oldMessages, state];
             })
+            scrollIntoView({ alignment: "end" });
             setState("");
         }
     }
@@ -86,12 +90,14 @@ function MiddleColumn() {
     }
     return (
         <>
-            <div className={classes.middle_column_class}>
-                <ScrollArea type="hover" style={{ height: "40rem" }}>
-                    <ol>
+            <div className={classes.middle_column_class} id="messages">
+                <ScrollArea type="hover" style={{ height: "40rem" }} >
+                    <ol >
+                        <Text ref={scrollableRef}></Text>
                         {message.map((ele: any, index: number) => (
                             <li key={Math.random() * index * 54239} className={classes.listClass}><Message message={ele} /></li>
                         ))}
+                        <Text ref={targetRef}></Text>
                     </ol>
                 </ScrollArea>
                 <form action="" method="get">
