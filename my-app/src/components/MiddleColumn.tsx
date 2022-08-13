@@ -39,7 +39,7 @@ const useStyles = createStyles((theme, _params, getRef) => ({
     }
 }))
 type message = (string | Element | JSX.Element)[];
-const messageArray: message = [""]
+const messageArray: message = []
 function MiddleColumn() {
     const { scrollIntoView, targetRef, scrollableRef } = useScrollIntoView<HTMLDivElement>({ axis: "y" });
     const socket = React.useContext(socketContext);
