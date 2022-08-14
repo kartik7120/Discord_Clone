@@ -16,6 +16,7 @@ import Message from "./Message";
 import Stickers from "./StipopComponents/Stickers";
 import { useScrollIntoView } from "@mantine/hooks";
 import { BsFillStickiesFill } from "react-icons/bs";
+import { useAuth0 } from "@auth0/auth0-react";
 const useStyles = createStyles((theme, _params, getRef) => ({
     middle_column_class: {
         backgroundColor: theme.colors.discord_palette[1],
@@ -38,9 +39,14 @@ const useStyles = createStyles((theme, _params, getRef) => ({
         justifyContent: "space-between"
     }
 }))
-type message = (string | Element | JSX.Element)[];
-const messageArray: message = []
+interface messageObj<T> {
+    sub: string,
+    message: T
+}
+type message = messageObj<string | Element | JSX.Element>[];
+const messageArray: message = [];
 function MiddleColumn() {
+    const { user } = useAuth0();
     const { scrollIntoView, targetRef, scrollableRef } = useScrollIntoView<HTMLDivElement>({ axis: "y" });
     const socket = React.useContext(socketContext);
     const { channelName } = useParams();
@@ -50,20 +56,26 @@ function MiddleColumn() {
     const [message, setMessageState] = useState(messageArray);
     React.useEffect(() => {
         scrollIntoView({ alignment: "end" });
-        socket.on("messages", (message: string) => {
+        socket.on("messages", (message: string, userSub: string) => {
             console.log("Message revieved from backend = ", message);
             setMessageState(function (oldMessages) {
-                return [...oldMessages, message];
+                return [...oldMessages, { message, sub: userSub }];
             })
         })
-        socket.on("gif", (gifURL: string) => {
+        socket.on("gif", (gifURL: string, userSub: string) => {
             setMessageState(function (oldMessages) {
-                return [...oldMessages, <video autoPlay loop muted style={{ borderRadius: "0.5em" }} src={gifURL} />]
+                return [...oldMessages, {
+                    message: <video autoPlay loop muted style={{ borderRadius: "0.5em" }} src={gifURL} />,
+                    sub: userSub
+                }]
             })
         })
-        socket.on("sticker", (stickerURL: string) => {
+        socket.on("sticker", (stickerURL: string, userSub: string) => {
             setMessageState(function (oldMessages) {
-                return [...oldMessages, <img alt="sticker" style={{ borderRadius: "0.5em", width: "6em" }} src={stickerURL} />]
+                return [...oldMessages, {
+                    message: <img alt="sticker" style={{ borderRadius: "0.5em", width: "6em" }} src={stickerURL} />
+                    , sub: userSub
+                }]
             })
         })
     }, [])
@@ -73,9 +85,9 @@ function MiddleColumn() {
     }
     function handleMessageSubmit(e: any) {
         if (state !== "") {
-            socket.emit("message", state, channelName);
+            socket.emit("message", state, channelName, user?.sub);
             setMessageState(function (oldMessages) {
-                return [...oldMessages, state];
+                return [...oldMessages, { message: state, sub: user?.sub! }];
             })
             scrollIntoView({ alignment: "end" });
             setState("");
@@ -95,7 +107,7 @@ function MiddleColumn() {
                     <ol >
                         <Text ref={scrollableRef}></Text>
                         {message.map((ele: any, index: number) => (
-                            <li key={Math.random() * index * 54239} className={classes.listClass}><Message message={ele} /></li>
+                            <li key={Math.random() * index * 54239} className={classes.listClass}><Message {...ele} /></li>
                         ))}
                         <Text ref={targetRef}></Text>
                     </ol>

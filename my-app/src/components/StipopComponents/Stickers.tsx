@@ -1,17 +1,26 @@
 import { UnifiedComponent } from "stipop-react-sdk";
 import { useMantineTheme } from "@mantine/core";
-type message = (string | Element | JSX.Element)[];
+import { useAuth0 } from "@auth0/auth0-react";
+type message = messageObj<string | Element | JSX.Element>[];
+interface messageObj<T> {
+    sub: string,
+    message: T
+}
 interface sticker {
     socket: any,
     setMessageState: React.Dispatch<React.SetStateAction<message>>
 }
+
 function Stickers(props: sticker) {
     const theme = useMantineTheme();
-
+    const { user } = useAuth0();
     function handleStickerClick(stickerObject: any) {
         props.socket.emit("sticker", stickerObject.url!);
         props.setMessageState(function (oldMessages) {
-            return [...oldMessages, <img src={stickerObject.url!} style={{ borderRadius: "0.5em",width:"6em" }} alt="sticker" />]
+            return [...oldMessages, {
+                message: <img src={stickerObject.url!} style={{ borderRadius: "0.5em", width: "6em" }} alt="sticker" />
+                , sub: user?.sub!
+            }]
         })
     }
 
