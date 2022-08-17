@@ -16,6 +16,7 @@ import { useLocalStorage } from "@mantine/hooks";
 import LoginButton from "./Auth/LoginButton";
 import LogoutButton from "./Auth/LogoutButton";
 import { useAuth0 } from "@auth0/auth0-react";
+import { createRoomInterface } from "./interfaces/createRoomInterface";
 const useStyles = createStyles((theme, _params, getRef) => ({
     createServerButton: {
         marginTop: "2rem",
@@ -68,13 +69,20 @@ function SideBar() {
     </div>
 }
 
-async function fetchCreateRoom(value: string) {
+async function fetchCreateRoom({ value, userSub }: createRoomInterface) {
+    const userBody = {
+        userSub
+    }
     try {
         const config = {
             method: "POST",
-            "Content-Type": "application/json"
+            headers: {
+                "Content-Type": "application/json",
+                "Accept": "application/json"
+            },
+            body: JSON.stringify(userBody)
         }
-        const URL = `http://localhost:4000/createNamespace/${value}`;
+        const URL = `${process.env.API_URL || "http://localhost:4000/"}namespace/createNamespace/${value}`;
         const response = await fetch(URL, config);
         const result = await response.json();
         return result;
@@ -98,10 +106,11 @@ function SidebarIcon({ icon, label }: any) {
 
 function SideBarAddIcon({ icon, label, setChannels }: any) {
     const navigate = useNavigate();
+    const { user } = useAuth0();
     const { classes } = useStyles();
     const [state, setState] = React.useState(false);
     const [value, setValue] = React.useState("");
-    const { isLoading, isError, error, mutate, isSuccess } = useMutation(["namespace"],
+    const { isLoading, isError, error, mutate, isSuccess } = useMutation(["namespace", `${user?.sub}`],
         fetchCreateRoom);
     React.useEffect(function () {
         if (isSuccess) {
@@ -123,13 +132,13 @@ function SideBarAddIcon({ icon, label, setChannels }: any) {
     }
 
     function handleCreateNamespace() {
-        mutate(value);
+        mutate({ value, userSub: user?.sub });
     }
 
     return <>
         <Modal opened={state} onClose={() => setState(false)} centered size="lg"
             title={<Title order={3}>Create Server</Title>}>
-            {isError ? <Alert title="Error while creating namespace" color="red" icon={<FiAlertTriangle />}>
+            {isError ? <Alert title="Error while creating namespace" withCloseButton color="red" icon={<FiAlertTriangle />}>
                 {`${error}`}
             </Alert> : ""}
             <Text weight="normal" size="xl" align="center">
