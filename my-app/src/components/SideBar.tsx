@@ -29,8 +29,18 @@ const useStyles = createStyles((theme, _params, getRef) => ({
     }
 }))
 
-async function fetchChannels() {
-    const URL = `${process.env.API_URL || "http://localhost:4000/"}/userNamespaces`;
+async function fetchChannels({ queryKey }: any) {
+    const [, _key2] = queryKey;
+    console.log(`userSub in fetch channel function = ${_key2}`);
+    const URL = `${process.env.API_URL}userNamespaces`;
+    const config = {
+        method: "GET",
+        headers: {
+            "Content-Type": "application/json",
+            "Accept": "application/json"
+        },
+        body: JSON.stringify(_key2)
+    }
     try {
         const response = await fetch(URL);
         const channels = await response.json();
@@ -41,10 +51,10 @@ async function fetchChannels() {
 }
 
 function SideBar() {
-    const { isAuthenticated } = useAuth0();
+    const { isAuthenticated, user } = useAuth0();
     const theme = useMantineTheme();
     const [channels, setChannels] = useLocalStorage({ key: "discordChannels", defaultValue: [""] });
-    const { isLoading, isError, data, error, isSuccess } = useQuery(["channels"], fetchChannels);
+    const { isLoading, isError, data, error, isSuccess } = useQuery(["channels", user?.sub], fetchChannels);
     if (isError) {
         console.log("Error occured while fetching namespaces");
         console.log(`fetching error = ${error}`);
