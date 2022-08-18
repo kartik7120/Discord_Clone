@@ -32,15 +32,7 @@ const useStyles = createStyles((theme, _params, getRef) => ({
 async function fetchChannels({ queryKey }: any) {
     const [, _key2] = queryKey;
     console.log(`userSub in fetch channel function = ${_key2}`);
-    const URL = `${process.env.API_URL}userNamespaces`;
-    const config = {
-        method: "GET",
-        headers: {
-            "Content-Type": "application/json",
-            "Accept": "application/json"
-        },
-        body: JSON.stringify(_key2)
-    }
+    const URL = `${process.env.REACT_APP_API_URL}namespace/userNamespaces/${_key2}`;
     try {
         const response = await fetch(URL);
         const channels = await response.json();
@@ -85,15 +77,6 @@ function SideBar() {
         >
             <SidebarIcon icon={<SiMyanimelist size="20" />} label="channel" />
         </Tooltip>
-        {channels.map((channel, index: number) => {
-            if (channel)
-                return <Tooltip key={Math.random() * 10 * index * 52} label="MyAnimeList" position="right"
-                    withArrow arrowSize={5}
-                >
-                    <SidebarIcon icon={<SiMyanimelist size="20" />} label={channel} />
-                </Tooltip>
-            return "";
-        })}
         {
             isSuccess ? data.map((channel: fetchChannel, index: number) => {
                 if (channel)
@@ -122,7 +105,7 @@ async function fetchCreateRoom({ value, userSub }: createRoomInterface) {
             },
             body: JSON.stringify(userBody)
         }
-        const URL = `${process.env.API_URL || "http://localhost:4000/"}namespace/createNamespace/${value}`;
+        const URL = `${process.env.REACT_APP_API_URL || "http://localhost:4000/"}namespace/createNamespace/${value}`;
         const response = await fetch(URL, config);
         const result = await response.json();
         return result;
