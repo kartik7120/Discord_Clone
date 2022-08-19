@@ -2,7 +2,6 @@ import { createStyles, Title } from "@mantine/core";
 import { Modal } from "@mantine/core";
 import { useMantineTheme } from "@mantine/core";
 import React from "react";
-import { Button } from "@mantine/core";
 import { Stack } from "@mantine/core";
 import { useLocalStorage } from "@mantine/hooks";
 import ModalCreateChannel from "./CreateChannelModal";
@@ -61,7 +60,6 @@ function LeftColumn() {
             overlayBlur={1} centered onClose={() => setOpened(false)} opened={opended}>
             <ModalCreateChannel setChannels={setChannels} setOpened={setOpened} />
         </Modal>
-        {/* <Button type="button" variant="outline" onClick={() => setOpened(true)}>Create Channel</Button> */}
         <GroupChannel />
         <Stack justify="center" align="stretch" className={classes.stack_class}>
             {channels.map((channel, index) => (
