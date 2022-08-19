@@ -6,7 +6,7 @@ import { FiAlertTriangle } from "react-icons/fi";
 import { FaCompass } from "react-icons/fa";
 import { BsPlus, BsFillLightningFill } from "react-icons/bs";
 import { useNavigate } from "react-router-dom";
-import { Box, Text, Title, TextInput, Button } from "@mantine/core";
+import { Box, Text, Title, TextInput, Button, ScrollArea } from "@mantine/core";
 import { Tooltip } from "@mantine/core";
 import { useMantineTheme } from "@mantine/core";
 import { Modal } from '@mantine/core';
@@ -52,42 +52,44 @@ function SideBar() {
         console.log(`fetching error = ${error}`);
     }
     return <div className="sidebar">
-        <Tooltip label="Home" position="right" withArrow arrowSize={5}
+        <ScrollArea style={{ height: "100%" }} scrollHideDelay={300}>
+            <Tooltip label="Home" position="right" withArrow arrowSize={5}
 
-        >
-            <SidebarIcon icon={<SiDiscord size={32} color={"#5663F7"} />} label="Home" />
-        </Tooltip>
-        <Tooltip label="Add a Server" position="right" withArrow arrowSize={5}
+            >
+                <SidebarIcon icon={<SiDiscord size={32} color={"#5663F7"} />} label="Home" />
+            </Tooltip>
+            <Tooltip label="Add a Server" position="right" withArrow arrowSize={5}
 
-        >
-            <SideBarAddIcon setChannels={setChannels} icon={<BsPlus size={32} />} />
-        </Tooltip>
-        <Tooltip label="Home" position="right" withArrow arrowSize={5}
+            >
+                <SideBarAddIcon setChannels={setChannels} icon={<BsPlus size={32} />} />
+            </Tooltip>
+            <Tooltip label="Home" position="right" withArrow arrowSize={5}
 
-        >
-            <SidebarIcon icon={<BsFillLightningFill size={20} />} />
-        </Tooltip>
-        <Tooltip label="Explore Servers" position="right" withArrow arrowSize={5}
+            >
+                <SidebarIcon icon={<BsFillLightningFill size={20} />} />
+            </Tooltip>
+            <Tooltip label="Explore Servers" position="right" withArrow arrowSize={5}
 
-        >
-            <SidebarIcon icon={<FaCompass size="20" />} />
-        </Tooltip>
-        <Tooltip label="MyAnimeList" position="right" withArrow arrowSize={5}
+            >
+                <SidebarIcon icon={<FaCompass size="20" />} />
+            </Tooltip>
+            <Tooltip label="MyAnimeList" position="right" withArrow arrowSize={5}
 
-        >
-            <SidebarIcon icon={<SiMyanimelist size="20" />} label="channel" />
-        </Tooltip>
-        {
-            isSuccess ? data.map((channel: fetchChannel, index: number) => {
-                if (channel)
-                    return <Tooltip key={Math.random() * 10 * index * 52} label="MyAnimeList" position="right"
-                        withArrow arrowSize={5}
-                    >
-                        <SidebarIcon icon={<GiPistolGun size="20" />} label={channel.channelName} />
-                    </Tooltip>
-                return "";
-            }) : ""
-        }
+            >
+                <SidebarIcon icon={<SiMyanimelist size="20" />} label="channel" />
+            </Tooltip>
+            {
+                isSuccess ? data.map((channel: fetchChannel, index: number) => {
+                    if (channel)
+                        return <Tooltip key={Math.random() * 10 * index * 52} label={channel.channelName} position="right"
+                            withArrow arrowSize={5}
+                        >
+                            <SidebarIcon icon={<GiPistolGun size="20" />} label={channel.channelName} />
+                        </Tooltip>
+                    return "";
+                }) : ""
+            }
+        </ScrollArea>
         {!isAuthenticated ? <LoginButton /> : <LogoutButton />}
     </div>
 }
