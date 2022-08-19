@@ -14,6 +14,7 @@ import { useParams } from "react-router-dom";
 import { useContext } from "react";
 import { socketContext } from "../globalImports";
 import ProfileComponent from "./ProfileComponent";
+import OptionsComponent from "./OptionsComponent";
 const useStyles = createStyles((theme, _params, getRef) => ({
     left_column_class: {
         backgroundColor: theme.colors.discord_palette[2],
@@ -51,6 +52,7 @@ function LeftColumn() {
         })
     }
     return <div className={classes.left_column_class}>
+        <OptionsComponent setOpened={setOpened} />
         <Modal overlayOpacity={0.4} title={<Title order={2}>Create Channel</Title>} radius="md" styles={{
             modal: {
                 backgroundColor: theme.colors.discord_palette[1]
@@ -59,7 +61,7 @@ function LeftColumn() {
             overlayBlur={1} centered onClose={() => setOpened(false)} opened={opended}>
             <ModalCreateChannel setChannels={setChannels} setOpened={setOpened} />
         </Modal>
-        <Button type="button" variant="outline" onClick={() => setOpened(true)}>Create Channel</Button>
+        {/* <Button type="button" variant="outline" onClick={() => setOpened(true)}>Create Channel</Button> */}
         <GroupChannel />
         <Stack justify="center" align="stretch" className={classes.stack_class}>
             {channels.map((channel, index) => (
