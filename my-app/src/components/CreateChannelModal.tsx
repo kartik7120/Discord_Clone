@@ -6,6 +6,8 @@ import { createStyles } from "@mantine/core";
 import { useNavigate } from "react-router-dom";
 import { socketContext } from "../globalImports";
 import React from "react";
+import { useMutation } from "@tanstack/react-query";
+import { useAuth0 } from "@auth0/auth0-react";
 interface createProps {
     setChannels: any,
     setOpened: React.Dispatch<React.SetStateAction<boolean>>
@@ -19,6 +21,8 @@ const useStyles = createStyles((theme, _params, getRef) => ({
     }
 }))
 function ModalCreateChannel(props: createProps) {
+    const { user } = useAuth0();
+    // const { isLoading, isError, data, error, mutate } = useMutation(["namespace",""])
     const socket = React.useContext(socketContext);
     const navigate = useNavigate();
     const { classes } = useStyles();
