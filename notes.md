@@ -42,7 +42,7 @@ All the people who are connect to a particular room will be shown in that column
 
 - [x] Make the navLink
 - [ ] Add ability to group items in a category
-- [ ] Settigs of a channel
+- [ ] Settings of a channel
 
 #### Idea for passing namespace connection
 
@@ -58,10 +58,10 @@ All the people who are connect to a particular room will be shown in that column
 #### Features to be added
 
 - [ ] Add profile using Auth0
-- [ ] Fix issue of chat reloading when typying
+- [ ] Fix issue of chat reloading when typing
 - [ ] fix issue for multiple a user sending two or messages at the same time
 - [ ] Add how many users are connected to a single room
-- [ ] Add ability to add videos , images and linkes
+- [ ] Add ability to add videos , images and linked
 - [ ] Add stickers in the text area
 - [ ] Add grouping chats by category
 
@@ -84,8 +84,8 @@ All the people who are connect to a particular room will be shown in that column
 
 ##### Routes
 
-- Create rooms
-- Delete rooms
-- Delete Channels
-- Save messages in the database
-- Ability to search several other servers and add them to the user schema
+- [ ] Create rooms
+- [ ] Delete rooms
+- [ ] Delete Channels
+- [ ] Save messages in the database
+- [ ] Ability to search several other servers and add them to the user schema
