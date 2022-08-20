@@ -38,9 +38,11 @@ root.render(
               <Route element={<FriendsBar />}>
                 <Route index element={<ChatWindow />} />
               </Route>
-              <Route path=':channel' element={<Channel />} >
-                <Route path=':channelName' element={<MiddleColumn />}>
-                  <Route index element={<RightColumn />} />
+              <Route path=':channel'>
+                <Route path=':id' element={<Channel />}>
+                  <Route path=':channelName' element={<MiddleColumn />}>
+                    <Route index element={<RightColumn />} />
+                  </Route>
                 </Route>
               </Route>
             </Route>

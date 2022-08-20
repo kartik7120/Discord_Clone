@@ -3,15 +3,15 @@ import { Button } from "@mantine/core";
 import { FaHashtag } from "react-icons/fa";
 import { useMantineTheme } from "@mantine/core";
 import { createStyles } from "@mantine/core";
-import { useNavigate } from "react-router-dom";
+import { useNavigate, useParams } from "react-router-dom";
 import { socketContext } from "../globalImports";
 import React from "react";
-import { useMutation } from "@tanstack/react-query";
+import { QueryClient, useMutation, useQueryClient } from "@tanstack/react-query";
 import { useAuth0 } from "@auth0/auth0-react";
+import createRoomInterface from "./interfaces/createRoomInterface";
 interface createProps {
     setChannels: any,
     setOpened: React.Dispatch<React.SetStateAction<boolean>>
-
 }
 const useStyles = createStyles((theme, _params, getRef) => ({
     flex_wrapper: {
@@ -20,9 +20,34 @@ const useStyles = createStyles((theme, _params, getRef) => ({
         justifyContent: "space-between"
     }
 }))
+async function fetchRooms({ value, userSub }: createRoomInterface) {
+    try {
+        // const [_key1, _key2, _key3, _key4] = queryKey;
+        const URL = `${process.env.REACT_APP_API_URL}namespace/createRooms`;
+        const config = {
+            method: "POST",
+            headers: {
+                "Content-Type": "application/json",
+                "Accept": "application/json"
+            },
+            body: JSON.stringify({
+                roomName: value,
+                userSub,
+            })
+        }
+        const response = await fetch(URL, config);
+        const result = await response.json();
+        return result;
+    } catch (error) {
+        throw error;
+    }
+}
 function ModalCreateChannel(props: createProps) {
+    const { channel } = useParams();
     const { user } = useAuth0();
-    // const { isLoading, isError, data, error, mutate } = useMutation(["namespace",""])
+    const queryClient = useQueryClient();
+    const d = queryClient.getQueryData(["channel",user?.sub]);
+    const { isLoading, isError, data, error, mutate } = useMutation(["namespace", channel, "rooms", user?.sub], fetchRooms)
     const socket = React.useContext(socketContext);
     const navigate = useNavigate();
     const { classes } = useStyles();
@@ -33,6 +58,7 @@ function ModalCreateChannel(props: createProps) {
         setInputState(channelName);
     }
     function handleClick(e: React.MouseEvent<HTMLElement>) {
+        mutate({ value: inputState, userSub: user?.sub });
         props.setChannels(function (oldChannels: string[]) {
             return [...oldChannels, inputState];
         })

@@ -8,7 +8,6 @@ import { BsPlus, BsFillLightningFill } from "react-icons/bs";
 import { useNavigate } from "react-router-dom";
 import { Box, Text, Title, TextInput, Button, ScrollArea } from "@mantine/core";
 import { Tooltip } from "@mantine/core";
-import { useMantineTheme } from "@mantine/core";
 import { Modal } from '@mantine/core';
 import { createStyles } from "@mantine/core";
 import { useMutation, useQuery } from "@tanstack/react-query";
@@ -17,7 +16,7 @@ import { useLocalStorage } from "@mantine/hooks";
 import LoginButton from "./Auth/LoginButton";
 import LogoutButton from "./Auth/LogoutButton";
 import { useAuth0 } from "@auth0/auth0-react";
-import { createRoomInterface } from "./interfaces/createRoomInterface";
+import createRoomInterface from "./interfaces/createRoomInterface";
 import fetchChannel from "./interfaces/interfaces";
 const useStyles = createStyles((theme, _params, getRef) => ({
     createServerButton: {
@@ -44,11 +43,11 @@ async function fetchChannels({ queryKey }: any) {
 
 function SideBar() {
     const { isAuthenticated, user } = useAuth0();
-    const theme = useMantineTheme();
+    // const theme = useMantineTheme();
     const [channels, setChannels] = useLocalStorage({ key: "discordChannels", defaultValue: [""] });
     const { isLoading, isError, data, error, isSuccess } = useQuery(["channels", user?.sub], fetchChannels);
     if (isError) {
-        console.log("Error occured while fetching namespaces");
+        console.log("Error occurred while fetching namespaces");
         console.log(`fetching error = ${error}`);
     }
     return <div className="sidebar">
@@ -81,12 +80,13 @@ function SideBar() {
             {
                 isSuccess ? data.map((channel: fetchChannel, index: number) => {
                     if (channel)
-                        return <Tooltip key={Math.random() * 10 * index * 52} label={channel.channelName} position="right"
-                            withArrow arrowSize={5}
-                        >
-                            <SidebarIcon icon={<GiPistolGun size="20" />} label={channel.channelName} />
-                        </Tooltip>
-                    return "";
+                        console.log(channel._id);
+                    return <Tooltip key={Math.random() * 10 * index * 52} label={channel.channelName} position="right"
+                        withArrow arrowSize={5}
+                    >
+                        <SidebarIcon icon={<GiPistolGun size="20" />} channelId={channel._id} label={channel.channelName} />
+                    </Tooltip>
+                    // return "";
                 }) : ""
             }
         </ScrollArea>
@@ -116,11 +116,11 @@ async function fetchCreateRoom({ value, userSub }: createRoomInterface) {
     }
 }
 
-function SidebarIcon({ icon, label }: any) {
+function SidebarIcon({ icon, label, channelId }: any) {
     const navigate = useNavigate();
     function handleClick() {
         if (label && label !== "Home")
-            navigate(`/${label}`);
+            navigate(`/${label}/${channelId}`);
         else
             navigate("../");
     }

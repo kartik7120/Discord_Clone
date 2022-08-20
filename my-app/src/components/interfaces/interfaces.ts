@@ -1,5 +1,5 @@
 interface fetchChannel {
-    id: any
+    _id: any
     channelName: string,
     room?: any[],
     description?: string,
