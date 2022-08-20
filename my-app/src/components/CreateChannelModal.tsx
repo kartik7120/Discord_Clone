@@ -8,7 +8,10 @@ import { socketContext } from "../globalImports";
 import React from "react";
 import { QueryClient, useMutation, useQueryClient } from "@tanstack/react-query";
 import { useAuth0 } from "@auth0/auth0-react";
+import { GrStatusWarning } from "react-icons/gr";
 import createRoomInterface from "./interfaces/createRoomInterface";
+import { showNotification } from "@mantine/notifications"
+import { TiTickOutline } from "react-icons/ti";
 interface createProps {
     setChannels: any,
     setOpened: React.Dispatch<React.SetStateAction<boolean>>
@@ -20,7 +23,7 @@ const useStyles = createStyles((theme, _params, getRef) => ({
         justifyContent: "space-between"
     }
 }))
-async function fetchRooms({ value, userSub }: createRoomInterface) {
+async function fetchRooms({ value, userSub, id }: createRoomInterface) {
     try {
         // const [_key1, _key2, _key3, _key4] = queryKey;
         const URL = `${process.env.REACT_APP_API_URL}namespace/createRooms`;
@@ -33,6 +36,7 @@ async function fetchRooms({ value, userSub }: createRoomInterface) {
             body: JSON.stringify({
                 roomName: value,
                 userSub,
+                channelId: id
             })
         }
         const response = await fetch(URL, config);
@@ -43,22 +47,42 @@ async function fetchRooms({ value, userSub }: createRoomInterface) {
     }
 }
 function ModalCreateChannel(props: createProps) {
-    const { channel } = useParams();
+    const { channel, id } = useParams();
     const { user } = useAuth0();
     const queryClient = useQueryClient();
-    const d = queryClient.getQueryData(["channel",user?.sub]);
-    const { isLoading, isError, data, error, mutate } = useMutation(["namespace", channel, "rooms", user?.sub], fetchRooms)
+    const { isError, data, error, mutate, isSuccess } = useMutation(["namespace", channel, "rooms", user?.sub], fetchRooms)
     const socket = React.useContext(socketContext);
     const navigate = useNavigate();
     const { classes } = useStyles();
     const theme = useMantineTheme();
     const [inputState, setInputState] = React.useState("");
+
+    if (isError) {
+        console.log(error);
+        showNotification({
+            title: "Room not created ❌",
+            message: "Error occured while creating a new room",
+            color: "red",
+            autoClose: 2000,
+            icon: <GrStatusWarning />
+        })
+    }
+
+    if (isSuccess) {
+        showNotification({
+            title: "Room created ✅",
+            message: "Room successfully created",
+            color: "dark",
+            autoClose: 2000,
+            icon: <TiTickOutline />
+        })
+    }
     function handleChange(e: React.ChangeEvent<HTMLInputElement>) {
         const channelName = e.target.value;
         setInputState(channelName);
     }
     function handleClick(e: React.MouseEvent<HTMLElement>) {
-        mutate({ value: inputState, userSub: user?.sub });
+        mutate({ value: inputState, userSub: user?.sub, id });
         props.setChannels(function (oldChannels: string[]) {
             return [...oldChannels, inputState];
         })

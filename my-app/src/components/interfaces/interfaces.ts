@@ -5,4 +5,10 @@ interface fetchChannel {
     description?: string,
     picture?: string
 }
+interface Room {
+    _id: string
+    roomName: string
+    message: any[]
+}
 export default fetchChannel;
+export type { Room }

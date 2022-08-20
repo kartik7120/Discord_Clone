@@ -12,6 +12,7 @@ import RightColumn from './components/RightColumn';
 import { QueryClientProvider, QueryClient } from '@tanstack/react-query';
 import { ReactQueryDevtools } from '@tanstack/react-query-devtools';
 import { Auth0Provider } from '@auth0/auth0-react';
+import { NotificationsProvider } from '@mantine/notifications';
 const queryClient = new QueryClient();
 
 const root = ReactDOM.createRoot(
@@ -32,23 +33,25 @@ root.render(
         },
       }}
         withNormalizeCSS>
-        <BrowserRouter >
-          <Routes>
-            <Route path='/' element={<App />}>
-              <Route element={<FriendsBar />}>
-                <Route index element={<ChatWindow />} />
-              </Route>
-              <Route path=':channel'>
-                <Route path=':id' element={<Channel />}>
-                  <Route path=':channelName' element={<MiddleColumn />}>
-                    <Route index element={<RightColumn />} />
+        <NotificationsProvider>
+          <BrowserRouter >
+            <Routes>
+              <Route path='/' element={<App />}>
+                <Route element={<FriendsBar />}>
+                  <Route index element={<ChatWindow />} />
+                </Route>
+                <Route path=':channel'>
+                  <Route path=':id' element={<Channel />}>
+                    <Route path=':channelName' element={<MiddleColumn />}>
+                      <Route index element={<RightColumn />} />
+                    </Route>
                   </Route>
                 </Route>
               </Route>
-            </Route>
-            <Route path='*' element={<div>This path does not exist</div>} />
-          </Routes>
-        </BrowserRouter>
+              <Route path='*' element={<div>This path does not exist</div>} />
+            </Routes>
+          </BrowserRouter>
+        </NotificationsProvider>
       </MantineProvider>
       <ReactQueryDevtools />
     </QueryClientProvider>

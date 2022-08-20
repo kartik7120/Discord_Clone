@@ -14,6 +14,8 @@ import { useContext } from "react";
 import { socketContext } from "../globalImports";
 import ProfileComponent from "./ProfileComponent";
 import OptionsComponent from "./OptionsComponent";
+import { useQuery } from "@tanstack/react-query";
+import { Room } from "./interfaces/interfaces";
 const useStyles = createStyles((theme, _params, getRef) => ({
     left_column_class: {
         backgroundColor: theme.colors.discord_palette[2],
@@ -37,11 +39,24 @@ const useStyles = createStyles((theme, _params, getRef) => ({
         width: "80%"
     }
 }))
+async function fetchRooms({ queryKey }: any) {
+    const [, , _key3] = queryKey;
+    try {
+        const URL = `${process.env.REACT_APP_API_URL}namespace/${_key3}`;
+        const response = await fetch(URL);
+        const result = await response.json();
+        return result;
+    } catch (error) {
+        throw error;
+    }
+}
 function LeftColumn() {
-    const { channel } = useParams();
+    const { channel, id } = useParams();
     const { classes } = useStyles();
     const socket = useContext(socketContext);
     const theme = useMantineTheme();
+    const { isLoading, isError, data, error, isSuccess } = useQuery(["namespace", channel, id, "rooms"], fetchRooms,
+        { refetchOnWindowFocus: false });
     const [channels, setChannels] = useLocalStorage({ key: `${channel}Channels`, defaultValue: ["general"] });
 
     const [opended, setOpened] = React.useState(false);
@@ -62,13 +77,15 @@ function LeftColumn() {
         </Modal>
         <GroupChannel />
         <Stack justify="center" align="stretch" className={classes.stack_class}>
-            {channels.map((channel, index) => (
-                <Anchor key={Math.random() * index * 5487} className={classes.leftColumn_channel_button}
-                    component={Link} to={channel} align="left" variant="text" size="md"
-                    onClick={(e: any) => handleClick(e, channel)}>
-                    <HiHashtag color={theme.colors.discord_palette[6]} /> {channel}
-                </Anchor>
-            ))}
+            {
+                isSuccess ? data.map((room: Room, index: number) => (
+                    <Anchor key={Math.random() * index * 5487} className={classes.leftColumn_channel_button}
+                        component={Link} to={room.roomName} align="left" variant="text" size="md"
+                        onClick={(e: any) => handleClick(e, room.roomName)}>
+                        <HiHashtag color={theme.colors.discord_palette[6]} /> {room.roomName}
+                    </Anchor>))
+                    : ""
+            }
         </Stack>
         <ProfileComponent />
     </div>
