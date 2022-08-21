@@ -6,12 +6,13 @@ import { createStyles } from "@mantine/core";
 import { useNavigate, useParams } from "react-router-dom";
 import { socketContext } from "../globalImports";
 import React from "react";
-import { QueryClient, useMutation, useQueryClient } from "@tanstack/react-query";
+import { useMutation, useQueryClient } from "@tanstack/react-query";
 import { useAuth0 } from "@auth0/auth0-react";
 import { GrStatusWarning } from "react-icons/gr";
 import createRoomInterface from "./interfaces/createRoomInterface";
 import { showNotification } from "@mantine/notifications"
 import { TiTickOutline } from "react-icons/ti";
+import fetchChannel from "../components/interfaces/interfaces";
 interface createProps {
     setChannels: any,
     setOpened: React.Dispatch<React.SetStateAction<boolean>>
@@ -50,7 +51,13 @@ function ModalCreateChannel(props: createProps) {
     const { channel, id } = useParams();
     const { user } = useAuth0();
     const queryClient = useQueryClient();
-    const { isError, data, error, mutate, isSuccess } = useMutation(["namespace", channel, "rooms", user?.sub], fetchRooms)
+    async function onSuccessFunction(data: fetchChannel, variables: createRoomInterface, context: any) {
+        console.log(`Data send after mutation`, data);
+        queryClient.setQueryData(["namespace", channel, id, "rooms"], data);
+    }
+    const { isError, error, mutate, isSuccess } = useMutation(["namespace", channel, "rooms", user?.sub], fetchRooms, {
+        onSuccess: onSuccessFunction
+    })
     const socket = React.useContext(socketContext);
     const navigate = useNavigate();
     const { classes } = useStyles();
@@ -58,7 +65,7 @@ function ModalCreateChannel(props: createProps) {
     const [inputState, setInputState] = React.useState("");
 
     if (isError) {
-        console.log(error);
+        console.log("Error in mutation = ", error);
         showNotification({
             title: "Room not created ❌",
             message: "Error occured while creating a new room",
@@ -72,7 +79,7 @@ function ModalCreateChannel(props: createProps) {
         showNotification({
             title: "Room created ✅",
             message: "Room successfully created",
-            color: "dark",
+            color: "violet",
             autoClose: 2000,
             icon: <TiTickOutline />
         })
@@ -91,7 +98,6 @@ function ModalCreateChannel(props: createProps) {
         })
         navigate(`./${inputState}`, { replace: true });
         props.setOpened(false);
-        setInputState("");
     }
     return (
         <div className={classes.flex_wrapper}>

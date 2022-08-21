@@ -55,9 +55,9 @@ function LeftColumn() {
     const { classes } = useStyles();
     const socket = useContext(socketContext);
     const theme = useMantineTheme();
-    const { isLoading, isError, data, error, isSuccess } = useQuery(["namespace", channel, id, "rooms"], fetchRooms,
+    const { data, isSuccess } = useQuery(["namespace", channel, id, "rooms"], fetchRooms,
         { refetchOnWindowFocus: false });
-    const [channels, setChannels] = useLocalStorage({ key: `${channel}Channels`, defaultValue: ["general"] });
+    const [, setChannels] = useLocalStorage({ key: `${channel}Channels`, defaultValue: ["general"] });
 
     const [opended, setOpened] = React.useState(false);
     function handleClick(e: React.MouseEvent<HTMLButtonElement>, currChannel: string) {
