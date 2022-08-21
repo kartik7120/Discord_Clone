@@ -1,4 +1,4 @@
-import { createStyles, Title } from "@mantine/core";
+import { ActionIcon, createStyles, Title } from "@mantine/core";
 import { Modal } from "@mantine/core";
 import { useMantineTheme } from "@mantine/core";
 import React from "react";
@@ -14,8 +14,14 @@ import { useContext } from "react";
 import { socketContext } from "../globalImports";
 import ProfileComponent from "./ProfileComponent";
 import OptionsComponent from "./OptionsComponent";
-import { useQuery } from "@tanstack/react-query";
+import { useQuery, useMutation } from "@tanstack/react-query";
 import { Room } from "./interfaces/interfaces";
+import { AiFillDelete } from "react-icons/ai";
+import { useHover } from "@mantine/hooks";
+import { useQueryClient } from "@tanstack/react-query";
+import { showNotification } from "@mantine/notifications";
+import { TiTickOutline } from "react-icons/ti";
+import { MdOutlineError } from "react-icons/md";
 const useStyles = createStyles((theme, _params, getRef) => ({
     left_column_class: {
         backgroundColor: theme.colors.discord_palette[2],
@@ -37,6 +43,18 @@ const useStyles = createStyles((theme, _params, getRef) => ({
     },
     stack_class: {
         width: "80%"
+    },
+    room_class: {
+        display: "flex",
+        flexDirection: "row",
+        justifyContent: "space-between",
+        position: "relative"
+    },
+    action_class: {
+        position: "absolute",
+        right: "2%",
+        top: "7%",
+        bottom: "0%"
     }
 }))
 async function fetchRooms({ queryKey }: any) {
@@ -51,18 +69,57 @@ async function fetchRooms({ queryKey }: any) {
     }
 }
 function LeftColumn() {
+    const { hovered, ref } = useHover();
     const { channel, id } = useParams();
     const { classes } = useStyles();
+    const queryClient = useQueryClient();
     const socket = useContext(socketContext);
     const theme = useMantineTheme();
     const { data, isSuccess } = useQuery(["namespace", channel, id, "rooms"], fetchRooms,
         { refetchOnWindowFocus: false });
+    async function fetchUserRoomDelete({ roomId }: any) {
+        const URL = `${process.env.REACT_APP_API_URL}namespace/deleteRooms/${id}/rooms/${roomId}`;
+        const config = {
+            method: "DELETE",
+            headers: {
+                'Content-Type': "application/json",
+                'Accept': "application/json"
+            }
+        }
+        const response = await fetch(URL, config);
+        const result = await response.json();
+        return result;
+    }
+    const { isLoading, isError, error, mutate, isSuccess: isSuccess2 } = useMutation(["namespace", channel, id, "room"], fetchUserRoomDelete, {
+        onSuccess: function (data: Room[], variables: any, context: any) {
+            queryClient.setQueryData(["namespace", channel, id, "rooms"], data);
+        }
+    })
     const [, setChannels] = useLocalStorage({ key: `${channel}Channels`, defaultValue: ["general"] });
 
     const [opended, setOpened] = React.useState(false);
     function handleClick(e: React.MouseEvent<HTMLButtonElement>, currChannel: string) {
         socket.emit("joinRoom", { roomName: currChannel }, (response: string) => {
             console.log("Response on joining room = ", response);
+        })
+    }
+    function handleDelete(e: React.MouseEvent<HTMLButtonElement>, roomId: string) {
+        mutate({ roomId });
+    }
+    if (isSuccess2) {
+        showNotification({
+            title: "Room deleted",
+            message: "Room deleted successfully",
+            icon: <TiTickOutline />,
+            autoClose: 2000
+        })
+    }
+    if (isError) {
+        showNotification({
+            message: `${error}`,
+            title: "Error occured deleting room",
+            icon: <MdOutlineError />,
+            autoClose: 2000
         })
     }
     return <div className={classes.left_column_class}>
@@ -79,11 +136,21 @@ function LeftColumn() {
         <Stack justify="center" align="stretch" className={classes.stack_class}>
             {
                 isSuccess ? data.map((room: Room, index: number) => (
-                    <Anchor key={Math.random() * index * 5487} className={classes.leftColumn_channel_button}
-                        component={Link} to={room.roomName} align="left" variant="text" size="md"
-                        onClick={(e: any) => handleClick(e, room.roomName)}>
-                        <HiHashtag color={theme.colors.discord_palette[6]} /> {room.roomName}
-                    </Anchor>))
+                    <div className={classes.room_class} ref={ref}>
+                        <Anchor key={Math.random() * index * 5487} className={classes.leftColumn_channel_button}
+                            component={Link} to={room.roomName} align="left" variant="text" size="md"
+                            onClick={(e: any) => handleClick(e, room.roomName)}>
+                            <div style={{ alignSelf: "flex-start" }}>
+                                <HiHashtag color={theme.colors.discord_palette[6]} style={{ margin: "0.1em" }} />
+                                {room.roomName}
+                            </div>
+
+                        </Anchor>
+                        <ActionIcon onClick={(e: any) => handleDelete(e, room._id)} variant="transparent" className={classes.action_class} color={theme.colors.discord_palette[0]}>
+                            <AiFillDelete />
+                        </ActionIcon>
+                    </div>
+                ))
                     : ""
             }
         </Stack>
