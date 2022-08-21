@@ -69,7 +69,7 @@ async function fetchRooms({ queryKey }: any) {
     }
 }
 function LeftColumn() {
-    const { hovered, ref } = useHover();
+    const { ref } = useHover();
     const { channel, id } = useParams();
     const { classes } = useStyles();
     const queryClient = useQueryClient();
@@ -90,7 +90,7 @@ function LeftColumn() {
         const result = await response.json();
         return result;
     }
-    const { isLoading, isError, error, mutate, isSuccess: isSuccess2 } = useMutation(["namespace", channel, id, "room"], fetchUserRoomDelete, {
+    const { isError, error, mutate, isSuccess: isSuccess2 } = useMutation(["namespace", channel, id, "room"], fetchUserRoomDelete, {
         onSuccess: function (data: Room[], variables: any, context: any) {
             queryClient.setQueryData(["namespace", channel, id, "rooms"], data);
         }
@@ -144,7 +144,6 @@ function LeftColumn() {
                                 <HiHashtag color={theme.colors.discord_palette[6]} style={{ margin: "0.1em" }} />
                                 {room.roomName}
                             </div>
-
                         </Anchor>
                         <ActionIcon onClick={(e: any) => handleDelete(e, room._id)} variant="transparent" className={classes.action_class} color={theme.colors.discord_palette[0]}>
                             <AiFillDelete />
