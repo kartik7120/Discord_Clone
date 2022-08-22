@@ -62,7 +62,7 @@ All the people who are connect to a particular room will be shown in that column
 - [ ] fix issue for multiple a user sending two or messages at the same time
 - [ ] Add how many users are connected to a single room
 - [ ] Add ability to add videos , images and linked
-- [ ] Add stickers in the text area
+- [x] Add stickers in the text area
 - [ ] Add grouping chats by category
 
 #### Bonus features
@@ -84,8 +84,8 @@ All the people who are connect to a particular room will be shown in that column
 
 ##### Routes
 
-- [ ] Create rooms
-- [ ] Delete rooms
-- [ ] Delete Channels
+- [x] Create rooms
+- [x] Delete rooms
+- [x] Delete Channels
 - [ ] Save messages in the database
 - [ ] Ability to search several other servers and add them to the user schema
