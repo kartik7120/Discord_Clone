@@ -70,7 +70,7 @@ function SideBar() {
             <Tooltip label="Explore Servers" position="right" withArrow arrowSize={5}
 
             >
-                <SidebarIcon icon={<FaCompass size="20" />} />
+                <SidebarIcon icon={<FaCompass size="20" />} label="Explore" />
             </Tooltip>
             <Tooltip label="MyAnimeList" position="right" withArrow arrowSize={5}
 
@@ -86,7 +86,6 @@ function SideBar() {
                     >
                         <SidebarIcon icon={<GiPistolGun size="20" />} channelId={channel._id} label={channel.channelName} />
                     </Tooltip>
-                    // return "";
                 }) : ""
             }
         </ScrollArea>
@@ -119,10 +118,14 @@ async function fetchCreateRoom({ value, userSub }: createRoomInterface) {
 function SidebarIcon({ icon, label, channelId }: any) {
     const navigate = useNavigate();
     function handleClick() {
-        if (label && label !== "Home")
-            navigate(`/${label}/${channelId}`);
+        if (label === "Explore") {
+            navigate("/explore");
+        }
         else
-            navigate("../");
+            if (label && label !== "Home")
+                navigate(`/${label}/${channelId}`);
+            else
+                navigate("../");
     }
     return <Box component="div" className="sidebar-icon" onClick={handleClick}>
         {icon}
