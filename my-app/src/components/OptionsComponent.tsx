@@ -78,7 +78,8 @@ function OptionsComponent(props: Options) {
                 Are you sure ?
             </Title>}>
             <Text size="lg" style={{ margin: "1em" }}>
-                This will permanently delete this channel
+                This will <Text component="span" align="center" variant="gradient"
+                    gradient={{ from: "indigo", to: "cyan", deg: 45 }} weight={700}>permanently</Text>  delete this channel
             </Text>
             <Group position="center">
                 <Button variant="filled" onClick={fetchDeleteUserChannel} color="red">Yes</Button>
