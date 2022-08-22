@@ -13,6 +13,7 @@ import { QueryClientProvider, QueryClient } from '@tanstack/react-query';
 import { ReactQueryDevtools } from '@tanstack/react-query-devtools';
 import { Auth0Provider } from '@auth0/auth0-react';
 import { NotificationsProvider } from '@mantine/notifications';
+import ExploreComponents from './components/exploreChannel';
 const queryClient = new QueryClient();
 
 const root = ReactDOM.createRoot(
@@ -39,6 +40,7 @@ root.render(
               <Route path='/' element={<App />}>
                 <Route element={<FriendsBar />}>
                   <Route index element={<ChatWindow />} />
+                  <Route path='explore' element={<ExploreComponents />} />
                 </Route>
                 <Route path=':channel'>
                   <Route path=':id' element={<Channel />}>
