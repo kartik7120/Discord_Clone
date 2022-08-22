@@ -89,3 +89,6 @@ All the people who are connect to a particular room will be shown in that column
 - [x] Delete Channels
 - [ ] Save messages in the database
 - [ ] Ability to search several other servers and add them to the user schema
+- [ ] Make a component so that user can join different servers
+- [ ] Make so that a user can leave the server
+- [ ] Make the user join the default room on visiting a server
