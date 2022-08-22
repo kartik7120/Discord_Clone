@@ -132,7 +132,6 @@ function LeftColumn() {
             overlayBlur={1} centered onClose={() => setOpened(false)} opened={opended}>
             <ModalCreateChannel setChannels={setChannels} setOpened={setOpened} />
         </Modal>
-        <GroupChannel />
         <Stack justify="center" align="stretch" className={classes.stack_class}>
             {
                 isSuccess ? data.map((room: Room, index: number) => (
