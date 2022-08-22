@@ -8,7 +8,6 @@ import ModalCreateChannel from "./CreateChannelModal";
 import { Anchor } from "@mantine/core";
 import { Link } from "react-router-dom";
 import { HiHashtag } from "react-icons/hi";
-import GroupChannel from "./GroupChannel";
 import { useParams } from "react-router-dom";
 import { useContext } from "react";
 import { socketContext } from "../globalImports";

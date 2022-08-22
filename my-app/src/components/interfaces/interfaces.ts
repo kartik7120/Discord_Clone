@@ -10,5 +10,9 @@ interface Room {
     roomName: string
     message: any[]
 }
+interface deleteRoom {
+    userSub: string,
+    channelId: string
+}
 export default fetchChannel;
-export type { Room }
+export type { Room, deleteRoom }
