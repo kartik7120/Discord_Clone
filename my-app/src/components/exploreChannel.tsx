@@ -1,4 +1,4 @@
-import { BackgroundImage, Center, createStyles, Image, Text, Container } from "@mantine/core";
+import { BackgroundImage, Center, createStyles, Image, Text, Container, useMantineTheme } from "@mantine/core";
 import { Card } from "@mantine/core";
 const useStyles = createStyles((theme, _params, getRef) => ({
     explore_wrapper: {
@@ -11,6 +11,7 @@ const useStyles = createStyles((theme, _params, getRef) => ({
 }))
 
 function ExploreComponents() {
+    const theme = useMantineTheme();
     const { classes } = useStyles();
     return <div className={classes.explore_wrapper}>
         <BackgroundImage style={{
@@ -19,10 +20,12 @@ function ExploreComponents() {
             <Container size="xl" style={{
                 height: "50%"
             }} fluid>
-                <Center style={{ width: "100%", height: 300 }}>
+                <Center style={{ width: "100%", height: 240 }}>
                     <div>
-                        <Text size="xl" weight={600}>Find Your Community</Text>
-                        <Text size="xl" weight={600}>From gaming to music , to leaning there's a place for you.</Text>
+                        <Text size="xl" color="violet"
+                            weight={600}>Find Your Community</Text>
+                        <Text size="xl" color="violet"
+                            weight={600}>From gaming to music , to leaning there's a place for you.</Text>
                     </div>
                 </Center>
             </Container>
