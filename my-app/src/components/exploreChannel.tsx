@@ -6,7 +6,10 @@ const useStyles = createStyles((theme, _params, getRef) => ({
         width: "100%",
         padding: "1em",
         textAlign: "center",
-        verticalAlign: "text-bottom"
+        verticalAlign: "text-bottom",
+        display: "flex",
+        flexDirection: "column",
+        justifyContent: "space-evenly"
     }
 }))
 
@@ -15,7 +18,7 @@ function ExploreComponents() {
     const { classes } = useStyles();
     return <div className={classes.explore_wrapper}>
         <BackgroundImage style={{
-            height: "50%"
+            height: "50%",
         }} radius="md" src="https://i.postimg.cc/dtJ6dNhC/discord-explore-background.jpg">
             <Container size="xl" style={{
                 height: "50%"
@@ -30,13 +33,15 @@ function ExploreComponents() {
                 </Center>
             </Container>
         </BackgroundImage>
-        <Card shadow="xl" p="lg" radius="md" withBorder>
-            <Card.Section>
-                <Image src="https://images.unsplash.com/photo-1511216335778-7cb8f49fa7a3?ixid=MnwxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8&ixlib=rb-1.2.1&auto=format&fit=crop&w=720&q=80"
-                    radius="md" alt="Image of the channel" width={200} height={80} withPlaceholder
-                />
-            </Card.Section>
-        </Card>
+        <div>
+            <Card shadow="xl" p="lg" radius="md" withBorder>
+                <Card.Section>
+                    <Image src="https://images.unsplash.com/photo-1511216335778-7cb8f49fa7a3?ixid=MnwxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8&ixlib=rb-1.2.1&auto=format&fit=crop&w=720&q=80"
+                        radius="md" alt="Image of the channel" width={200} height={80} withPlaceholder
+                    />
+                </Card.Section>
+            </Card>
+        </div>
     </div>
 }
 export default ExploreComponents;
