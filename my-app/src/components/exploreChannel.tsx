@@ -1,5 +1,6 @@
 import { BackgroundImage, Center, createStyles, Image, Text, Container, useMantineTheme } from "@mantine/core";
 import { Card } from "@mantine/core";
+import { useQuery } from "@tanstack/react-query";
 const useStyles = createStyles((theme, _params, getRef) => ({
     explore_wrapper: {
         backgroundColor: theme.colorScheme === "dark" ? theme.colors.discord_palette[1] : theme.white,
@@ -17,9 +18,21 @@ const useStyles = createStyles((theme, _params, getRef) => ({
 
 }))
 
+async function fetchChannels() {
+    const URL = `${process.env.REACT_APP_API_URL}namespace/`;
+    try {
+        const response = await fetch(URL);
+        const result = await response.json();
+        return result;
+    } catch (error) {
+        throw error;
+    }
+}
+
 function ExploreComponents() {
     const theme = useMantineTheme();
     const { classes } = useStyles();
+    const { isLoading, isError, error, isSuccess } = useQuery(["namespace", "explore"], fetchChannels)
     return <div className={classes.explore_wrapper}>
         <BackgroundImage style={{
             height: "50%",
@@ -39,7 +52,7 @@ function ExploreComponents() {
             </Container>
         </BackgroundImage>
         <div className={classes.channel_container}>
-            <Card shadow="xl" p="lg" radius="md" withBorder style={{
+            <Card shadow="xl" p="lg" component="a" href="https:://www.google.com" target="_blank" radius="md" withBorder style={{
                 width: "21em"
             }}>
                 <Card.Section>
