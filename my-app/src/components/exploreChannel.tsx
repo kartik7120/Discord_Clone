@@ -1,12 +1,12 @@
 import { BackgroundImage, Center, createStyles, Image, Text, Container, useMantineTheme } from "@mantine/core";
-import { Card } from "@mantine/core";
+import { Card, ScrollArea } from "@mantine/core";
 import { useQuery } from "@tanstack/react-query";
 import fetchChannel from "./interfaces/interfaces";
 const useStyles = createStyles((theme, _params, getRef) => ({
     explore_wrapper: {
         backgroundColor: theme.colorScheme === "dark" ? theme.colors.discord_palette[1] : theme.white,
         width: "100%",
-        padding: "1em",
+        padding: "0.5em",
         textAlign: "center",
         verticalAlign: "text-bottom",
         display: "flex",
@@ -19,6 +19,10 @@ const useStyles = createStyles((theme, _params, getRef) => ({
         gridTemplateColumns: "1fr 1fr 1fr",
         gridAutoRows: "1fr",
         rowGap: "2em"
+    },
+    scrollAreaClass: {
+        width: "80%",
+        height: "100%"
     },
     card_motion: {
         '&:hover': {
@@ -43,7 +47,7 @@ async function fetchChannels() {
 function ExploreComponents() {
     const theme = useMantineTheme();
     const { classes } = useStyles();
-    const { isLoading, isError, error, isSuccess, data } = useQuery(["namespace", "explore"], fetchChannels)
+    const { isSuccess, data } = useQuery(["namespace", "explore"], fetchChannels)
     return <div className={classes.explore_wrapper}>
         <BackgroundImage style={{
             height: "50%",
@@ -62,29 +66,30 @@ function ExploreComponents() {
                 </Center>
             </Container>
         </BackgroundImage>
-        <div className={classes.channel_container}>
-            {
-                isSuccess ? data.map((ele: fetchChannel) => {
-                    return (
-                        <Card shadow="xl" p="lg" component="a" href="https:://www.google.com" target="_blank" radius="md" withBorder style={{
-                            width: "21em"
-                        }}>
-                            <Card.Section>
-                                <Image src="https://images.unsplash.com/photo-1511216335778-7cb8f49fa7a3?ixid=MnwxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8&ixlib=rb-1.2.1&auto=format&fit=crop&w=720&q=80"
-                                    radius="md" alt="Image of the channel" width="100%" height={200} withPlaceholder
-                                />
-                            </Card.Section>
-                            <Text size="lg" align="left" weight="bold" style={{ marginTop: "0.5em" }}>
-                                {ele.channelName}
-                            </Text>
-                            <Text lineClamp={4} align="left" size="sm">
-                                {ele.description}
-                            </Text>
-                        </Card>
-                    )
-                }) : ""
-            }
-        </div>
-    </div>
+            <div className={classes.channel_container}>
+                {
+                    isSuccess ? data.map((ele: fetchChannel) => {
+                        return (
+                            <Card shadow="xl" p="lg" component="a" href="https:://www.google.com" target="_blank" radius="md" withBorder style={{
+                                width: "21em"
+                            }}>
+                                <Card.Section>
+                                    <Image src="https://images.unsplash.com/photo-1511216335778-7cb8f49fa7a3?ixid=MnwxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8&ixlib=rb-1.2.1&auto=format&fit=crop&w=720&q=80"
+                                        radius="md" alt="Image of the channel" width="100%" height={200} withPlaceholder
+                                    />
+                                </Card.Section>
+                                <Text size="lg" align="left" weight="bold" style={{ marginTop: "0.5em" }}>
+                                    {ele.channelName}
+                                </Text>
+                                <Text lineClamp={4} align="left" size="sm">
+                                    {ele.description}
+                                </Text>
+                            </Card>
+                        )
+                    }) : ""
+                }
+            </div>
+    </div >
+
 }
 export default ExploreComponents;
