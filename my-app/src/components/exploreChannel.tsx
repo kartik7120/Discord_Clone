@@ -18,7 +18,7 @@ const useStyles = createStyles((theme, _params, getRef) => ({
         display: "grid",
         gridTemplateColumns: "1fr 1fr 1fr",
         gridAutoRows: "1fr",
-        rowGap: "2em"
+        rowGap: "2em",
     },
     scrollAreaClass: {
         width: "80%",
@@ -54,7 +54,8 @@ function ExploreComponents() {
                 <BackgroundImage style={{
                     height: "50%",
                     width: "95%",
-                    margin:"0 auto"
+                    backgroundColor: theme.colors.discord_palette[1],
+                    margin: "0 auto"
                 }} radius="md" src="https://i.postimg.cc/dtJ6dNhC/discord-explore-background.jpg">
                     <Container size="xl" style={{
                         height: "50%",
@@ -78,7 +79,7 @@ function ExploreComponents() {
                                     width: "21em"
                                 }}>
                                     <Card.Section>
-                                        <Image src="https://images.unsplash.com/photo-1511216335778-7cb8f49fa7a3?ixid=MnwxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8&ixlib=rb-1.2.1&auto=format&fit=crop&w=720&q=80"
+                                        <Image src="https://i.postimg.cc/Wb5sR5pT/3401963.jpg"
                                             radius="md" alt="Image of the channel" width="100%" height={200} withPlaceholder
                                         />
                                     </Card.Section>
@@ -93,7 +94,7 @@ function ExploreComponents() {
                         }) : ""
                     }
                 </div>
-            </div >
+            </div>
         </ScrollArea>
     )
 
