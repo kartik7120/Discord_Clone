@@ -24,10 +24,9 @@ const useStyles = createStyles((theme, _params, getRef) => ({
         width: "80%",
         height: "100%"
     },
-    card_motion: {
+    card_class: {
         '&:hover': {
-            // transform: scale(2,0.5),
-            // backgroundColor:theme.fn.darken("#")
+            backgroundColor: theme.fn.darken("#2b2e33", 0.5),
         }
     }
 
@@ -75,7 +74,7 @@ function ExploreComponents() {
                     {
                         isSuccess ? data.map((ele: fetchChannel) => {
                             return (
-                                <Card shadow="xl" p="lg" component="a" href="https:://www.google.com" target="_blank" radius="md" withBorder style={{
+                                <Card shadow="xl" p="lg" className={classes.card_class} component="a" href="https:://www.google.com" target="_blank" radius="md" withBorder style={{
                                     width: "21em"
                                 }}>
                                     <Card.Section>
