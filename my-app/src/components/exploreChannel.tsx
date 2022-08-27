@@ -1,6 +1,7 @@
 import { BackgroundImage, Center, createStyles, Image, Text, Container, useMantineTheme } from "@mantine/core";
 import { Card } from "@mantine/core";
 import { useQuery } from "@tanstack/react-query";
+import fetchChannel from "./interfaces/interfaces";
 const useStyles = createStyles((theme, _params, getRef) => ({
     explore_wrapper: {
         backgroundColor: theme.colorScheme === "dark" ? theme.colors.discord_palette[1] : theme.white,
@@ -13,7 +14,16 @@ const useStyles = createStyles((theme, _params, getRef) => ({
         justifyContent: "space-evenly"
     },
     channel_container: {
-        marginTop: "3em"
+        marginTop: "3em",
+        display: "grid",
+        gridTemplateColumns: "1fr 1fr 1fr 1fr",
+        gridAutoRows: "1fr"
+    },
+    card_motion: {
+        '&:hover': {
+            // transform: scale(2,0.5),
+            // backgroundColor:theme.fn.darken("#")
+        }
     }
 
 }))
@@ -32,7 +42,7 @@ async function fetchChannels() {
 function ExploreComponents() {
     const theme = useMantineTheme();
     const { classes } = useStyles();
-    const { isLoading, isError, error, isSuccess } = useQuery(["namespace", "explore"], fetchChannels)
+    const { isLoading, isError, error, isSuccess, data } = useQuery(["namespace", "explore"], fetchChannels)
     return <div className={classes.explore_wrapper}>
         <BackgroundImage style={{
             height: "50%",
