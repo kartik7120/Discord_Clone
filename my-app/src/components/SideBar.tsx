@@ -62,11 +62,6 @@ function SideBar() {
             >
                 <SideBarAddIcon setChannels={setChannels} icon={<BsPlus size={32} />} />
             </Tooltip>
-            <Tooltip label="Home" position="right" withArrow arrowSize={5}
-
-            >
-                <SidebarIcon icon={<BsFillLightningFill size={20} />} />
-            </Tooltip>
             <Tooltip label="Explore Servers" position="right" withArrow arrowSize={5}
 
             >
