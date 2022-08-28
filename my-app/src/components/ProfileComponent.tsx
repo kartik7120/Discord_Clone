@@ -22,7 +22,6 @@ const useStyles = createStyles((theme, _params, getRef) => ({
     }
 }))
 function ProfileComponent() {
-    const [opened, setOpened] = useState(false);
     const { user } = useAuth0();
     const { classes } = useStyles();
     return <>

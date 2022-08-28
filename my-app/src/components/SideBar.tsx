@@ -72,11 +72,6 @@ function SideBar() {
             >
                 <SidebarIcon icon={<FaCompass size="20" />} label="Explore" />
             </Tooltip>
-            <Tooltip label="MyAnimeList" position="right" withArrow arrowSize={5}
-
-            >
-                <SidebarIcon icon={<SiMyanimelist size="20" />} label="channel" />
-            </Tooltip>
             {
                 isSuccess ? data.map((channel: fetchChannel, index: number) => {
                     if (channel)
