@@ -20,6 +20,7 @@ const useStyles = createStyles((theme, _params, getRef) => ({
         gridTemplateColumns: "1fr 1fr 1fr",
         gridAutoRows: "1fr",
         rowGap: "2em",
+        cursor: "pointer"
     },
     scrollAreaClass: {
         width: "80%",
@@ -81,7 +82,8 @@ function ExploreComponents() {
                         isSuccess ? data.map((ele: fetchChannel) => {
                             return (
                                 <Card shadow="xl"
-                                    onClick={() => handleClick(ele._id, navigate, ele.channelName)} p="lg" className={classes.card_class} component="a" href="https:://www.google.com" target="_blank" radius="md" withBorder style={{
+                                    onClick={() => handleClick(ele._id, navigate, ele.channelName)} p="lg" className={classes.card_class}
+                                    radius="md" withBorder style={{
                                         width: "21em"
                                     }}>
                                     <Card.Section>
