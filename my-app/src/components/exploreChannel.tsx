@@ -3,6 +3,9 @@ import { Card, ScrollArea } from "@mantine/core";
 import { useQuery } from "@tanstack/react-query";
 import fetchChannel from "./interfaces/interfaces";
 import { useNavigate } from "react-router-dom";
+import { Portal } from "@mantine/core";
+import { useLayoutEffect, useState } from "react";
+import JoinChannelPortal from "./joinChannelPortal";
 const useStyles = createStyles((theme, _params, getRef) => ({
     explore_wrapper: {
         backgroundColor: theme.colorScheme === "dark" ? theme.colors.discord_palette[1] : theme.white,
@@ -20,7 +23,6 @@ const useStyles = createStyles((theme, _params, getRef) => ({
         gridTemplateColumns: "1fr 1fr 1fr",
         gridAutoRows: "1fr",
         rowGap: "2em",
-        cursor: "pointer"
     },
     scrollAreaClass: {
         width: "80%",
@@ -29,6 +31,7 @@ const useStyles = createStyles((theme, _params, getRef) => ({
     card_class: {
         '&:hover': {
             backgroundColor: theme.fn.darken("#2b2e33", 0.5),
+            cursor: "pointer"
         }
     }
 
@@ -45,65 +48,79 @@ async function fetchChannels() {
     }
 }
 
-function handleClick(id: string, navigate: any, channelName: string) {
+function handleClick(id: string, navigate: any, channelName: string, setOpened: React.Dispatch<React.SetStateAction<boolean>>
+) {
+    setOpened(true);
     navigate(`/${channelName}/${id}`);
 }
 
 function ExploreComponents() {
+    const [opened, setOpened] = useState(false);
     const navigate = useNavigate();
     const theme = useMantineTheme();
     const { classes } = useStyles();
     const { isSuccess, data } = useQuery(["namespace", "explore"], fetchChannels);
+    useLayoutEffect(() => {
+        setOpened(false);
+    }, [])
     return (
-        <ScrollArea type="hover" style={{ height: "100vh", width: "100%", padding: 0, minHeight: "100vh" }}>
-            <div className={classes.explore_wrapper}>
-                <BackgroundImage style={{
-                    height: "50%",
-                    width: "95%",
-                    backgroundColor: theme.colors.discord_palette[1],
-                    margin: "0 auto"
-                }} radius="md" src="https://i.postimg.cc/dtJ6dNhC/discord-explore-background.jpg">
-                    <Container size="xl" style={{
+        <>
+            <ScrollArea type="hover" style={{ height: "100vh", width: "100%", padding: 0, minHeight: "100vh" }}>
+                <div className={classes.explore_wrapper}>
+                    <BackgroundImage style={{
                         height: "50%",
-                        alignItems: "flex-start"
-                    }} fluid>
-                        <Center style={{ width: "100%", height: 240 }}>
-                            <div>
-                                <Text size="xl" color="violet"
-                                    weight={600}>Find Your Community</Text>
-                                <Text size="xl" color="violet"
-                                    weight={600}>From gaming to music , to leaning there's a place for you.</Text>
-                            </div>
-                        </Center>
-                    </Container>
-                </BackgroundImage>
-                <div className={classes.channel_container}>
-                    {
-                        isSuccess ? data.map((ele: fetchChannel) => {
-                            return (
-                                <Card shadow="xl"
-                                    onClick={() => handleClick(ele._id, navigate, ele.channelName)} p="lg" className={classes.card_class}
-                                    radius="md" withBorder style={{
-                                        width: "21em"
-                                    }}>
-                                    <Card.Section>
-                                        <Image src="https://i.postimg.cc/Wb5sR5pT/3401963.jpg"
-                                            radius="md" alt="Image of the channel" width="100%" height={200} withPlaceholder
-                                        />
-                                    </Card.Section>
-                                    <Text size="lg" align="left" weight="bold" style={{ marginTop: "0.5em" }}>
-                                        {ele.channelName}
-                                    </Text>
-                                    <Text lineClamp={4} align="left" size="sm">
-                                        {ele.description}
-                                    </Text>
-                                </Card>
-                            )
-                        }) : ""
-                    }
+                        width: "95%",
+                        backgroundColor: theme.colors.discord_palette[1],
+                        margin: "0 auto"
+                    }} radius="md" src="https://i.postimg.cc/dtJ6dNhC/discord-explore-background.jpg">
+                        <Container size="xl" style={{
+                            height: "50%",
+                            alignItems: "flex-start"
+                        }} fluid>
+                            <Center style={{ width: "100%", height: 240 }}>
+                                <div>
+                                    <Text size="xl" color="violet"
+                                        weight={600}>Find Your Community</Text>
+                                    <Text size="xl" color="violet"
+                                        weight={600}>From gaming to music , to leaning there's a place for you.</Text>
+                                </div>
+                            </Center>
+                        </Container>
+                    </BackgroundImage>
+                    <div className={classes.channel_container}>
+                        {
+                            isSuccess ? data.map((ele: fetchChannel) => {
+                                return (
+                                    <Card shadow="xl"
+                                        onClick={() => handleClick(ele._id, navigate, ele.channelName, setOpened)} p="lg"
+                                        className={classes.card_class}
+                                        radius="md" withBorder style={{
+                                            width: "21em"
+                                        }}>
+                                        <Card.Section>
+                                            <Image src="https://i.postimg.cc/Wb5sR5pT/3401963.jpg"
+                                                radius="md" alt="Image of the channel" width="100%" height={200} withPlaceholder
+                                            />
+                                        </Card.Section>
+                                        <Text size="lg" align="left" weight="bold" style={{ marginTop: "0.5em" }}>
+                                            {ele.channelName}
+                                        </Text>
+                                        <Text lineClamp={4} align="left" size="sm">
+                                            {ele.description}
+                                        </Text>
+                                    </Card>
+                                )
+                            }) : ""
+                        }
+                    </div>
                 </div>
-            </div>
-        </ScrollArea>
+            </ScrollArea>
+            {opened &&
+                <Portal>
+                    <JoinChannelPortal />
+                </Portal>
+            }
+        </>
     )
 
 }

@@ -134,8 +134,8 @@ function LeftColumn() {
         <Stack justify="center" align="stretch" className={classes.stack_class}>
             {
                 isSuccess ? data.map((room: Room, index: number) => (
-                    <div className={classes.room_class} ref={ref}>
-                        <Anchor key={Math.random() * index * 5487} className={classes.leftColumn_channel_button}
+                    <div className={classes.room_class} key={Math.random() * index * 5487} ref={ref}>
+                        <Anchor className={classes.leftColumn_channel_button}
                             component={Link} to={room.roomName} align="left" variant="text" size="md"
                             onClick={(e: any) => handleClick(e, room.roomName)}>
                             <div style={{ alignSelf: "flex-start" }}>
