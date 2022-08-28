@@ -2,6 +2,7 @@ import { BackgroundImage, Center, createStyles, Image, Text, Container, useManti
 import { Card, ScrollArea } from "@mantine/core";
 import { useQuery } from "@tanstack/react-query";
 import fetchChannel from "./interfaces/interfaces";
+import { useNavigate } from "react-router-dom";
 const useStyles = createStyles((theme, _params, getRef) => ({
     explore_wrapper: {
         backgroundColor: theme.colorScheme === "dark" ? theme.colors.discord_palette[1] : theme.white,
@@ -43,12 +44,17 @@ async function fetchChannels() {
     }
 }
 
+function handleClick(id: string, navigate: any, channelName: string) {
+    navigate(`/${channelName}/${id}`);
+}
+
 function ExploreComponents() {
+    const navigate = useNavigate();
     const theme = useMantineTheme();
     const { classes } = useStyles();
-    const { isSuccess, data } = useQuery(["namespace", "explore"], fetchChannels)
+    const { isSuccess, data } = useQuery(["namespace", "explore"], fetchChannels);
     return (
-        <ScrollArea type="hover" style={{ height: "100vh", width: "100%", padding: 0 }}>
+        <ScrollArea type="hover" style={{ height: "100vh", width: "100%", padding: 0, minHeight: "100vh" }}>
             <div className={classes.explore_wrapper}>
                 <BackgroundImage style={{
                     height: "50%",
@@ -74,9 +80,10 @@ function ExploreComponents() {
                     {
                         isSuccess ? data.map((ele: fetchChannel) => {
                             return (
-                                <Card shadow="xl" p="lg" className={classes.card_class} component="a" href="https:://www.google.com" target="_blank" radius="md" withBorder style={{
-                                    width: "21em"
-                                }}>
+                                <Card shadow="xl"
+                                    onClick={() => handleClick(ele._id, navigate, ele.channelName)} p="lg" className={classes.card_class} component="a" href="https:://www.google.com" target="_blank" radius="md" withBorder style={{
+                                        width: "21em"
+                                    }}>
                                     <Card.Section>
                                         <Image src="https://i.postimg.cc/Wb5sR5pT/3401963.jpg"
                                             radius="md" alt="Image of the channel" width="100%" height={200} withPlaceholder
