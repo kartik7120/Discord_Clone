@@ -5,7 +5,7 @@ import React from "react";
 import { Stack } from "@mantine/core";
 import { useLocalStorage } from "@mantine/hooks";
 import ModalCreateChannel from "./CreateChannelModal";
-import { Anchor } from "@mantine/core";
+import { Anchor, Portal } from "@mantine/core";
 import { Link } from "react-router-dom";
 import { HiHashtag } from "react-icons/hi";
 import { useParams } from "react-router-dom";

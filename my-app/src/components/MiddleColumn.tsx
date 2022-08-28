@@ -103,7 +103,7 @@ function MiddleColumn() {
     return (
         <>
             <div className={classes.middle_column_class} id="messages">
-                <ScrollArea type="hover" style={{ height: "40rem" }} >
+                <ScrollArea type="hover" style={{ height: "40rem" }}>
                     <ol >
                         <Text ref={scrollableRef}></Text>
                         {message.map((ele: any, index: number) => (

@@ -2,9 +2,9 @@ import { BackgroundImage, Center, createStyles, Image, Text, Container, useManti
 import { Card, ScrollArea } from "@mantine/core";
 import { useQuery } from "@tanstack/react-query";
 import fetchChannel from "./interfaces/interfaces";
-import { useNavigate } from "react-router-dom";
+import { useLocation, useNavigate } from "react-router-dom";
 import { Portal } from "@mantine/core";
-import { useLayoutEffect, useState } from "react";
+import { useEffect, useState } from "react";
 import JoinChannelPortal from "./joinChannelPortal";
 const useStyles = createStyles((theme, _params, getRef) => ({
     explore_wrapper: {
@@ -34,7 +34,6 @@ const useStyles = createStyles((theme, _params, getRef) => ({
             cursor: "pointer"
         }
     }
-
 }))
 
 async function fetchChannels() {
@@ -48,21 +47,19 @@ async function fetchChannels() {
     }
 }
 
-function handleClick(id: string, navigate: any, channelName: string, setOpened: React.Dispatch<React.SetStateAction<boolean>>
+function handleClick(id: string, navigate: any, channelName: string, setOpened: React.Dispatch<React.SetStateAction<boolean>>, currLocation: string
 ) {
     setOpened(true);
     navigate(`/${channelName}/${id}`);
 }
 
 function ExploreComponents() {
+    const location = useLocation();
     const [opened, setOpened] = useState(false);
     const navigate = useNavigate();
     const theme = useMantineTheme();
     const { classes } = useStyles();
     const { isSuccess, data } = useQuery(["namespace", "explore"], fetchChannels);
-    useLayoutEffect(() => {
-        setOpened(false);
-    }, [])
     return (
         <>
             <ScrollArea type="hover" style={{ height: "100vh", width: "100%", padding: 0, minHeight: "100vh" }}>
@@ -92,7 +89,7 @@ function ExploreComponents() {
                             isSuccess ? data.map((ele: fetchChannel) => {
                                 return (
                                     <Card shadow="xl"
-                                        onClick={() => handleClick(ele._id, navigate, ele.channelName, setOpened)} p="lg"
+                                        onClick={() => handleClick(ele._id, navigate, ele.channelName, setOpened, location.pathname)} p="lg"
                                         className={classes.card_class}
                                         radius="md" withBorder style={{
                                             width: "21em"
@@ -115,11 +112,6 @@ function ExploreComponents() {
                     </div>
                 </div>
             </ScrollArea>
-            {opened &&
-                <Portal>
-                    <JoinChannelPortal />
-                </Portal>
-            }
         </>
     )
 

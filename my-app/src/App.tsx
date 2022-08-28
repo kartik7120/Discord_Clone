@@ -6,6 +6,7 @@ import { withAuthenticationRequired } from '@auth0/auth0-react';
 function App() {
   return (
     <>
+      <div id="portalDiv"></div>
       <div className="App">
         <SideBar />
         <Outlet />
