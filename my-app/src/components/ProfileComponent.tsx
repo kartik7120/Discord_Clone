@@ -1,8 +1,7 @@
 import { createStyles, Avatar, Text, ActionIcon } from "@mantine/core";
-import { Indicator, Modal, Menu } from "@mantine/core";
+import { Indicator, Menu } from "@mantine/core";
 import { useAuth0 } from "@auth0/auth0-react";
 import { BsFillGearFill } from "react-icons/bs";
-import { useState } from "react";
 import { HiOutlineLogout } from "react-icons/hi";
 import { AiOutlineUser } from "react-icons/ai";
 const useStyles = createStyles((theme, _params, getRef) => ({

@@ -6,7 +6,7 @@ import { Stack } from "@mantine/core";
 import { useLocalStorage } from "@mantine/hooks";
 import ModalCreateChannel from "./CreateChannelModal";
 import { Anchor, Portal } from "@mantine/core";
-import { Link } from "react-router-dom";
+import { Link, useLocation } from "react-router-dom";
 import { HiHashtag } from "react-icons/hi";
 import { useParams } from "react-router-dom";
 import { useContext } from "react";
@@ -21,6 +21,7 @@ import { useQueryClient } from "@tanstack/react-query";
 import { showNotification } from "@mantine/notifications";
 import { TiTickOutline } from "react-icons/ti";
 import { MdOutlineError } from "react-icons/md";
+import JoinChannelPortal from "./joinChannelPortal";
 const useStyles = createStyles((theme, _params, getRef) => ({
     left_column_class: {
         backgroundColor: theme.colors.discord_palette[2],
@@ -68,6 +69,7 @@ async function fetchRooms({ queryKey }: any) {
     }
 }
 function LeftColumn() {
+    const location = useLocation();
     const { ref } = useHover();
     const { channel, id } = useParams();
     const { classes } = useStyles();
@@ -150,6 +152,9 @@ function LeftColumn() {
                 ))
                     : ""
             }
+            {location.state ? <Portal target="#portalDiv">
+                <JoinChannelPortal />
+            </Portal> : ""}
         </Stack>
         <ProfileComponent />
     </div>

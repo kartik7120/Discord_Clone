@@ -3,9 +3,7 @@ import { Card, ScrollArea } from "@mantine/core";
 import { useQuery } from "@tanstack/react-query";
 import fetchChannel from "./interfaces/interfaces";
 import { useLocation, useNavigate } from "react-router-dom";
-import { Portal } from "@mantine/core";
-import { useEffect, useState } from "react";
-import JoinChannelPortal from "./joinChannelPortal";
+import { useState } from "react";
 const useStyles = createStyles((theme, _params, getRef) => ({
     explore_wrapper: {
         backgroundColor: theme.colorScheme === "dark" ? theme.colors.discord_palette[1] : theme.white,
@@ -50,7 +48,9 @@ async function fetchChannels() {
 function handleClick(id: string, navigate: any, channelName: string, setOpened: React.Dispatch<React.SetStateAction<boolean>>, currLocation: string
 ) {
     setOpened(true);
-    navigate(`/${channelName}/${id}`);
+    navigate(`/${channelName}/${id}`, {
+        state: true
+    });
 }
 
 function ExploreComponents() {
@@ -62,8 +62,8 @@ function ExploreComponents() {
     const { isSuccess, data } = useQuery(["namespace", "explore"], fetchChannels);
     return (
         <>
-            <ScrollArea type="hover" style={{ height: "100vh", width: "100%", padding: 0, minHeight: "100vh" }}>
-                <div className={classes.explore_wrapper}>
+            <div className={classes.explore_wrapper}>
+                <ScrollArea type="hover" style={{ height: "100vh", width: "100%", padding: 0, margin: 0 }}>
                     <BackgroundImage style={{
                         height: "50%",
                         width: "95%",
@@ -110,8 +110,8 @@ function ExploreComponents() {
                             }) : ""
                         }
                     </div>
-                </div>
-            </ScrollArea>
+                </ScrollArea>
+            </div>
         </>
     )
 
