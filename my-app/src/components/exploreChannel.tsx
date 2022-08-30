@@ -1,9 +1,11 @@
 import { BackgroundImage, Center, createStyles, Image, Text, Container, useMantineTheme } from "@mantine/core";
 import { Card, ScrollArea } from "@mantine/core";
-import { useQuery } from "@tanstack/react-query";
+import { QueryClient, useQuery } from "@tanstack/react-query";
 import fetchChannel from "./interfaces/interfaces";
 import { useLocation, useNavigate } from "react-router-dom";
 import { useState } from "react";
+import { useQueryClient } from "@tanstack/react-query";
+import { useAuth0 } from "@auth0/auth0-react";
 const useStyles = createStyles((theme, _params, getRef) => ({
     explore_wrapper: {
         backgroundColor: theme.colorScheme === "dark" ? theme.colors.discord_palette[1] : theme.white,
@@ -45,15 +47,30 @@ async function fetchChannels() {
     }
 }
 
-function handleClick(id: string, navigate: any, channelName: string, setOpened: React.Dispatch<React.SetStateAction<boolean>>, currLocation: string
+function handleClick(id: string, navigate: any, channelName: string,
+    setOpened: React.Dispatch<React.SetStateAction<boolean>>, currLocation: string, queryClient: QueryClient,
+    userId: string | undefined
 ) {
     setOpened(true);
+    const channels: fetchChannel[] | undefined = queryClient.getQueryData(["channels", userId])
+    if (channels !== undefined) {
+        const channel = channels.find((ele) => {
+            return ele._id === id
+        })
+        if (channel) {
+            return navigate(`/${channelName}/${id}`, {
+                state: false
+            });
+        }
+    }
     navigate(`/${channelName}/${id}`, {
         state: true
     });
 }
 
 function ExploreComponents() {
+    const { user } = useAuth0();
+    const queryClient = useQueryClient()
     const location = useLocation();
     const [opened, setOpened] = useState(false);
     const navigate = useNavigate();
@@ -86,10 +103,11 @@ function ExploreComponents() {
                     </BackgroundImage>
                     <div className={classes.channel_container}>
                         {
-                            isSuccess ? data.map((ele: fetchChannel) => {
+                            isSuccess ? data.map((ele: fetchChannel, index: number) => {
                                 return (
-                                    <Card shadow="xl"
-                                        onClick={() => handleClick(ele._id, navigate, ele.channelName, setOpened, location.pathname)} p="lg"
+                                    <Card shadow="xl" key={Math.random() * 456 * index}
+                                        onClick={() => handleClick(ele._id, navigate, ele.channelName, setOpened,
+                                            location.pathname, queryClient, user?.sub)} p="lg"
                                         className={classes.card_class}
                                         radius="md" withBorder style={{
                                             width: "21em"

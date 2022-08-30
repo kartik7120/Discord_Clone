@@ -53,7 +53,6 @@ function SideBar() {
     return <div className="sidebar">
         <ScrollArea style={{ height: "100%" }} scrollHideDelay={300}>
             <Tooltip label="Home" position="right" withArrow arrowSize={5}
-
             >
                 <SidebarIcon icon={<SiDiscord size={32} color={"#5663F7"} />} label="Home" />
             </Tooltip>
