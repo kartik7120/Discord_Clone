@@ -1,10 +1,9 @@
 import React from "react";
 import { SiDiscord } from "react-icons/si";
-import { SiMyanimelist } from "react-icons/si";
 import { GiPistolGun } from "react-icons/gi";
 import { FiAlertTriangle } from "react-icons/fi";
 import { FaCompass } from "react-icons/fa";
-import { BsPlus, BsFillLightningFill } from "react-icons/bs";
+import { BsPlus } from "react-icons/bs";
 import { useNavigate } from "react-router-dom";
 import { Box, Text, Title, TextInput, Button, ScrollArea } from "@mantine/core";
 import { Tooltip } from "@mantine/core";
@@ -43,9 +42,8 @@ async function fetchChannels({ queryKey }: any) {
 
 function SideBar() {
     const { isAuthenticated, user } = useAuth0();
-    // const theme = useMantineTheme();
-    const [channels, setChannels] = useLocalStorage({ key: "discordChannels", defaultValue: [""] });
-    const { isLoading, isError, data, error, isSuccess } = useQuery(["channels", user?.sub], fetchChannels);
+    const [setChannels] = useLocalStorage({ key: "discordChannels", defaultValue: [""] });
+    const { isError, data, error, isSuccess } = useQuery(["channels", user?.sub], fetchChannels);
     if (isError) {
         console.log("Error occurred while fetching namespaces");
         console.log(`fetching error = ${error}`);

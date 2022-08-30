@@ -153,7 +153,7 @@ function LeftColumn() {
                     : ""
             }
             {location.state ? <Portal target="#portalDiv">
-                <JoinChannelPortal channelId={id!} />
+                <JoinChannelPortal channelId={id!} channelName={channel!}/>
             </Portal> : ""}
         </Stack>
         <ProfileComponent />

@@ -7,6 +7,7 @@ import { useAuth0 } from "@auth0/auth0-react";
 import { TiTick } from "react-icons/ti";
 import { BiError } from "react-icons/bi";
 import { joinRoom } from "./interfaces/interfaces";
+import { useQueryClient } from "@tanstack/react-query";
 const useStyles = createStyles((theme, _params, getRef) => ({
     portal_class: {
         backgroundColor: theme.colors.discord_palette[0],
@@ -37,7 +38,8 @@ async function fetchAddChannel({ channelId, userSub }: any) {
 }
 
 function JoinChannelPortal(props: joinRoom) {
-    const { channelId } = props;
+    const queryClient = useQueryClient();
+    const { channelId, channelName } = props;
     const { user } = useAuth0();
     const navigate = useNavigate();
     const { classes } = useStyles();
@@ -53,6 +55,10 @@ function JoinChannelPortal(props: joinRoom) {
         })
     }
     if (isSuccess) {
+        queryClient.invalidateQueries(["channels", user?.sub])
+        navigate(`/${channelName}/${channelId}`, {
+            state: false
+        });
         showNotification({
             title: "Joined channel",
             message: "Joined channel successfully",
