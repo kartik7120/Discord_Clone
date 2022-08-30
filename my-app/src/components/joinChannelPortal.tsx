@@ -46,6 +46,7 @@ function JoinChannelPortal(props: joinRoom) {
     const theme = useMantineTheme();
     const { isError, error, isSuccess, mutate } = useMutation(["explore", "joinChannel", channelId], fetchAddChannel);
     if (isError) {
+        console.log(`Error in join channel portal = ${error}`);
         showNotification({
             title: "Error occured",
             message: "Something went wrong while joining channel",
@@ -56,9 +57,6 @@ function JoinChannelPortal(props: joinRoom) {
     }
     if (isSuccess) {
         queryClient.invalidateQueries(["channels", user?.sub])
-        navigate(`/${channelName}/${channelId}`, {
-            state: false
-        });
         showNotification({
             title: "Joined channel",
             message: "Joined channel successfully",
@@ -66,6 +64,9 @@ function JoinChannelPortal(props: joinRoom) {
             icon: <TiTick color="green" />,
             color: "teal"
         })
+        navigate(`/${channelName}/${channelId}`, {
+            state: false
+        });
     }
     function handleBackClick() {
         navigate(`/explore`, { replace: true })
