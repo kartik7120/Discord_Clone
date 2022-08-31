@@ -13,7 +13,7 @@ interface SearchInterface {
 function SearchExperience(props: any) {
     return <div style={{ width: "80%" }}>
         <SearchContextManager apiKey={"V68YK1MFUoaFnLWe6QY41Fd2FDa5xrUk"}>
-            <Components socket={props.socket} setMessageState={props.setMessageState} mutate={props.mutate}/>
+            <Components socket={props.socket} mutate={props.mutate}/>
         </SearchContextManager>
     </div>
 }

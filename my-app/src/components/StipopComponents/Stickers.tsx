@@ -1,6 +1,7 @@
 import { UnifiedComponent } from "stipop-react-sdk";
 import { useMantineTheme } from "@mantine/core";
 import { useAuth0 } from "@auth0/auth0-react";
+import { useParams } from "react-router-dom";
 type message = messageObj<string | Element | JSX.Element>[];
 interface messageObj<T> {
     sub: string,
@@ -8,19 +9,24 @@ interface messageObj<T> {
 }
 interface sticker {
     socket: any,
-    setMessageState: React.Dispatch<React.SetStateAction<message>>
 }
 
-function Stickers(props: sticker) {
-    const theme = useMantineTheme();
+function Stickers(props: any) {
     const { user } = useAuth0();
+    const { channelName, id, roomId } = useParams();
+    const theme = useMantineTheme();
     function handleStickerClick(stickerObject: any) {
-        props.socket.emit("sticker", stickerObject.url!);
-        props.setMessageState(function (oldMessages) {
-            return [...oldMessages, {
-                message: <img src={stickerObject.url!} style={{ borderRadius: "0.5em", width: "6em" }} alt="sticker" />
-                , sub: user?.sub!
-            }]
+        props.socket.emit("sticker", stickerObject.url!, {
+            message_content: stickerObject.url,
+            userSub: user?.sub!,
+            userPicture: user?.picture!, userName: user?.name!,
+            category: "image", roomId: roomId!, channelId: id!, channelName
+        });
+        props.mutate({
+            message_content: stickerObject.url,
+            userSub: user?.sub!,
+            userPicture: user?.picture!, userName: user?.name!,
+            category: "image", roomId: roomId!, channelId: id!
         })
     }
 

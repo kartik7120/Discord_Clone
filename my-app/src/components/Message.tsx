@@ -1,8 +1,6 @@
 import { Avatar, Text } from "@mantine/core";
 // import { useAuth0 } from "@auth0/auth0-react";
 import { createStyles, Space } from "@mantine/core";
-import useFetchUser from "../hooks/FetchUserDetails";
-import { messageMutate } from "./interfaces/interfaces";
 const useStyles = createStyles((theme, _params, getDef) => ({
     message_wrapper: {
         display: "grid",

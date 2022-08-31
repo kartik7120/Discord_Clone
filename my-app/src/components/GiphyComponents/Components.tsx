@@ -38,12 +38,6 @@ function Components(props: any) {
             userPicture: user?.picture!, userName: user?.name!,
             category: "video", roomId: roomId!, channelId: id!
         })
-        props.setMessageState(function (oldMessages: any) {
-            return [...oldMessages, {
-                message: <video autoPlay className={classes.video_class} loop muted src={gifURL} />
-                , sub: user?.sub!
-            }]
-        })
     }
     return (
         <>
