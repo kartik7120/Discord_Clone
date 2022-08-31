@@ -44,7 +44,7 @@ root.render(
                 </Route>
                 <Route path=':channel'>
                   <Route path=':id' element={<Channel />}>
-                    <Route path=':channelName' element={<MiddleColumn />}>
+                    <Route path=':channelName/:roomId' element={<MiddleColumn />}>
                       <Route index element={<RightColumn />} />
                     </Route>
                   </Route>

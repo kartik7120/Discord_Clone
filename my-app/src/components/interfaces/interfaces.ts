@@ -23,5 +23,15 @@ interface messageUser {
     userPicture: string,
     userSub: string
 }
+interface messageMutate {
+    category: "video" | "audio" | "text",
+    date?: Date,
+    channelId: string,
+    message_content: string,
+    userName: string,
+    userPicture: string,
+    userSub: string,
+    roomId: string
+}
 export default fetchChannel;
-export type { Room, deleteRoom, joinRoom, messageUser }
+export type { Room, deleteRoom, joinRoom, messageUser, messageMutate }

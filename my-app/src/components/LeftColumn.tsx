@@ -138,7 +138,7 @@ function LeftColumn() {
                 isSuccess ? data.map((room: Room, index: number) => (
                     <div className={classes.room_class} key={Math.random() * index * 5487} ref={ref}>
                         <Anchor className={classes.leftColumn_channel_button}
-                            component={Link} to={room.roomName} align="left" variant="text" size="md"
+                            component={Link} to={`${room.roomName}/${room._id}`} align="left" variant="text" size="md"
                             onClick={(e: any) => handleClick(e, room.roomName)}>
                             <div style={{ alignSelf: "flex-start" }}>
                                 <HiHashtag color={theme.colors.discord_palette[6]} style={{ margin: "0.1em" }} />
@@ -153,7 +153,7 @@ function LeftColumn() {
                     : ""
             }
             {location.state ? <Portal target="#portalDiv">
-                <JoinChannelPortal channelId={id!} channelName={channel!}/>
+                <JoinChannelPortal channelId={id!} channelName={channel!} />
             </Portal> : ""}
         </Stack>
         <ProfileComponent />

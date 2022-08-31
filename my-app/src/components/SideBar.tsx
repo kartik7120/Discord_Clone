@@ -12,8 +12,6 @@ import { createStyles } from "@mantine/core";
 import { useMutation, useQuery } from "@tanstack/react-query";
 import { Alert } from "@mantine/core";
 import { useLocalStorage } from "@mantine/hooks";
-import LoginButton from "./Auth/LoginButton";
-import LogoutButton from "./Auth/LogoutButton";
 import { useAuth0 } from "@auth0/auth0-react";
 import createRoomInterface from "./interfaces/createRoomInterface";
 import fetchChannel from "./interfaces/interfaces";
