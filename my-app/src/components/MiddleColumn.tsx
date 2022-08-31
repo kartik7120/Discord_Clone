@@ -17,13 +17,11 @@ import Stickers from "./StipopComponents/Stickers";
 import { useScrollIntoView } from "@mantine/hooks";
 import { BsFillStickiesFill } from "react-icons/bs";
 import { useAuth0 } from "@auth0/auth0-react";
-import { messageUser } from "./interfaces/interfaces";
 import { useMutation, useQuery } from "@tanstack/react-query";
 import { showNotification } from "@mantine/notifications";
 import { BiError } from "react-icons/bi";
 import { messageMutate } from "./interfaces/interfaces";
 import { useQueryClient } from "@tanstack/react-query";
-import { createContext } from "react";
 const useStyles = createStyles((theme, _params, getRef) => ({
     middle_column_class: {
         backgroundColor: theme.colors.discord_palette[1],
@@ -46,12 +44,6 @@ const useStyles = createStyles((theme, _params, getRef) => ({
         justifyContent: "space-between"
     }
 }))
-interface messageObj<T> {
-    sub: any,
-    message: T
-}
-type message = messageObj<string | Element | JSX.Element>[];
-const messageArray: message = [];
 async function fetchRoomMessage({ queryKey }: any) {
     const [, , , _key4] = queryKey;
     const URL = `${process.env.REACT_APP_API_URL}namespace/messages/${_key4}`;

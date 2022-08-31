@@ -8,16 +8,6 @@ const useStyles = createStyles((theme, _params, getRef) => ({
         borderRadius: "0.5em"
     }
 }));
-type message = messageObj<string | Element | JSX.Element>[];
-interface SearchInterface {
-    socket: any,
-    setMessageState: React.Dispatch<React.SetStateAction<message>>
-}
-interface messageObj<T> {
-    sub: string,
-    message: T
-}
-
 function Components(props: any) {
     const { user } = useAuth0();
     const { classes } = useStyles();

@@ -12,11 +12,6 @@ const useStyles = createStyles((theme, _params, getDef) => ({
         margin: 0
     }
 }))
-interface messageObj<T> {
-    sub: any,
-    message: T
-}
-type message = messageObj<string | Element | JSX.Element>;
 function Message(props: any) {
     // const { user } = useAuth0();
     const { classes } = useStyles();

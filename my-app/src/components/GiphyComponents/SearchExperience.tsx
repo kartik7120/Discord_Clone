@@ -1,14 +1,5 @@
 import { SearchContextManager } from "@giphy/react-components";
 import Components from "../GiphyComponents/Components";
-type message = messageObj<string | Element | JSX.Element>[];
-interface messageObj<T> {
-    sub: string,
-    message: T
-}
-interface SearchInterface {
-    socket: any,
-    setMessageState: React.Dispatch<React.SetStateAction<message>>
-}
 
 function SearchExperience(props: any) {
     return <div style={{ width: "80%" }}>

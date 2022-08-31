@@ -2,14 +2,6 @@ import { UnifiedComponent } from "stipop-react-sdk";
 import { useMantineTheme } from "@mantine/core";
 import { useAuth0 } from "@auth0/auth0-react";
 import { useParams } from "react-router-dom";
-type message = messageObj<string | Element | JSX.Element>[];
-interface messageObj<T> {
-    sub: string,
-    message: T
-}
-interface sticker {
-    socket: any,
-}
 
 function Stickers(props: any) {
     const { user } = useAuth0();
