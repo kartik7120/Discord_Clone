@@ -76,7 +76,6 @@ function SideBar() {
                 }) : ""
             }
         </ScrollArea>
-        {!isAuthenticated ? <LoginButton /> : <LogoutButton />}
     </div>
 }
 

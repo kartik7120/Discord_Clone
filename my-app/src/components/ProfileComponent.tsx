@@ -21,7 +21,7 @@ const useStyles = createStyles((theme, _params, getRef) => ({
     }
 }))
 function ProfileComponent() {
-    const { user } = useAuth0();
+    const { user, isAuthenticated, logout, loginWithRedirect } = useAuth0();
     const { classes } = useStyles();
     return <>
 
@@ -38,9 +38,11 @@ function ProfileComponent() {
                     <Menu.Item icon={<AiOutlineUser />}>
                         Profile
                     </Menu.Item>
-                    <Menu.Item icon={<HiOutlineLogout />} color="red">
-                        LogOut
-                    </Menu.Item>
+                    {!isAuthenticated ? <Menu.Item icon={<HiOutlineLogout />} onClick={() => loginWithRedirect()} color="green">
+                        Login
+                    </Menu.Item> : <Menu.Item icon={<HiOutlineLogout />} onClick={() => logout()} color="red">
+                        Logout
+                    </Menu.Item>}
                 </Menu.Dropdown>
             </Menu>
         </div>
