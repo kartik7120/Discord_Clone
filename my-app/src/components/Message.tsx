@@ -22,7 +22,6 @@ type message = messageObj<string | Element | JSX.Element>;
 function Message(props: any) {
     // const { user } = useAuth0();
     const { classes } = useStyles();
-    console.log(props);
     // const { userData } = useFetchUser({ sub: props.sub });
     return <div className={classes.message_wrapper}>
         <div>
@@ -31,11 +30,15 @@ function Message(props: any) {
         <div>
             <Text weight={500}>{props?.message_bearer.username}</Text>
             <Space h="xs" />
-            <p className={classes.text_class}>
-                <>
-                    {props.message_content}
-                </>
-            </p>
+            {
+                props.category === "text" ? <p className={classes.text_class}>
+                    <>
+                        {props.message_content}
+                    </>
+                </p> : props.category === "video" ?
+                    <video autoPlay loop muted style={{ borderRadius: "0.5em" }} src={props.message_content} />
+                    : <img alt="sticker" style={{ borderRadius: "0.5em", width: "6em" }} src={props.message_content} />
+            }
         </div>
     </div>
 }

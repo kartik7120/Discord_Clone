@@ -10,10 +10,10 @@ interface SearchInterface {
     setMessageState: React.Dispatch<React.SetStateAction<message>>
 }
 
-function SearchExperience(props: SearchInterface) {
+function SearchExperience(props: any) {
     return <div style={{ width: "80%" }}>
         <SearchContextManager apiKey={"V68YK1MFUoaFnLWe6QY41Fd2FDa5xrUk"}>
-            <Components socket={props.socket} setMessageState={props.setMessageState} />
+            <Components socket={props.socket} setMessageState={props.setMessageState} mutate={props.mutate}/>
         </SearchContextManager>
     </div>
 }

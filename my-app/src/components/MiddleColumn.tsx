@@ -23,6 +23,7 @@ import { showNotification } from "@mantine/notifications";
 import { BiError } from "react-icons/bi";
 import { messageMutate } from "./interfaces/interfaces";
 import { useQueryClient } from "@tanstack/react-query";
+import { createContext } from "react";
 const useStyles = createStyles((theme, _params, getRef) => ({
     middle_column_class: {
         backgroundColor: theme.colors.discord_palette[1],
@@ -108,11 +109,10 @@ function MiddleColumn() {
         socket.on("messages", (message: string, { userSub,
             userPicture, userName,
             category, roomId, channelId }: messageMutate) => {
-            console.log("Message revieved from backend = ", message);
             queryClient.setQueryData(["channel", id, "room", roomId], (old: any): any => {
                 return [...old, {
                     category,
-                    message_content:message,
+                    message_content: message,
                     message_bearer: {
                         username: userName,
                         picture: userPicture,
@@ -124,7 +124,20 @@ function MiddleColumn() {
                 return [...oldMessages, { message, sub: user }];
             })
         })
-        socket.on("gif", (gifURL: string, userSub: string) => {
+        socket.on("gif", (gifURL: string, { userSub,
+            userPicture, userName,
+            category, roomId, channelId }: messageMutate) => {
+            queryClient.setQueryData(["channel", id, "room", roomId], (old: any): any => {
+                return [...old, {
+                    category,
+                    message_content: gifURL,
+                    message_bearer: {
+                        username: userName,
+                        picture: userPicture,
+                        sub_id: userSub
+                    }
+                }]
+            });
             setMessageState(function (oldMessages) {
                 return [...oldMessages, {
                     message: <video autoPlay loop muted style={{ borderRadius: "0.5em" }} src={gifURL} />,
@@ -151,13 +164,13 @@ function MiddleColumn() {
             color: "red"
         })
     }
-    if (isSuccess) {
-        showNotification({
-            title: "Success",
-            message: "Messages loaded successfully",
-            color: "green"
-        })
-    }
+    // if (isSuccess) {
+    //     showNotification({
+    //         title: "Success",
+    //         message: "Messages loaded successfully",
+    //         color: "green"
+    //     })
+    // }
     function handleChange(e: any) {
         const message: string = e.target.value;
         setState(message);
@@ -237,7 +250,7 @@ function MiddleColumn() {
                                     </Popover.Target>
                                     <Popover.Dropdown>
                                         <ScrollArea type="hover" style={{ height: "14em" }}>
-                                            <SearchExperience socket={socket} setMessageState={setMessageState} />
+                                            <SearchExperience socket={socket} mutate={mutate} setMessageState={setMessageState} />
                                         </ScrollArea>
                                     </Popover.Dropdown>
                                 </Popover>
