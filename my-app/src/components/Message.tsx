@@ -14,20 +14,20 @@ const useStyles = createStyles((theme, _params, getDef) => ({
     }
 }))
 interface messageObj<T> {
-    sub: string,
+    sub: any,
     message: T
 }
 type message = messageObj<string | Element | JSX.Element>;
 function Message(props: message) {
     // const { user } = useAuth0();
     const { classes } = useStyles();
-    const { userData } = useFetchUser({ sub: props.sub });
+    // const { userData } = useFetchUser({ sub: props.sub });
     return <div className={classes.message_wrapper}>
         <div>
-            <Avatar src={userData?.picture} radius="lg" />
+            <Avatar src={props.sub?.userPicture} radius="lg" />
         </div>
         <div>
-            <Text weight={500}>{userData?.name}</Text>
+            <Text weight={500}>{props.sub?.userName}</Text>
             <Space h="xs" />
             <p className={classes.text_class}>
                 <>

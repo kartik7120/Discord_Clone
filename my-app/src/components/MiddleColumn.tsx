@@ -17,6 +17,7 @@ import Stickers from "./StipopComponents/Stickers";
 import { useScrollIntoView } from "@mantine/hooks";
 import { BsFillStickiesFill } from "react-icons/bs";
 import { useAuth0 } from "@auth0/auth0-react";
+import { messageUser } from "./interfaces/interfaces";
 const useStyles = createStyles((theme, _params, getRef) => ({
     middle_column_class: {
         backgroundColor: theme.colors.discord_palette[1],
@@ -40,7 +41,7 @@ const useStyles = createStyles((theme, _params, getRef) => ({
     }
 }))
 interface messageObj<T> {
-    sub: string,
+    sub: any,
     message: T
 }
 type message = messageObj<string | Element | JSX.Element>[];
@@ -56,17 +57,17 @@ function MiddleColumn() {
     const [message, setMessageState] = useState(messageArray);
     React.useEffect(() => {
         scrollIntoView({ alignment: "end" });
-        socket.on("messages", (message: string, userSub: string) => {
+        socket.on("messages", (message: string, user: messageUser) => {
             console.log("Message revieved from backend = ", message);
             setMessageState(function (oldMessages) {
-                return [...oldMessages, { message, sub: userSub }];
+                return [...oldMessages, { message, sub: user }];
             })
         })
         socket.on("gif", (gifURL: string, userSub: string) => {
             setMessageState(function (oldMessages) {
                 return [...oldMessages, {
                     message: <video autoPlay loop muted style={{ borderRadius: "0.5em" }} src={gifURL} />,
-                    sub: userSub
+                    sub: { userSub: user?.sub!, userPicture: user?.picture, userName: user?.name }
                 }]
             })
         })
@@ -74,7 +75,7 @@ function MiddleColumn() {
             setMessageState(function (oldMessages) {
                 return [...oldMessages, {
                     message: <img alt="sticker" style={{ borderRadius: "0.5em", width: "6em" }} src={stickerURL} />
-                    , sub: userSub
+                    , sub: { userSub: user?.sub!, userPicture: user?.picture, userName: user?.name }
                 }]
             })
         })
@@ -85,9 +86,9 @@ function MiddleColumn() {
     }
     function handleMessageSubmit(e: any) {
         if (state !== "") {
-            socket.emit("message", state, channelName, user?.sub);
+            socket.emit("message", state, channelName, user?.sub, user?.picture, user?.name);
             setMessageState(function (oldMessages) {
-                return [...oldMessages, { message: state, sub: user?.sub! }];
+                return [...oldMessages, { message: state, sub: { userSub: user?.sub!, userPicture: user?.picture, userName: user?.name } }];
             })
             scrollIntoView({ alignment: "end" });
             setState("");

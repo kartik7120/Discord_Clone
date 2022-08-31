@@ -16,7 +16,12 @@ interface deleteRoom {
 }
 interface joinRoom {
     channelId: string,
-    channelName:string
+    channelName: string
+}
+interface messageUser {
+    userName: string,
+    userPicture: string,
+    userSub: string
 }
 export default fetchChannel;
-export type { Room, deleteRoom, joinRoom }
+export type { Room, deleteRoom, joinRoom, messageUser }

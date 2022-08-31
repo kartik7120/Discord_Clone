@@ -20,8 +20,7 @@ function useFetchUser(props: userProps) {
                 },
             });
             const user = await metadataResponse.json();
-            userData = JSON.stringify(user);
-            console.log(`userData in useFetchUser hook = ${JSON.parse(userData)}`);
+            return userData = JSON.stringify(user);
         } catch (e: any) {
             console.log(e.message);
         }
