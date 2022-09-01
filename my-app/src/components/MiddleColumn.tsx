@@ -22,6 +22,7 @@ import { showNotification } from "@mantine/notifications";
 import { BiError } from "react-icons/bi";
 import { messageMutate } from "./interfaces/interfaces";
 import { useQueryClient } from "@tanstack/react-query";
+import ChatSkeleton from "./ChatSkeleton";
 const useStyles = createStyles((theme, _params, getRef) => ({
     middle_column_class: {
         backgroundColor: theme.colors.discord_palette[1],
@@ -130,121 +131,121 @@ function MiddleColumn() {
         socket.on("sticker", (stickerURL: string, { userSub,
             userPicture, userName,
             category, roomId, channelId }: messageMutate) => {
-                queryClient.setQueryData(["channel", id, "room", roomId], (old: any): any => {
-                    return [...old, {
-                        category,
-                        message_content: stickerURL,
-                        message_bearer: {
-                            username: userName,
-                            picture: userPicture,
-                            sub_id: userSub
-                        }
-                    }]
-                })
+            queryClient.setQueryData(["channel", id, "room", roomId], (old: any): any => {
+                return [...old, {
+                    category,
+                    message_content: stickerURL,
+                    message_bearer: {
+                        username: userName,
+                        picture: userPicture,
+                        sub_id: userSub
+                    }
+                }]
             })
-        }, [])
+        })
+    }, [])
 
-        if (isError) {
-            console.log(`Error occured while fetching messages = ${error}`);
-            showNotification({
-                title: "Error",
-                message: "Error occured while fetching messages",
-                icon: <BiError />,
-                color: "red"
-            })
-        }
-        function handleChange(e: any) {
-            const message: string = e.target.value;
-            setState(message);
-        }
-        function handleMessageSubmit(e: any) {
-            if (state !== "") {
-                socket.emit("message", state, {
+    if (isError) {
+        console.log(`Error occured while fetching messages = ${error}`);
+        showNotification({
+            title: "Error",
+            message: "Error occured while fetching messages",
+            icon: <BiError />,
+            color: "red"
+        })
+    }
+    function handleChange(e: any) {
+        const message: string = e.target.value;
+        setState(message);
+    }
+    function handleMessageSubmit(e: any) {
+        if (state !== "") {
+            socket.emit("message", state, {
+                message_content: state,
+                userSub: user?.sub!,
+                userPicture: user?.picture!, userName: user?.name!,
+                category: "text", roomId: roomId!, channelId: id!, channelName
+            });
+            mutate(
+                {
                     message_content: state,
                     userSub: user?.sub!,
                     userPicture: user?.picture!, userName: user?.name!,
-                    category: "text", roomId: roomId!, channelId: id!, channelName
-                });
-                mutate(
-                    {
-                        message_content: state,
-                        userSub: user?.sub!,
-                        userPicture: user?.picture!, userName: user?.name!,
-                        category: "text", roomId: roomId!, channelId: id!
-                    }
-                )
-                scrollIntoView({ alignment: "end" });
-                setState("");
-            }
+                    category: "text", roomId: roomId!, channelId: id!
+                }
+            )
+            scrollIntoView({ alignment: "end" });
+            setState("");
         }
-
-        function handleEmojiClick(e: any, emojiObject: any) {
-            setChosenEmoji(emojiObject);
-            setState(function (oldState) {
-                return oldState += emojiObject.emoji;
-            })
-        }
-        return (
-            <>
-                <div className={classes.middle_column_class} id="messages">
-                    <ScrollArea type="hover" style={{ height: "40rem" }}>
-                        <ol >
-                            <Text ref={scrollableRef}></Text>
-                            {isSuccess ? data.map((ele: messageMutate, index: number) => (
-                                <li key={Math.random() * index * 54239} className={classes.listClass}><Message {...ele} /></li>
-                            )) : ""}
-                            <Text ref={targetRef}></Text>
-                        </ol>
-                    </ScrollArea>
-                    <form action="" method="get">
-                        <Textarea className={classes.TextAreaClass} value={state} onChange={handleChange}
-                            placeholder="Enter your message"
-                            autosize minRows={1} size={"xl"} onKeyDown={getHotkeyHandler([
-                                ["Enter", handleMessageSubmit]
-                            ])} rightSectionWidth={100} rightSection={
-                                <div className={classes.rightSectionClass}>
-                                    <Popover position="top">
-                                        <Popover.Target>
-                                            <ActionIcon variant="outline" color="grape">
-                                                <MdInsertEmoticon />
-                                            </ActionIcon>
-                                        </Popover.Target>
-                                        <Popover.Dropdown>
-                                            <EmojiPicker onEmojiClick={handleEmojiClick} pickerStyle={{
-                                                width: "100%"
-                                            }} native />
-                                        </Popover.Dropdown>
-                                    </Popover>
-                                    <Popover position="top" offset={50} width="25em">
-                                        <Popover.Target>
-                                            <ActionIcon variant="outline" color="grape">
-                                                <AiOutlineGif />
-                                            </ActionIcon>
-                                        </Popover.Target>
-                                        <Popover.Dropdown>
-                                            <ScrollArea type="hover" style={{ height: "14em" }}>
-                                                <SearchExperience socket={socket} mutate={mutate} />
-                                            </ScrollArea>
-                                        </Popover.Dropdown>
-                                    </Popover>
-                                    <Popover position="top" offset={50} width="25em">
-                                        <Popover.Target>
-                                            <ActionIcon variant="outline" color="grape">
-                                                <BsFillStickiesFill />
-                                            </ActionIcon>
-                                        </Popover.Target>
-                                        <Popover.Dropdown>
-                                            <ScrollArea type="hover" style={{ height: "14em" }}>
-                                                <Stickers socket={socket} mutate={mutate}/>
-                                            </ScrollArea>
-                                        </Popover.Dropdown>
-                                    </Popover>
-                                </div>
-                            } />
-                    </form>
-                </div>
-                <Outlet />
-            </>
-        )
     }
+
+    function handleEmojiClick(e: any, emojiObject: any) {
+        setChosenEmoji(emojiObject);
+        setState(function (oldState) {
+            return oldState += emojiObject.emoji;
+        })
+    }
+    return (
+        <>
+            <div className={classes.middle_column_class} id="messages">
+                <ScrollArea type="hover" style={{ height: "40rem" }}>
+                    <ol >
+                        <Text ref={scrollableRef}></Text>
+                        {isSuccess ? data.map((ele: messageMutate, index: number) => (
+                            <li key={Math.random() * index * 54239} className={classes.listClass}><Message {...ele} /></li>
+                        )) : <ChatSkeleton />}
+                        <Text ref={targetRef}></Text>
+                    </ol>
+                </ScrollArea>
+                <form action="" method="get">
+                    <Textarea className={classes.TextAreaClass} value={state} onChange={handleChange}
+                        placeholder="Enter your message"
+                        autosize minRows={1} size={"xl"} onKeyDown={getHotkeyHandler([
+                            ["Enter", handleMessageSubmit]
+                        ])} rightSectionWidth={100} rightSection={
+                            <div className={classes.rightSectionClass}>
+                                <Popover position="top">
+                                    <Popover.Target>
+                                        <ActionIcon variant="outline" color="grape">
+                                            <MdInsertEmoticon />
+                                        </ActionIcon>
+                                    </Popover.Target>
+                                    <Popover.Dropdown>
+                                        <EmojiPicker onEmojiClick={handleEmojiClick} pickerStyle={{
+                                            width: "100%"
+                                        }} native />
+                                    </Popover.Dropdown>
+                                </Popover>
+                                <Popover position="top" offset={50} width="25em">
+                                    <Popover.Target>
+                                        <ActionIcon variant="outline" color="grape">
+                                            <AiOutlineGif />
+                                        </ActionIcon>
+                                    </Popover.Target>
+                                    <Popover.Dropdown>
+                                        <ScrollArea type="hover" style={{ height: "14em" }}>
+                                            <SearchExperience socket={socket} mutate={mutate} />
+                                        </ScrollArea>
+                                    </Popover.Dropdown>
+                                </Popover>
+                                <Popover position="top" offset={50} width="25em">
+                                    <Popover.Target>
+                                        <ActionIcon variant="outline" color="grape">
+                                            <BsFillStickiesFill />
+                                        </ActionIcon>
+                                    </Popover.Target>
+                                    <Popover.Dropdown>
+                                        <ScrollArea type="hover" style={{ height: "14em" }}>
+                                            <Stickers socket={socket} mutate={mutate} />
+                                        </ScrollArea>
+                                    </Popover.Dropdown>
+                                </Popover>
+                            </div>
+                        } />
+                </form>
+            </div>
+            <Outlet />
+        </>
+    )
+}
 export default MiddleColumn;
