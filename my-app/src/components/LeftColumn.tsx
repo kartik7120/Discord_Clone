@@ -99,8 +99,8 @@ function LeftColumn() {
     const [, setChannels] = useLocalStorage({ key: `${channel}Channels`, defaultValue: ["general"] });
 
     const [opended, setOpened] = React.useState(false);
-    function handleClick(e: React.MouseEvent<HTMLButtonElement>, currChannel: string) {
-        socket.emit("joinRoom", { roomName: currChannel }, (response: string) => {
+    function handleClick(e: React.MouseEvent<HTMLButtonElement>, currChannelId: string) {
+        socket.emit("joinRoom", { roomId: currChannelId }, (response: string) => {
             console.log("Response on joining room = ", response);
         })
     }
@@ -139,7 +139,7 @@ function LeftColumn() {
                     <div className={classes.room_class} key={Math.random() * index * 5487} ref={ref}>
                         <Anchor className={classes.leftColumn_channel_button}
                             component={Link} to={`${room.roomName}/${room._id}`} align="left" variant="text" size="md"
-                            onClick={(e: any) => handleClick(e, room.roomName)}>
+                            onClick={(e: any) => handleClick(e, room._id)}>
                             <div style={{ alignSelf: "flex-start" }}>
                                 <HiHashtag color={theme.colors.discord_palette[6]} style={{ margin: "0.1em" }} />
                                 {room.roomName}
