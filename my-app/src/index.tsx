@@ -14,6 +14,7 @@ import { ReactQueryDevtools } from '@tanstack/react-query-devtools';
 import { Auth0Provider } from '@auth0/auth0-react';
 import { NotificationsProvider } from '@mantine/notifications';
 import ExploreComponents from './components/exploreChannel';
+import Home from "./components/Home"
 const queryClient = new QueryClient();
 
 const root = ReactDOM.createRoot(
@@ -37,6 +38,7 @@ root.render(
         <NotificationsProvider>
           <BrowserRouter >
             <Routes>
+              <Route path="/home" element={<Home />} />
               <Route path='/' element={<App />}>
                 <Route element={<FriendsBar />}>
                   <Route index element={<ChatWindow />} />

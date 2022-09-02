@@ -1,5 +1,11 @@
-
+import React from "react"
+import UpperHome from "./UpperHome";
 function Home() {
-    return <h1>I am the home page</h1>
+
+    return (
+        <>
+            <UpperHome />
+        </>
+    )
 }
 export default Home;
