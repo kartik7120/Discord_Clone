@@ -1,5 +1,6 @@
 import LeftColumn from "./LeftColumn";
 import { createStyles } from "@mantine/core";
+import { useAuth0 } from "@auth0/auth0-react";
 import { Outlet, useParams } from "react-router-dom";
 import React from "react";
 import { connectNamespace, socketContext } from "../globalImports";
@@ -12,9 +13,10 @@ const useStyles = createStyles((theme, _params, getRef) => ({
     }
 }))
 function Channel() {
+    const { user } = useAuth0();
     const { classes } = useStyles();
     const { channel } = useParams();
-    const [state,] = React.useState(connectNamespace(channel!));
+    const [state,] = React.useState(connectNamespace(channel!, user?.sub!, user?.picture!, user?.name!));
     React.useEffect(function () {
         state.on("connection", () => {
             console.log(`socket ${state.id} connected`);

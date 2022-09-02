@@ -76,6 +76,7 @@ function LeftColumn() {
     const queryClient = useQueryClient();
     const socket = useContext(socketContext);
     const theme = useMantineTheme();
+    const [users, setUsers] = useLocalStorage<string[]>({ key: `${channel}-${id}`, defaultValue: [] })
     const { data, isSuccess } = useQuery(["namespace", channel, id, "rooms"], fetchRooms,
         { refetchOnWindowFocus: false });
     async function fetchUserRoomDelete({ roomId }: any) {
@@ -100,8 +101,9 @@ function LeftColumn() {
 
     const [opended, setOpened] = React.useState(false);
     function handleClick(e: React.MouseEvent<HTMLButtonElement>, currChannelId: string) {
-        socket.emit("joinRoom", { roomId: currChannelId }, (response: string) => {
-            console.log("Response on joining room = ", response);
+        socket.emit("joinRoom", { roomId: currChannelId, users }, (response: string, userData: any) => {
+            setUsers(userData);
+            console.log("Response on joining room = ", response, userData);
         })
     }
     function handleDelete(e: React.MouseEvent<HTMLButtonElement>, roomId: string) {
@@ -145,7 +147,8 @@ function LeftColumn() {
                                 {room.roomName}
                             </div>
                         </Anchor>
-                        <ActionIcon onClick={(e: any) => handleDelete(e, room._id)} variant="transparent" className={classes.action_class} color={theme.colors.discord_palette[0]}>
+                        <ActionIcon onClick={(e: any) => handleDelete(e, room._id)} variant="transparent"
+                            className={classes.action_class} color={theme.colors.discord_palette[0]}>
                             <AiFillDelete />
                         </ActionIcon>
                     </div>
