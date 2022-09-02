@@ -1,6 +1,7 @@
 import { Title, createStyles, useMantineTheme, Text, Button, ActionIcon, useMantineColorScheme } from "@mantine/core";
 import { BsFillSunFill } from "react-icons/bs";
 import { BsFillMoonFill } from "react-icons/bs"
+import { useNavigate } from "react-router-dom";
 const useStyles = createStyles((theme, _params, getRef) => ({
     upperHomeWrapper: {
         display: "flex",
@@ -21,8 +22,8 @@ const useStyles = createStyles((theme, _params, getRef) => ({
 }))
 function UpperHome() {
     const { colorScheme, toggleColorScheme } = useMantineColorScheme();
-    const theme = useMantineTheme();
     const { classes } = useStyles();
+    const navigate = useNavigate();
     console.log(colorScheme);
     const dark = colorScheme === 'dark';
     return (
@@ -36,7 +37,7 @@ function UpperHome() {
                 Where just you and a handful of friends can spend time together. A place that makes it easy to talk every
                 day and hang out more often.
             </Text>
-            <Button size="xl" className={classes.button_class} variant="gradient"
+            <Button onClick={() => navigate("/")} size="xl" className={classes.button_class} variant="gradient"
                 gradient={{ from: 'indigo', to: 'cyan' }}>Get Started</Button>
             <ActionIcon
                 size="xl"
