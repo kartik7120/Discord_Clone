@@ -34,7 +34,7 @@ function RightColumn() {
     }, [socket])
     return <div className={classes.right_column_class}>
         <Text size="xl" weight="revert" color={theme.colorScheme === "dark" ? theme.white : theme.black}>Users Online</Text>
-        <ScrollArea type="hover" style={{ height: "100%" }}>
+        <ScrollArea type="hover" style={{ height: "90vh" }}>
             {
                 users.map((user: any) => {
                     return <div className={classes.profile_class}>
