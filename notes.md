@@ -92,3 +92,19 @@ All the people who are connect to a particular room will be shown in that column
 - [x] Make a component so that user can join different servers
 - [x] Make so that a user can leave the server
 - [ ] Make the user join the default room on visiting a server
+
+Process of retriving and sending messages:
+
+1. Send the data to the server to save the new message
+2. Broadcast the same message that have joined the room
+3. Set query data after the message data recieved from the broadcast message
+
+Try to connect to a room using it's id rather than making a different connection to channels and then rooms
+
+#### Steps for recognizing a user in socket rooms and namespaces
+
+- Use the io middleware to set the query data as socket data
+- When join the room fetch all the sockets connected to that room
+- Display them in the right column of the chat
+- When a socket leave the room send the remaining sockets connected to that room
+- A socket can only connect to one single room **ONLY**
