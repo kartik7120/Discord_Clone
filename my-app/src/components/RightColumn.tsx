@@ -23,8 +23,9 @@ const useStyles = createStyles((theme, _params, getRef) => ({
 function RightColumn() {
     const theme = useMantineTheme();
     const { classes } = useStyles();
-    const { channel, id } = useParams();
-    const [users, setUsers] = useLocalStorage<string[]>({ key: `${channel}-${id}`, defaultValue: [] })
+    const { channel, id, channelName, roomId } = useParams();
+    const [users, setUsers] = useLocalStorage<string[]>({ key: `${channel}-${channelName}-${id}-${roomId}`, defaultValue: [] });
+    console.log(`channel name = ${channelName} and room id = ${roomId}`);
     const socket = React.useContext(socketContext);
     React.useEffect(() => {
         socket.on("userJoined", (users: string[]) => {

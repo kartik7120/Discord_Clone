@@ -1,4 +1,4 @@
-import { createStyles, Text } from "@mantine/core";
+import { Button, createStyles, Text } from "@mantine/core";
 import { Textarea } from "@mantine/core";
 import { ScrollArea } from "@mantine/core";
 import { socketContext } from "../globalImports";
@@ -10,6 +10,7 @@ import { MdInsertEmoticon } from "react-icons/md";
 import { ActionIcon } from "@mantine/core";
 import EmojiPicker from "emoji-picker-react";
 import { Popover } from '@mantine/core';
+import { FiUpload } from "react-icons/fi";
 import { AiOutlineGif } from "react-icons/ai";
 import SearchExperience from "./GiphyComponents/SearchExperience";
 import Message from "./Message";
@@ -20,9 +21,11 @@ import { useAuth0 } from "@auth0/auth0-react";
 import { useMutation, useQuery } from "@tanstack/react-query";
 import { showNotification } from "@mantine/notifications";
 import { BiError } from "react-icons/bi";
+import { FileInput } from "@mantine/core";
 import { messageMutate } from "./interfaces/interfaces";
 import { useQueryClient } from "@tanstack/react-query";
 import ChatSkeleton from "./ChatSkeleton";
+import { useLocalStorage } from "@mantine/hooks";
 const useStyles = createStyles((theme, _params, getRef) => ({
     middle_column_class: {
         backgroundColor: theme.colors.discord_palette[1],
@@ -79,6 +82,7 @@ async function fetchUpdateMessages({ userSub, category, message_content, userPic
 }
 
 function MiddleColumn() {
+    const [value, setValue] = useState<File | null>(null);
     const queryClient = useQueryClient();
     const { user } = useAuth0();
     const { scrollIntoView, targetRef, scrollableRef } = useScrollIntoView<HTMLDivElement>({ axis: "y" });
@@ -87,6 +91,7 @@ function MiddleColumn() {
     const { classes } = useStyles();
     const [state, setState] = useState("");
     const [, setChosenEmoji] = useState(null);
+    const [users, setUsers] = useLocalStorage<string[]>({ key: `${channelName}-${id}-${roomId}`, defaultValue: [] })
     const { isLoading, isError, error, data, isSuccess } = useQuery(["channel", id, "room", roomId], fetchRoomMessage, {
         refetchOnWindowFocus: false
     })
@@ -197,13 +202,28 @@ function MiddleColumn() {
                         <Text ref={targetRef}></Text>
                     </ol>
                 </ScrollArea>
+                {/**/}
                 <form action="" method="get">
                     <Textarea className={classes.TextAreaClass} value={state} onChange={handleChange}
                         placeholder="Enter your message"
                         autosize minRows={1} size={"xl"} onKeyDown={getHotkeyHandler([
                             ["Enter", handleMessageSubmit]
-                        ])} rightSectionWidth={100} rightSection={
+                        ])} rightSectionWidth={120} rightSection={
                             <div className={classes.rightSectionClass}>
+                                <Popover position="top">
+                                    <Popover.Target>
+                                        <ActionIcon variant="outline" color="grape">
+                                            <FiUpload />
+                                        </ActionIcon>
+                                    </Popover.Target>
+                                    <Popover.Dropdown>
+                                        <FileInput placeholder="Your File"
+                                            label="Upload a file"
+                                            withAsterisk value={value} onChange={setValue}
+                                            accept="image/png,image/jpeg/mp4/mov/wmv" />
+                                        <Button variant="filled" color="violet">Upload</Button>
+                                    </Popover.Dropdown>
+                                </Popover>
                                 <Popover position="top">
                                     <Popover.Target>
                                         <ActionIcon variant="outline" color="grape">
