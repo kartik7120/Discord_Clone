@@ -3,7 +3,7 @@ import { createStyles } from "@mantine/core";
 import { useAuth0 } from "@auth0/auth0-react";
 import { Outlet, useParams } from "react-router-dom";
 import React from "react";
-// import { socket as socket2 } from "../globalImports";
+import { socket } from "../globalImports";
 import { connectNamespace, socketContext } from "../globalImports";
 import { useLocalStorage } from "@mantine/hooks";
 import { io } from "socket.io-client";
@@ -19,15 +19,15 @@ function Channel() {
     const { user } = useAuth0();
     const { classes } = useStyles();
     const { channel, id } = useParams();
-    const [socket,] = useLocalStorage({
-        key: "socket", defaultValue: io(`http://localhost:4000/`, {
-            auth: {
-                userName: user?.name,
-                userSub: user?.sub,
-                userPicture: user?.picture
-            }
-        })
-    })
+    // const [socket,] = useLocalStorage({
+    //     key: "socket", defaultValue: io(`http://localhost:4000/`, {
+    //         auth: {
+    //             userName: user?.name,
+    //             userSub: user?.sub,
+    //             userPicture: user?.picture
+    //         }
+    //     })
+    // })
     const [users, setUsers] = useLocalStorage<string[]>({ key: `${channel}-${id}`, defaultValue: [] });
     // const [state,] = React.useState(connectNamespace(channel!, user?.sub!, user?.picture!, user?.name!));
     React.useEffect(function () {

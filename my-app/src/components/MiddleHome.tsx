@@ -32,9 +32,9 @@ function MiddleHome() {
                 </div>
             </div>
             <div className={classes.flexClass}>
-                <div className={classes.inner_div}>
+                <div className={classes.inner_div} style={{alignSelf:"flex-end"}}>
                     <Text size={50}>From few to a fandom</Text>
-                    <Text size="xl">
+                    <Text size={20}>
                         Join any community running from the explore tab that matches your intrest and style
                     </Text>
                 </div>

@@ -9,6 +9,7 @@ import { Anchor, Portal } from "@mantine/core";
 import { Link, useLocation } from "react-router-dom";
 import { HiHashtag } from "react-icons/hi";
 import { useParams } from "react-router-dom";
+import { useAuth0 } from "@auth0/auth0-react";
 import { useContext } from "react";
 import { socketContext } from "../globalImports";
 import ProfileComponent from "./ProfileComponent";
@@ -69,6 +70,7 @@ async function fetchRooms({ queryKey }: any) {
     }
 }
 function LeftColumn() {
+    const { user } = useAuth0();
     const location = useLocation();
     const { ref } = useHover();
     const { channel, id } = useParams();
@@ -92,7 +94,8 @@ function LeftColumn() {
         const result = await response.json();
         return result;
     }
-    const { isError, error, mutate, isSuccess: isSuccess2 } = useMutation(["namespace", channel, id, "room"], fetchUserRoomDelete, {
+    const { isError, error, mutate, isSuccess: isSuccess2 } = useMutation(["namespace", channel, id, "room"],
+        fetchUserRoomDelete, {
         onSuccess: function (data: Room[], variables: any, context: any) {
             queryClient.setQueryData(["namespace", channel, id, "rooms"], data);
         }
@@ -101,7 +104,10 @@ function LeftColumn() {
 
     const [opended, setOpened] = React.useState(false);
     function handleClick(e: React.MouseEvent<HTMLButtonElement>, currChannelId: string) {
-        socket.emit("joinRoom", { roomId: currChannelId, users }, (response: string, userData: any) => {
+        socket.emit("joinRoom", {
+            roomId: currChannelId, users, userSub: user?.sub,
+            userName: user?.name, userPicture: user?.picture
+        }, (response: string, userData: any) => {
             setUsers(userData);
             console.log("Response on joining room = ", response, userData);
         })
