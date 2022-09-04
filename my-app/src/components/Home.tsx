@@ -1,7 +1,7 @@
-import React from "react"
+import React from "react";
 import { useNavigate } from "react-router-dom";
 import UpperHome from "./UpperHome";
-import homeImg from "../images/home_background.webp"
+import homeImg from "../images/home_background.webp";
 import { BackgroundImage } from "@mantine/core";
 import { Button, createStyles } from "@mantine/core";
 import MiddleHome from "./MiddleHome";
@@ -22,12 +22,12 @@ function Home() {
     const navigate = useNavigate();
     return (
         <div className={classes.home_wrapper}>
-            <BackgroundImage src={homeImg}>
+            {/* <BackgroundImage src={homeImg}> */}
                 <UpperHome />
                 <MiddleHome />
                 <Button size="xl" onClick={() => navigate("/")} className={classes.button_class} variant="gradient"
                     gradient={{ from: 'indigo', to: 'cyan' }}>Get Started</Button>
-            </BackgroundImage>
+            {/* </BackgroundImage> */}
         </div>
     )
 }

@@ -1,5 +1,4 @@
 import { Avatar, Text } from "@mantine/core";
-// import { useAuth0 } from "@auth0/auth0-react";
 import { createStyles, Space } from "@mantine/core";
 const useStyles = createStyles((theme, _params, getDef) => ({
     message_wrapper: {
@@ -13,9 +12,7 @@ const useStyles = createStyles((theme, _params, getDef) => ({
     }
 }))
 function Message(props: any) {
-    // const { user } = useAuth0();
     const { classes } = useStyles();
-    // const { userData } = useFetchUser({ sub: props.sub });
     return <div className={classes.message_wrapper}>
         <div>
             <Avatar src={props?.message_bearer.picture} radius="lg" />
