@@ -2,7 +2,6 @@ import ReactDOM from 'react-dom/client';
 import React from "react"
 import './index.css';
 import App from './App';
-import reportWebVitals from './reportWebVitals';
 import { MantineProvider } from '@mantine/core';
 import { BrowserRouter, Route, Routes } from 'react-router-dom';
 import FriendsBar from './components/FriendsBar';
@@ -21,7 +20,7 @@ const queryClient = new QueryClient();
 
 function Root() {
     const [colorSchema, setColorSchema] = React.useState<ColorScheme>("light");
-    const toggleColorScheme = (value?: ColorScheme) => setColorSchema(value || (colorSchema === "dark" ? "light" : "dark"))
+    const toggleColorScheme = (value?: ColorScheme) => setColorSchema(value || (colorSchema === "dark" ? "light" : "dark"));
     return <Auth0Provider domain='dev-6mnzakh2.us.auth0.com'
         clientId='TrpH2owRNMhbMYK860wtxBnWYS2ZPnnv' redirectUri='http://localhost:3000'
         audience='https://dev-6mnzakh2.us.auth0.com/api/v2/'
@@ -30,7 +29,7 @@ function Root() {
         <QueryClientProvider client={queryClient}>
             <ColorSchemeProvider colorScheme={colorSchema} toggleColorScheme={toggleColorScheme}>
                 <MantineProvider theme={{
-                    colorScheme:"dark",
+                    colorScheme: colorSchema,
                     colors: {
                         'discord_dark': ["#282b30", "#36393e", "#424549"],
                         'discord_palette': ["#7289da", "#424549", "#36393e", "#282b30", "#1e2124", "#42464d", "#f2f3f5"]
