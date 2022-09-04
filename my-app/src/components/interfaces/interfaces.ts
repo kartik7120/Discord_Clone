@@ -1,3 +1,5 @@
+import { ReadStream } from "fs"
+
 interface fetchChannel {
     _id: any
     channelName: string,
@@ -24,10 +26,10 @@ interface messageUser {
     userSub: string
 }
 interface messageMutate {
-    category: "video" | "audio" | "text",
+    category: "video" | "audio" | "text" | "video_file" | "audio_file" | "image",
     date?: Date,
     channelId: string,
-    message_content: string,
+    message_content: string | File | any,
     userName: string,
     userPicture: string,
     userSub: string,

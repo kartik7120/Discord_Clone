@@ -29,8 +29,12 @@ function Message(props: any) {
                         {props.message_content}
                     </>
                 </p> : props.category === "video" ?
-                    <video autoPlay loop muted style={{ borderRadius: "0.5em" }} src={props.message_content} />
-                    : <img alt="sticker" style={{ borderRadius: "0.5em", width: "6em" }} src={props.message_content} />
+                    <video autoPlay loop muted style={{ borderRadius: "0.5em" }} src={props.message_content} /> :
+                    props.category === "video_file" ?
+                        <video controls loop muted style={{ borderRadius: "0.5em",width:"50%" }} src={props.message_content} /> :
+                        props.category === "audio_file" ?
+                            <audio src={props.message_content} controls muted style={{ borderRadius: "0.5em" }} />
+                            : <img alt="sticker" style={{ borderRadius: "0.5em", width: "50%" }} src={props.message_content} />
             }
         </div>
     </div>

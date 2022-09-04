@@ -1,4 +1,4 @@
-import { Button, createStyles, Text } from "@mantine/core";
+import { Button, createStyles, FileInput, Text } from "@mantine/core";
 import { Textarea } from "@mantine/core";
 import { ScrollArea } from "@mantine/core";
 import { socketContext } from "../globalImports";
@@ -21,11 +21,9 @@ import { useAuth0 } from "@auth0/auth0-react";
 import { useMutation, useQuery } from "@tanstack/react-query";
 import { showNotification } from "@mantine/notifications";
 import { BiError } from "react-icons/bi";
-import { FileInput } from "@mantine/core";
 import { messageMutate } from "./interfaces/interfaces";
 import { useQueryClient } from "@tanstack/react-query";
 import ChatSkeleton from "./ChatSkeleton";
-import { useLocalStorage } from "@mantine/hooks";
 const useStyles = createStyles((theme, _params, getRef) => ({
     middle_column_class: {
         backgroundColor: theme.colors.discord_palette[1],
@@ -81,8 +79,40 @@ async function fetchUpdateMessages({ userSub, category, message_content, userPic
     }
 }
 
+async function uploadFile({ file, category }: any) {
+    const formData = new FormData();
+    if (category === "video_file") {
+        category = "video";
+        formData.append("resource_type", "video")
+    }
+    else
+        if (category === "audio_file") {
+            category = "audio";
+            formData.append("resource_type", "audio")
+        }
+        else
+            if (category === "image") {
+                formData.append("resource_type", "image")
+            }
+    formData.append("file", file);
+    formData.append("upload_preset", "zya1vrnx");
+    formData.append("api_key", `${process.env.REACT_APP_CLOUDINARY_API_KEY}`);
+    const URL = `https://api.cloudinary.com/v1_1/${process.env.REACT_APP_CLOUDINARY_CLOUD_NAME}/upload`;
+    try {
+        const config = {
+            method: "POST",
+            body: formData
+        }
+        const response = await fetch(URL, config);
+        const result = await response.json();
+        console.log(`Result from cloudinary API = ${JSON.stringify(result)}`);
+        return result.secure_url;
+    } catch (error) {
+        throw error;
+    }
+}
 function MiddleColumn() {
-    const [value, setValue] = useState<File | null>(null);
+    const [file, setFile] = useState<File | null>(null)
     const queryClient = useQueryClient();
     const { user } = useAuth0();
     const { scrollIntoView, targetRef, scrollableRef } = useScrollIntoView<HTMLDivElement>({ axis: "y" });
@@ -91,7 +121,7 @@ function MiddleColumn() {
     const { classes } = useStyles();
     const [state, setState] = useState("");
     const [, setChosenEmoji] = useState(null);
-    const [users, setUsers] = useLocalStorage<string[]>({ key: `${channelName}-${id}-${roomId}`, defaultValue: [] })
+    // const [users, setUsers] = useLocalStorage<string[]>({ key: `${channelName}-${id}-${roomId}`, defaultValue: [] })
     const { isLoading, isError, error, data, isSuccess } = useQuery(["channel", id, "room", roomId], fetchRoomMessage, {
         refetchOnWindowFocus: false
     })
@@ -99,6 +129,27 @@ function MiddleColumn() {
         fetchUpdateMessages, {
         onSuccess: (data, varaibles, context) => {
             queryClient.setQueryData(["channel", id, "room", roomId], data);
+        }
+    })
+    const { isError: isError3, mutate: mutateFile, error: error3 } = useMutation(
+        ["channel", id, "room", roomId, "message"]
+        , uploadFile, {
+        onSuccess: (data, variables: any, context) => {
+            socket.emit("message", data, {
+                message_content: data,
+                userSub: user?.sub!,
+                userPicture: user?.picture!, userName: user?.name!,
+                category: variables.category, roomId: roomId!, channelId: id!, channelName
+            });
+            mutate({
+                category: variables.category,
+                channelId: id!,
+                roomId: roomId!,
+                userName: user?.name!,
+                message_content: data,
+                userSub: user?.sub!,
+                userPicture: user?.picture!
+            })
         }
     })
     React.useEffect(() => {
@@ -150,6 +201,15 @@ function MiddleColumn() {
         })
     }, [])
 
+    if (isError3) {
+        console.log(`Error occured while uploading filr = ${error3}`);
+        showNotification({
+            title: "Error File upload",
+            message: "Error occured while uploading file",
+            icon: <BiError />,
+            color: "red"
+        })
+    }
     if (isError) {
         console.log(`Error occured while fetching messages = ${error}`);
         showNotification({
@@ -183,6 +243,35 @@ function MiddleColumn() {
             setState("");
         }
     }
+    async function handleUpload(e: any) {
+        let category: messageMutate["category"];
+        if (file !== null) {
+            const reg1 = new RegExp("video/*")
+            const reg2 = new RegExp("audio/*")
+            const reg3 = new RegExp("image/*")
+            if (reg1.test(file.type)) {
+                category = "video_file";
+            }
+            else
+                if (reg2.test(file.type)) {
+                    category = "audio_file";
+                }
+                else
+                    if (reg3.test(file.type)) {
+                        category = "image";
+                    }
+                    else
+                        category = "text";
+            mutateFile
+                (
+                    {
+                        file, category
+                    }
+                )
+            scrollIntoView({ alignment: "end" });
+            setFile(null);
+        }
+    }
 
     function handleEmojiClick(e: any, emojiObject: any) {
         setChosenEmoji(emojiObject);
@@ -202,7 +291,6 @@ function MiddleColumn() {
                         <Text ref={targetRef}></Text>
                     </ol>
                 </ScrollArea>
-                {/**/}
                 <form action="" method="get">
                     <Textarea className={classes.TextAreaClass} value={state} onChange={handleChange}
                         placeholder="Enter your message"
@@ -217,11 +305,14 @@ function MiddleColumn() {
                                         </ActionIcon>
                                     </Popover.Target>
                                     <Popover.Dropdown>
-                                        <FileInput placeholder="Your File"
-                                            label="Upload a file"
-                                            withAsterisk value={value} onChange={setValue}
-                                            accept="image/png,image/jpeg/mp4/mov/wmv" />
-                                        <Button variant="filled" color="violet">Upload</Button>
+                                        <FileInput
+                                            placeholder="Choose your file"
+                                            label="Upload file"
+                                            withAsterisk
+                                            value={file}
+                                            onChange={setFile}
+                                        />
+                                        <Button variant="filled" color="violet" onClick={handleUpload}>Upload</Button>
                                     </Popover.Dropdown>
                                 </Popover>
                                 <Popover position="top">
