@@ -1,7 +1,7 @@
-import { createStyles, Avatar, Text, ActionIcon } from "@mantine/core";
+import { createStyles, Avatar, Text, ActionIcon, useMantineColorScheme } from "@mantine/core";
 import { Indicator, Menu } from "@mantine/core";
 import { useAuth0 } from "@auth0/auth0-react";
-import { BsFillGearFill } from "react-icons/bs";
+import { BsFillGearFill, BsFillMoonFill, BsFillSunFill } from "react-icons/bs";
 import { HiOutlineLogout } from "react-icons/hi";
 import { AiOutlineUser } from "react-icons/ai";
 const useStyles = createStyles((theme, _params, getRef) => ({
@@ -21,6 +21,8 @@ const useStyles = createStyles((theme, _params, getRef) => ({
     }
 }))
 function ProfileComponent() {
+    const { colorScheme, toggleColorScheme } = useMantineColorScheme();
+    const dark = colorScheme === 'dark';
     const { user, isAuthenticated, logout, loginWithRedirect } = useAuth0();
     const { classes } = useStyles();
     return <>
@@ -43,6 +45,14 @@ function ProfileComponent() {
                     </Menu.Item> : <Menu.Item icon={<HiOutlineLogout />} onClick={() => logout()} color="red">
                         Logout
                     </Menu.Item>}
+                    <ActionIcon
+                        size="xl"
+                        variant="gradient"
+                        gradient={{ from: 'indigo', to: 'cyan', deg: 45 }}
+                        onClick={() => toggleColorScheme()}
+                        title="Toggle light and dark theme">
+                        {dark ? <BsFillSunFill size={18} /> : <BsFillMoonFill size={18} />}
+                    </ActionIcon>
                 </Menu.Dropdown>
             </Menu>
         </div>

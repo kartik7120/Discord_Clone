@@ -1,4 +1,4 @@
-import { Title, createStyles, useMantineTheme, Text, Button, ActionIcon, useMantineColorScheme } from "@mantine/core";
+import { Title, createStyles, Text, Button, ActionIcon, useMantineColorScheme } from "@mantine/core";
 import { BsFillSunFill } from "react-icons/bs";
 import { BsFillMoonFill } from "react-icons/bs"
 import { useNavigate } from "react-router-dom";
