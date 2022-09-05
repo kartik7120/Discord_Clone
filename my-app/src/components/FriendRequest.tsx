@@ -3,7 +3,7 @@ import { showNotification } from "@mantine/notifications";
 import { useAuth0 } from "@auth0/auth0-react";
 import { TiTickOutline } from "react-icons/ti";
 import { BiError } from "react-icons/bi";
-
+import FriendRequestData from "./FriendRequestData";
 async function fetchFriendRequest({ queryKey }: any) {
     const [, , _key3] = queryKey;
     const URL = `${process.env.REACT_APP_API_URL}namespace/friends/friendRequest/${_key3}`;
@@ -21,7 +21,7 @@ function FriendRequest() {
     const { isLoading, isError, error, data, isSuccess } = useQuery(["Friends", "requests", user?.sub], fetchFriendRequest);
 
     if (isSuccess) {
-        console.log(`data recieved while fetching friend request = ${data}`);
+        console.log(`data recieved while fetching friend request = ${JSON.stringify(data)}`);
         showNotification({
             title: "Success",
             message: "Friend request send",
@@ -39,6 +39,8 @@ function FriendRequest() {
             color: "red"
         })
     }
-    return <h1>I will contain all the friend request</h1>
+    return <>
+        <FriendRequestData />
+    </>
 }
 export default FriendRequest;
