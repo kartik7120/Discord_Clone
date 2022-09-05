@@ -1,6 +1,11 @@
 import { Avatar, Button, Text, Title } from "@mantine/core";
 import React from "react"
 import { createStyles, Space, Modal } from "@mantine/core";
+import { showNotification } from "@mantine/notifications";
+import { useMutation, useQueryClient } from "@tanstack/react-query";
+import { sendFriendRequest as friendRequest } from "./interfaces/interfaces";
+import { BiError } from "react-icons/bi";
+import { TiTickOutline } from "react-icons/ti"
 const useStyles = createStyles((theme, _params, getDef) => ({
     message_wrapper: {
         display: "grid",
@@ -18,9 +23,53 @@ const useStyles = createStyles((theme, _params, getDef) => ({
         cursor: "pointer"
     }
 }))
+async function sendFriendRequest({ userSub, friendSub }: friendRequest) {
+    const URL = `${process.env.REACT_APP_API_URL}friends/friendRequest`;
+    const config = {
+        method: "POST",
+        headers: {
+            "Content-Type": "application/json",
+            "Accept": "application/jsonf"
+        },
+        body: JSON.stringify({ userSub, friendSub })
+    }
+    try {
+        const response = await fetch(URL, config);
+        const result = await response.json();
+        return result;
+    } catch (error) {
+        throw error;
+    }
+}
 function Message(props: any) {
+    const queryClient = useQueryClient();
     const { classes } = useStyles();
     const [opened, setOpened] = React.useState(false);
+    const { isLoading, isError, mutate, isSuccess, error } = useMutation(["friend request"], sendFriendRequest);
+
+    if (isSuccess) {
+        showNotification({
+            title: "Success",
+            message: "Friend request send",
+            icon: <TiTickOutline />,
+            color: "red"
+        })
+    }
+
+    if (isError) {
+        console.log(error);
+        showNotification({
+            title: "Error",
+            message: "Error occured while sending friend request",
+            icon: <BiError />,
+            color: "red"
+        })
+    }
+
+    function handleClick() {
+        setOpened(false);
+    }
+
     return <div className={classes.message_wrapper}>
         <div>
             <Avatar src={props?.message_bearer.picture} radius="lg" />
@@ -28,7 +77,7 @@ function Message(props: any) {
         <div>
             <Modal opened={opened} centered onClose={() => setOpened(false)} withCloseButton={true}
                 title={<Title>User Profile</Title>}>
-                <Button variant="filled" size="lg">Send friend request</Button>
+                <Button variant="filled" size="lg" onClick={handleClick}>Send friend request</Button>
             </Modal>
             <Text size="lg" className={classes.user_name_text} onClick={() => setOpened(true)}>
                 {props?.message_bearer.username}

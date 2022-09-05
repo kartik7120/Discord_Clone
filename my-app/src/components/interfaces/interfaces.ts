@@ -35,5 +35,9 @@ interface messageMutate {
     userSub: string,
     roomId: string
 }
+interface sendFriendRequest {
+    userSub: string,
+    friendSub: string
+}
 export default fetchChannel;
-export type { Room, deleteRoom, joinRoom, messageUser, messageMutate }
+export type { Room, deleteRoom, joinRoom, messageUser, messageMutate, sendFriendRequest }
