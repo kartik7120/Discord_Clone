@@ -1,6 +1,7 @@
 import { Avatar, Button, Text, Title } from "@mantine/core";
 import React from "react"
 import { createStyles, Space, Modal } from "@mantine/core";
+import { useAuth0 } from "@auth0/auth0-react";
 import { showNotification } from "@mantine/notifications";
 import { useMutation, useQueryClient } from "@tanstack/react-query";
 import { sendFriendRequest as friendRequest } from "./interfaces/interfaces";
@@ -24,7 +25,7 @@ const useStyles = createStyles((theme, _params, getDef) => ({
     }
 }))
 async function sendFriendRequest({ userSub, friendSub }: friendRequest) {
-    const URL = `${process.env.REACT_APP_API_URL}friends/friendRequest`;
+    const URL = `${process.env.REACT_APP_API_URL}namespace/friends/friendRequest`;
     const config = {
         method: "POST",
         headers: {
@@ -44,15 +45,17 @@ async function sendFriendRequest({ userSub, friendSub }: friendRequest) {
 function Message(props: any) {
     const queryClient = useQueryClient();
     const { classes } = useStyles();
+    const { user } = useAuth0();
     const [opened, setOpened] = React.useState(false);
-    const { isLoading, isError, mutate, isSuccess, error } = useMutation(["friend request"], sendFriendRequest);
+    const { isError, mutate, isSuccess, error } =
+        useMutation(["friend request", user?.sub, props.message_content.userSub], sendFriendRequest);
 
     if (isSuccess) {
         showNotification({
             title: "Success",
             message: "Friend request send",
             icon: <TiTickOutline />,
-            color: "red"
+            color: "green"
         })
     }
 
@@ -68,6 +71,7 @@ function Message(props: any) {
 
     function handleClick() {
         setOpened(false);
+        mutate({ userSub: user?.sub!, friendSub: props.message_bearer.sub_id });
     }
 
     return <div className={classes.message_wrapper}>
