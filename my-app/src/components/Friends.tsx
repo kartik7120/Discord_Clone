@@ -4,8 +4,9 @@ import { showNotification } from "@mantine/notifications";
 import { BiError } from "react-icons/bi";
 import { friend } from "./interfaces/interfaces";
 import UserFriend from "./UserFriend";
-async function fetchFriends({ userSub }: any) {
-    const URL = `${process.env.REACT_APP_API_URL}namespace/friends/${userSub}`;
+async function fetchFriends({ queryKey }: any) {
+    const [, _key2] = queryKey;
+    const URL = `${process.env.REACT_APP_API_URL}namespace/friends/${_key2}`;
     const config = {
         method: "GET",
         headers: {
@@ -14,7 +15,7 @@ async function fetchFriends({ userSub }: any) {
         },
     }
     try {
-        const response = await fetch(URL, config);
+        const response = await fetch(URL);
         const result = await response.json();
         return result;
     } catch (error) {
