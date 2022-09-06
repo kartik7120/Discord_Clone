@@ -27,7 +27,6 @@ const useStyles = createStyles((theme, _params, getRef) => ({
 
 async function fetchChannels({ queryKey }: any) {
     const [, _key2] = queryKey;
-    console.log(`userSub in fetch channel function = ${_key2}`);
     const URL = `${process.env.REACT_APP_API_URL}namespace/userNamespaces/${_key2}`;
     try {
         const response = await fetch(URL);
@@ -38,14 +37,37 @@ async function fetchChannels({ queryKey }: any) {
     }
 }
 
+async function sendUserData({ userSub, userPicture, userName }: any) {
+    const URL = `${process.env.REACT_APP_API_URL}namespace/userData`;
+    const config = {
+        method: "POST",
+        headers: {
+            "Content-Type": "application/json",
+            "Accept": "application/json"
+        },
+        body: JSON.stringify({ userSub, userName, userPicture })
+    }
+    try {
+        const response = await fetch(URL, config);
+        const result = await response.json();
+        return result;
+    } catch (error) {
+        throw error;
+    }
+}
+
 function SideBar() {
     const { isAuthenticated, user } = useAuth0();
     const [setChannels] = useLocalStorage({ key: "discordChannels", defaultValue: [""] });
     const { isError, data, error, isSuccess } = useQuery(["channels", user?.sub], fetchChannels);
+    const { mutate } = useMutation(["userInfo"], sendUserData);
     if (isError) {
         console.log("Error occurred while fetching namespaces");
         console.log(`fetching error = ${error}`);
     }
+    // if (isSuccess) {
+    //     mutate({ userSub: user?.sub, userPicture: user?.picture, userName: user?.name });
+    // }
     return <div className="sidebar">
         <ScrollArea style={{ height: "100%" }} scrollHideDelay={300}>
             <Tooltip label="Home" position="right" withArrow arrowSize={5}

@@ -4,6 +4,12 @@ import { showNotification } from "@mantine/notifications";
 import { BiError } from "react-icons/bi";
 import { friend } from "./interfaces/interfaces";
 import UserFriend from "./UserFriend";
+import { Center, createStyles, Text } from "@mantine/core"
+const useStyles = createStyles((theme, _params, getRef) => ({
+    wrapper: {
+        height: "100%"
+    }
+}))
 async function fetchFriends({ queryKey }: any) {
     const [, _key2] = queryKey;
     const URL = `${process.env.REACT_APP_API_URL}namespace/friends/${_key2}`;
@@ -23,6 +29,7 @@ async function fetchFriends({ queryKey }: any) {
     }
 }
 function Friends() {
+    const { classes } = useStyles();
     const { user } = useAuth0();
     const { isLoading, isError, data, error, isSuccess } = useQuery(["Friends", user?.sub], fetchFriends);
 
@@ -36,22 +43,20 @@ function Friends() {
         })
     }
 
-    // if (isSuccess) {
-    //     console.log(`Friends data = ${data}`);
-    // }
-
     if (!data) {
         return <h1>No friends</h1>
     }
     else
         if (data.length === 0)
-            return <h1>No friends</h1>
+            return <Center>
+                <Text variant="text" color="dimmed" size="xl">No friends</Text>
+            </Center>
 
-    return <>
+    return <div className={classes.wrapper}>
         {isSuccess ? data.map((friend: friend, index: number) => {
             console.log(friend);
             return <UserFriend key={Math.random() * 889 * index} {...friend} />
         }) : ""}
-    </>
+    </div>
 }
 export default Friends;

@@ -5,6 +5,7 @@ import { TiTickOutline } from "react-icons/ti";
 import { BiError } from "react-icons/bi";
 import FriendRequestData from "./FriendRequestData";
 import { friendRequest } from "./interfaces/interfaces";
+import { Center, Text } from "@mantine/core";
 async function fetchFriendRequest({ queryKey }: any) {
     const [, , _key3] = queryKey;
     const URL = `${process.env.REACT_APP_API_URL}namespace/friends/friendRequest/${_key3}`;
@@ -40,10 +41,17 @@ function FriendRequest() {
             color: "red"
         })
     }
-    if (isSuccess) {
-        if(data.length === 0)
-        return <h1>No Friend request</h1>
+    if (!data) {
+        return <Center>
+            <Text variant="text" color="dimmed" size="xl">No friend requests</Text>
+        </Center>
     }
+    else
+        if (data.length === 0)
+            return <Center>
+                <Text variant="text" color="dimmed" size="xl">No friend requests</Text>
+            </Center>
+
     return <>
 
         {isSuccess ? data.map((user: friendRequest) => (
