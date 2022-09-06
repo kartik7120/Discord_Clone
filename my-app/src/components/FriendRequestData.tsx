@@ -51,17 +51,41 @@ async function cancelRequest({ user_id, _id }: any) {
     }
 }
 
+async function addRequest({ user_id, _id }: any) {
+    const URL = `${process.env.REACT_APP_API_URL}namespace/friends`;
+    const config = {
+        method: "POST",
+        headers: {
+            "Content-Type": "application/json",
+            "Accept": "application/json"
+        },
+        body: JSON.stringify({ userSub: user_id, _id })
+    }
+    try {
+        const response = await fetch(URL, config);
+        const result = await response.json();
+        return result;
+    } catch (error) {
+        throw error;
+    }
+}
+
 function FriendRequestData(props: friendRequest) {
     const { user } = useAuth0()
     const queryClient = useQueryClient();
     const { classes } = useStyles();
     const { isLoading, isError, error, mutate } =
-        useMutation(["friend", "request", "cancel", props.user_id, props._id], cancelRequest, {
+        useMutation(["friend", "request", "cancel", user?.sub, props._id], cancelRequest, {
             onSuccess(data, variables, context) {
                 queryClient.setQueryData(["Friends", "requests", user?.sub], data);
             },
         });
-
+    const { isError: isError2, error: error2, mutate: mutate2 } =
+        useMutation(["friend", "request", "add", user?.sub, props._id], addRequest, {
+            onSuccess(data, variables, context) {
+                queryClient.setQueryData(["Friends", user?.sub], data);
+            },
+        });
     if (isError) {
         console.log(`Error occured while cancelling friend request ${error}`);
         showNotification({
@@ -79,9 +103,13 @@ function FriendRequestData(props: friendRequest) {
             <Text size="lg">{props.user_id}</Text>
         </div>
         <div className={classes.button_div}>
-            <ActionIcon variant="outline" color="green"><TiTickOutline size={30} /></ActionIcon>
+            <ActionIcon variant="outline" color="green"
+                onClick={() => mutate2({ user_id: user?.sub, _id: props._id })}>
+                <TiTickOutline size={30} />
+            </ActionIcon>
             <ActionIcon variant="outline" onClick={() => mutate({ user_id: user?.sub, _id: props._id })}
-                color="red"><ImCross /></ActionIcon>
+                color="red"><ImCross />
+            </ActionIcon>
         </div>
     </div>
 }
