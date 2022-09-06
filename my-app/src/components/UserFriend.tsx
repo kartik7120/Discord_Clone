@@ -31,15 +31,16 @@ const useStyles = createStyles((theme, _params, getRef) => ({
     }
 }))
 
-async function removeFriend({ userSub, _id }: any) {
-    const URL = `${process.env.REACT_APP_API_URL}namespace/friends`;
+async function removeFriend({ user_id, _id }: any) {
+    console.log(`UserSub = ${user_id} and _id of friend = ${_id}`);
+    const URL = `${process.env.REACT_APP_API_URL}namespace/friends/deleteFriend`;
     const config = {
         method: "DELETE",
         headers: {
             "Content-Type": "application/json",
             "Accept": "application/json"
         },
-        body: JSON.stringify({ user_id: userSub, _id })
+        body: JSON.stringify({ userSub: user_id, _id })
     }
     try {
         const response = await fetch(URL, config);
@@ -54,7 +55,11 @@ function UserFriend(props: friend) {
     const { user } = useAuth0();
     const queryClient = useQueryClient();
     const { classes } = useStyles();
-    const { isLoading, isError, error, mutate } = useMutation(["friends", user?.sub], removeFriend);
+    const { isLoading, isError, error, mutate } = useMutation(["friends", user?.sub], removeFriend, {
+        // onSuccess(data, variables, context) {
+        //     queryClient.setQueryData(["Friends", user?.sub], data);
+        // },
+    });
 
     if (isError) {
         console.log(error);

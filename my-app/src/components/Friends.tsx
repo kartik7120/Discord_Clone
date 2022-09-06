@@ -36,13 +36,21 @@ function Friends() {
         })
     }
 
-    if (isSuccess) {
-        console.log(`Friends data = ${data}`);
+    // if (isSuccess) {
+    //     console.log(`Friends data = ${data}`);
+    // }
+
+    if (!data) {
+        return <h1>No friends</h1>
     }
+    else
+        if (data.length === 0)
+            return <h1>No friends</h1>
 
     return <>
-        {isSuccess ? data.map((friend: friend) => {
-            return <UserFriend {...friend} />
+        {isSuccess ? data.map((friend: friend, index: number) => {
+            console.log(friend);
+            return <UserFriend key={Math.random() * 889 * index} {...friend} />
         }) : ""}
     </>
 }
