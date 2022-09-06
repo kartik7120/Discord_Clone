@@ -39,5 +39,11 @@ interface sendFriendRequest {
     userSub: string,
     friendSub: string
 }
+interface friendRequest {
+    user_id: string,
+    picture?: string,
+    username?: string,
+    _id: string
+}
 export default fetchChannel;
-export type { Room, deleteRoom, joinRoom, messageUser, messageMutate, sendFriendRequest }
+export type { Room, deleteRoom, joinRoom, messageUser, messageMutate, sendFriendRequest, friendRequest }
