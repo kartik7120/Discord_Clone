@@ -4,6 +4,9 @@ import { useMantineTheme, createStyles } from "@mantine/core";
 import { FaUserFriends } from "react-icons/fa";
 import FriendRequest from "./FriendRequest";
 import { GoRequestChanges } from "react-icons/go"
+import { useLocalStorage } from "@mantine/hooks";
+import { useAuth0 } from "@auth0/auth0-react";
+import { friend } from "./interfaces/interfaces";
 const useStyles = createStyles((theme, _params, getRef) => ({
     tab_class: {
         backgroundColor: theme.colorScheme === "dark" ? theme.colors.discord_palette[2] : theme.white,
@@ -18,6 +21,8 @@ const useStyles = createStyles((theme, _params, getRef) => ({
 function ActiveNow() {
     const { classes } = useStyles();
     const theme = useMantineTheme();
+    const { user } = useAuth0();
+    const [friends, setFriends] = useLocalStorage<friend[]>({ key: `${user?.sub}-friends`, defaultValue: [] })
     return <div className="active-now"> <Tabs color={theme.colors.discord_palette[0]} className={classes.tab_class} defaultValue="Friends">
         <Tabs.List position="center" grow>
             <Tabs.Tab value="Friends" icon={<FaUserFriends />}>Friends</Tabs.Tab>

@@ -1,5 +1,8 @@
+import { useAuth0 } from "@auth0/auth0-react";
 import { Avatar, Text, createStyles, ActionIcon, useMantineTheme } from "@mantine/core";
+import { useLocalStorage } from "@mantine/hooks";
 import { IoClose } from "react-icons/io5";
+import { friend } from "./interfaces/interfaces";
 const useStyles = createStyles((theme, _params, getRef) => ({
     wrapper: {
         display: "flex",
@@ -12,13 +15,22 @@ const useStyles = createStyles((theme, _params, getRef) => ({
         cursor: "pointer"
     }
 }))
-function FriendChannel() {
+function FriendChannel(props: friend) {
     const { classes } = useStyles();
+    const { user } = useAuth0();
     const theme = useMantineTheme();
+    const [, setFriends] = useLocalStorage<friend[]>({ key: `${user?.sub}-friends`, defaultValue: [] })
+    function handleClick() {
+        setFriends(function (oldFriends) {
+            return oldFriends.filter((friend) =>
+                friend.user_id !== props.user_id
+            )
+        })
+    }
     return <div className={classes.wrapper}>
-        <Avatar src={null} alt="Friend profile pic" />
-        <Text size="lg" color={theme.colorScheme === "dark" ? theme.white : theme.black}>Friend's username</Text>
-        <ActionIcon>
+        <Avatar src={props.picture} alt="Friend profile pic" />
+        <Text size="md" color={theme.colorScheme === "dark" ? theme.white : theme.black}>{props.username}</Text>
+        <ActionIcon onClick={handleClick}>
             <IoClose size={45} />
         </ActionIcon>
     </div>

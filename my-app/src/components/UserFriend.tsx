@@ -1,5 +1,6 @@
 import { useAuth0 } from "@auth0/auth0-react";
 import { useMantineTheme, createStyles, ActionIcon, Avatar, Text } from "@mantine/core";
+import { useLocalStorage } from "@mantine/hooks";
 import { showNotification } from "@mantine/notifications";
 import { useMutation, useQueryClient } from "@tanstack/react-query";
 import { BiError } from "react-icons/bi";
@@ -55,6 +56,7 @@ function UserFriend(props: friend) {
     const { user } = useAuth0();
     const queryClient = useQueryClient();
     const { classes } = useStyles();
+    const [friends, setFriends] = useLocalStorage<friend[]>({ key: `${user?.sub}-friends`, defaultValue: [] })
     const { isLoading, isError, error, mutate } = useMutation(["friends", user?.sub], removeFriend, {
         // onSuccess(data, variables, context) {
         //     queryClient.setQueryData(["Friends", user?.sub], data);
@@ -70,10 +72,25 @@ function UserFriend(props: friend) {
             color: "red"
         })
     }
-    return <div className={classes.wrapper}>
+
+    function handleClick() {
+        const isPresent = friends.find((friend) => friend.user_id === props.user_id);
+        if (isPresent === undefined) {
+            setFriends(function (oldFriends) {
+                return [...oldFriends, {
+                    picture: props.picture,
+                    _id: props._id,
+                    username: props.username,
+                    user_id: props.user_id
+                }]
+            })
+        }
+    }
+
+    return <div className={classes.wrapper} onClick={handleClick}>
         <div className={classes.name_div}>
             <Avatar src={props.picture} alt="Friend request image" />
-            <Text size="lg">{props.user_id}</Text>
+            <Text size="lg">{props.username}</Text>
         </div>
         <div className={classes.button_div}>
             <ActionIcon variant="outline" onClick={() => mutate({ user_id: user?.sub, _id: props._id })}

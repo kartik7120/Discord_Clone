@@ -24,7 +24,7 @@ const useStyles = createStyles((theme, _params, getDef) => ({
         cursor: "pointer"
     }
 }))
-async function sendFriendRequest({ userSub, friendSub }: friendRequest) {
+async function sendFriendRequest({ userSub, friendSub, friendPicture, friendName }: friendRequest) {
     const URL = `${process.env.REACT_APP_API_URL}namespace/friends/friendRequest`;
     const config = {
         method: "POST",
@@ -32,7 +32,7 @@ async function sendFriendRequest({ userSub, friendSub }: friendRequest) {
             "Content-Type": "application/json",
             "Accept": "application/jsonf"
         },
-        body: JSON.stringify({ userSub, friendSub })
+        body: JSON.stringify({ userSub, friendSub, friendName, friendPicture })
     }
     try {
         const response = await fetch(URL, config);
@@ -71,7 +71,10 @@ function Message(props: any) {
 
     function handleClick() {
         setOpened(false);
-        mutate({ userSub: user?.sub!, friendSub: props.message_bearer.sub_id });
+        mutate({
+            userSub: user?.sub!, friendSub: props.message_bearer.sub_id,
+            friendPicture: user?.picture!, friendName: user?.name!
+        });
     }
 
     return <div className={classes.message_wrapper}>

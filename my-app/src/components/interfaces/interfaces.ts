@@ -37,7 +37,9 @@ interface messageMutate {
 }
 interface sendFriendRequest {
     userSub: string,
-    friendSub: string
+    friendSub: string,
+    friendPicture: string,
+    friendName: string
 }
 interface friendRequest {
     user_id: string,
