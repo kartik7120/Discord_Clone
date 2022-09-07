@@ -3,6 +3,7 @@ import { Avatar, Text, createStyles, ActionIcon, useMantineTheme } from "@mantin
 import { useLocalStorage } from "@mantine/hooks";
 import { IoClose } from "react-icons/io5";
 import { friend } from "./interfaces/interfaces";
+import { useNavigate } from "react-router-dom";
 const useStyles = createStyles((theme, _params, getRef) => ({
     wrapper: {
         display: "flex",
@@ -16,10 +17,12 @@ const useStyles = createStyles((theme, _params, getRef) => ({
     }
 }))
 function FriendChannel(props: friend) {
+    const navigate = useNavigate();
     const { classes } = useStyles();
     const { user } = useAuth0();
     const theme = useMantineTheme();
-    const [, setFriends] = useLocalStorage<friend[]>({ key: `${user?.sub}-friends`, defaultValue: [] })
+    const [, setFriends] = useLocalStorage<friend[]>({ key: `${user?.sub}-friends`, defaultValue: [] });
+
     function handleClick() {
         setFriends(function (oldFriends) {
             return oldFriends.filter((friend) =>
@@ -27,7 +30,12 @@ function FriendChannel(props: friend) {
             )
         })
     }
-    return <div className={classes.wrapper}>
+
+    function handleClick2() {
+        navigate(`${user?.name}/${user?.sub}/friends/${props._id}`);
+    }
+
+    return <div className={classes.wrapper} onClick={handleClick2}>
         <Avatar src={props.picture} alt="Friend profile pic" />
         <Text size="md" color={theme.colorScheme === "dark" ? theme.white : theme.black}>{props.username}</Text>
         <ActionIcon onClick={handleClick}>
