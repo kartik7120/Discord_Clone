@@ -108,3 +108,9 @@ Try to connect to a room using it's id rather than making a different connection
 - Display them in the right column of the chat
 - When a socket leave the room send the remaining sockets connected to that room
 - A socket can only connect to one single room **ONLY**
+
+#### List of things to be done for removing friends
+
+- Add ability to remove friends
+- Add friends to the left column when selected
+- Add private messaging with friends
