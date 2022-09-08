@@ -30,7 +30,8 @@ const useStyles = createStyles((theme, _params, getRef) => ({
     },
     card_class: {
         '&:hover': {
-            backgroundColor: theme.fn.darken("#2b2e33", 0.5),
+            backgroundColor: theme.colorScheme === "dark" ?
+                theme.fn.darken("#2b2e33", 0.5) : theme.fn.darken(theme.white, 0.2),
             cursor: "pointer"
         }
     }
