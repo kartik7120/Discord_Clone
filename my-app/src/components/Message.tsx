@@ -47,6 +47,7 @@ function Message(props: any) {
     const { classes } = useStyles();
     const { user } = useAuth0();
     const [opened, setOpened] = React.useState(false);
+    const [opened2, setOpened2] = React.useState(false);
     const { isError, mutate, isSuccess, error, reset } =
         useMutation(["friend request", user?.sub, props.message_content.userSub], sendFriendRequest);
 
