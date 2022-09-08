@@ -56,6 +56,12 @@ const useStyles = createStyles((theme, _params, getRef) => ({
         right: "2%",
         top: "7%",
         bottom: "0%"
+    },
+    hash_class: {
+        display: "flex",
+        flexDirection: "row",
+        justifyContent: "flex-start",
+        alignItems: "center"
     }
 }))
 async function fetchRooms({ queryKey }: any) {
@@ -148,7 +154,7 @@ function LeftColumn() {
                         <Anchor className={classes.leftColumn_channel_button}
                             component={Link} to={`${room.roomName}/${room._id}`} align="left" variant="text" size="md"
                             onClick={(e: any) => handleClick(e, room._id)}>
-                            <div style={{ alignSelf: "flex-start" }}>
+                            <div style={{ alignSelf: "flex-start" }} className={classes.hash_class}>
                                 <HiHashtag color={theme.colorScheme === "dark" ?
                                     theme.colors.discord_palette[6] : theme.black} style={{ margin: "0.1em" }} />
                                 {room.roomName}
