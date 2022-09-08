@@ -6,6 +6,7 @@ import { getHotkeyHandler } from "@mantine/hooks";
 import React, { useState } from "react";
 import { useParams } from "react-router-dom";
 import { Outlet } from "react-router-dom";
+import { updateNotification } from "@mantine/notifications";
 import { MdInsertEmoticon } from "react-icons/md";
 import { ActionIcon } from "@mantine/core";
 import EmojiPicker from "emoji-picker-react";
@@ -24,6 +25,7 @@ import { BiError } from "react-icons/bi";
 import { messageMutate } from "./interfaces/interfaces";
 import { useQueryClient } from "@tanstack/react-query";
 import ChatSkeleton from "./ChatSkeleton";
+import { TiTickOutline } from "react-icons/ti";
 const useStyles = createStyles((theme, _params, getRef) => ({
     middle_column_class: {
         backgroundColor: theme.colors.discord_palette[1],
@@ -131,7 +133,7 @@ function MiddleColumn() {
             queryClient.setQueryData(["channel", id, "room", roomId], data);
         }
     })
-    const { isError: isError3, mutate: mutateFile, error: error3 } = useMutation(
+    const { isError: isError3, mutate: mutateFile, error: error3, isLoading: isLoading3, isSuccess: isSuccess3, reset } = useMutation(
         ["channel", id, "room", roomId, "message"]
         , uploadFile, {
         onSuccess: (data, variables: any, context) => {
@@ -243,6 +245,27 @@ function MiddleColumn() {
             setState("");
         }
     }
+    if (isLoading3) {
+        showNotification({
+            id: 'load-data',
+            loading: true,
+            title: 'Uploading your file',
+            message: 'Please wait while data is being uploaded',
+            autoClose: false,
+            disallowClose: true,
+        });
+    }
+    if (isSuccess3) {
+        updateNotification({
+            id: 'load-data',
+            color: 'teal',
+            title: 'File uploaded',
+            message: 'File uploaded successfully',
+            icon: <TiTickOutline size={16} />,
+            autoClose: 2000,
+        });
+        reset();
+    }
     async function handleUpload(e: any) {
         let category: messageMutate["category"];
         if (file !== null) {
@@ -285,9 +308,9 @@ function MiddleColumn() {
                 <ScrollArea type="hover" style={{ height: "40rem" }}>
                     <ol >
                         <Text ref={scrollableRef}></Text>
-                        {/* {isSuccess ? data ? data.map((ele: messageMutate, index: number) => (
+                        {isSuccess ? data ? data.map((ele: messageMutate, index: number) => (
                             <li key={Math.random() * index * 54239} className={classes.listClass}><Message {...ele} /></li>
-                        )) : <ChatSkeleton /> : ""} */}
+                        )) : <ChatSkeleton /> : ""}
                         <Text ref={targetRef}></Text>
                     </ol>
                 </ScrollArea>

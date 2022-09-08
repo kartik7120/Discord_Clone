@@ -17,7 +17,8 @@ const useStyles = createStyles((theme, _params, getRef) => ({
             backgroundColor: theme.fn.darken(theme.colors.discord_palette[2], 0.2)
         },
         margin: "0.7em",
-        height: "3em"
+        height: "3em",
+        width: "50%"
     },
     button_div: {
         display: "flex",
