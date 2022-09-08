@@ -37,8 +37,8 @@ function RightColumn() {
         <Text size="xl" weight="revert" color={theme.colorScheme === "dark" ? theme.white : theme.black}>Users Online</Text>
         <ScrollArea type="hover" style={{ height: "90vh" }}>
             {
-                users.map((user: any) => {
-                    return <div className={classes.profile_class}>
+                users.map((user: any, index: number) => {
+                    return <div key={Math.random() * 265 * index} className={classes.profile_class}>
                         <Indicator position="bottom-end" inline withBorder offset={6} size={9} color="green">
                             <Avatar src={user?.userPicture} alt="username" size="lg" radius="xl" />
                         </Indicator>
