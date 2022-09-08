@@ -9,7 +9,7 @@ const useStyles = createStyles((theme, _params, getRef) => ({
         backgroundColor: theme.colorScheme === "dark" ? theme.colors.discord_palette[3] : theme.white,
         width: "100%",
         height: "8%",
-        color: "white",
+        color: theme.colorScheme === "dark" ? theme.white : theme.black,
         display: "flex",
         justifyContent: "space-evenly",
         alignContent: "center",
