@@ -20,27 +20,28 @@ async function fetchFriendRequest({ queryKey }: any) {
 
 function FriendRequest() {
     const { user } = useAuth0();
-    const { isLoading, isError, error, data, isSuccess } = useQuery(["Friends", "requests", user?.sub], fetchFriendRequest);
+    const { isLoading, data, isSuccess } = useQuery(["Friends", "requests", user?.sub], fetchFriendRequest, {
 
-    if (isSuccess) {
-        console.log(`data recieved while fetching friend request = ${JSON.stringify(data)}`);
-        showNotification({
-            title: "Success",
-            message: "Friend request send",
-            icon: <TiTickOutline />,
-            color: "green"
-        })
-    }
+        onSuccess(data) {
+            console.log(`data recieved while fetching friend request = ${JSON.stringify(data)}`);
+            showNotification({
+                title: "Success",
+                message: "Friend request send",
+                icon: <TiTickOutline />,
+                color: "green"
+            })
+        },
+        onError(err) {
+            console.log(err);
+            showNotification({
+                title: "Error",
+                message: "Error occured while sending friend request",
+                icon: <BiError />,
+                color: "red"
+            })
+        },
+    });
 
-    if (isError) {
-        console.log(error);
-        showNotification({
-            title: "Error",
-            message: "Error occured while sending friend request",
-            icon: <BiError />,
-            color: "red"
-        })
-    }
     if (!data) {
         return <Center>
             <Text variant="text" color="dimmed" size="xl">No friend requests</Text>
