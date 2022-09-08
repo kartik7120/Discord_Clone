@@ -46,6 +46,9 @@ const useStyles = createStyles((theme, _params, getRef) => ({
     rightSectionClass: {
         display: "flex",
         justifyContent: "space-between"
+    },
+    orderListClass:{
+        marginBottom:"3em"
     }
 }))
 async function fetchRoomMessage({ queryKey }: any) {
@@ -305,7 +308,7 @@ function MiddleColumn() {
         <>
             <div className={classes.middle_column_class} id="messages">
                 <ScrollArea type="hover" style={{ height: "40rem" }}>
-                    <ol >
+                    <ol className={classes.orderListClass}>
                         <Text ref={scrollableRef}></Text>
                         {isSuccess ? data ? data.map((ele: messageMutate, index: number) => (
                             <li key={Math.random() * index * 54239} className={classes.listClass}><Message {...ele} /></li>
