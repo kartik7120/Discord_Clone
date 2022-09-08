@@ -81,7 +81,7 @@ function FriendRequestData(props: friendRequest) {
                 queryClient.setQueryData(["Friends", "requests", user?.sub], data);
             },
         });
-    const { isError: isError2, error: error2, mutate: mutate2 } =
+    const { isError: isError2, error: error2, mutate: mutate2, reset, isSuccess } =
         useMutation(["friend", "request", "add", user?.sub, props._id], addRequest, {
             onSuccess(data, variables, context) {
                 queryClient.setQueryData(["Friends", user?.sub], data);
@@ -95,6 +95,10 @@ function FriendRequestData(props: friendRequest) {
             icon: <BiError />,
             color: "red"
         })
+    }
+
+    if (isSuccess) {
+        reset();
     }
 
     console.log(`user_id = ${props.user_id} and _id = ${props._id} in friend request`)

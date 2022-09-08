@@ -47,10 +47,11 @@ function Message(props: any) {
     const { classes } = useStyles();
     const { user } = useAuth0();
     const [opened, setOpened] = React.useState(false);
-    const { isError, mutate, isSuccess, error } =
+    const { isError, mutate, isSuccess, error, reset } =
         useMutation(["friend request", user?.sub, props.message_content.userSub], sendFriendRequest);
 
     if (isSuccess) {
+        reset();
         showNotification({
             title: "Success",
             message: "Friend request send",
