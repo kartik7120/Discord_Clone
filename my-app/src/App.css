@@ -64,7 +64,6 @@
 .active-now {
   display: flex;
   flex-direction: column;
-  background-color: #424549;
   height: 100vh;
   width: 20rem;
   border-left: 2px solid rgba(128, 0, 128, 0.214);
