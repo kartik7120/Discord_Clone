@@ -11,7 +11,8 @@ const useStyles = createStyles((theme, _params, getRef) => ({
         justifyContent: "space-evenly",
         alignItems: "center",
         '&:hover': {
-            backgroundColor: theme.fn.lighten(theme.colors.discord_palette[2], 0.1)
+            backgroundColor: theme.colorScheme === "dark" ? 
+            theme.fn.lighten(theme.colors.discord_palette[2], 0.1) : theme.fn.lighten(theme.white, 0.1)
         },
         cursor: "pointer"
     }

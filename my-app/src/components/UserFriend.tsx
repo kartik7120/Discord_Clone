@@ -14,7 +14,8 @@ const useStyles = createStyles((theme, _params, getRef) => ({
         alignItems: "center",
         cursor: "pointer",
         '&:hover': {
-            backgroundColor: theme.fn.darken(theme.colors.discord_palette[2], 0.2)
+            backgroundColor: theme.colorScheme === "dark" ?
+                theme.fn.lighten(theme.colors.discord_palette[2], 0.1) : theme.fn.darken(theme.white, 0.1)
         },
         margin: "0.7em",
         height: "3em"
