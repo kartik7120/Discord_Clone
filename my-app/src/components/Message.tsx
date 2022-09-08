@@ -47,6 +47,7 @@ function Message(props: any) {
     const { classes } = useStyles();
     const { user } = useAuth0();
     const [opened, setOpened] = React.useState(false);
+    const [opened2, setOpened2] = React.useState(false);
     const { isError, mutate, isSuccess, error } =
         useMutation(["friend request", user?.sub, props.message_content.userSub], sendFriendRequest);
 
@@ -86,6 +87,11 @@ function Message(props: any) {
                 title={<Title>User Profile</Title>}>
                 <Button variant="filled" size="lg" onClick={handleClick}>Send friend request</Button>
             </Modal>
+            <Modal size="60%" overlayBlur={7} opened={opened2} centered onClose={() => setOpened2(false)} withCloseButton={true}>
+                {props.category === "video" ? <video autoPlay loop muted onClick={() => setOpened2(true)}
+                    style={{ borderRadius: "0.5em", width: "100%" }} src={props.message_content} /> :
+                    <img alt="sticker" style={{ borderRadius: "0.5em", width: "100%" }} src={props.message_content} />}
+            </Modal>
             <Text size="lg" className={classes.user_name_text} onClick={() => setOpened(true)}>
                 {props?.message_bearer.username}
             </Text>
@@ -97,13 +103,16 @@ function Message(props: any) {
                             {props.message_content}
                         </>
                     </Text> : props.category === "video" ?
-                        <video autoPlay loop muted style={{ borderRadius: "0.5em" }} src={props.message_content} /> :
+                        <video autoPlay loop muted onClick={() => setOpened2(true)}
+                            style={{ borderRadius: "0.5em", cursor: "pointer" }} src={props.message_content} /> :
                         props.category === "video_file" ?
                             <video controls loop muted style={{ borderRadius: "0.5em", width: "50%" }}
                                 src={props.message_content} /> :
                             props.category === "audio_file" ?
                                 <audio src={props.message_content} controls muted style={{ borderRadius: "0.5em" }} />
-                                : <img alt="sticker" style={{ borderRadius: "0.5em", width: "50%" }} src={props.message_content} />
+                                : <img alt="sticker" style={{ borderRadius: "0.5em", width: "50%", cursor: "pointer" }}
+                                    onClick={() => setOpened2(true)}
+                                    src={props.message_content} />
             }
         </div>
     </div>
