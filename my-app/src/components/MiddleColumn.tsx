@@ -285,9 +285,9 @@ function MiddleColumn() {
                 <ScrollArea type="hover" style={{ height: "40rem" }}>
                     <ol >
                         <Text ref={scrollableRef}></Text>
-                        {isSuccess ? data.map((ele: messageMutate, index: number) => (
+                        {/* {isSuccess ? data ? data.map((ele: messageMutate, index: number) => (
                             <li key={Math.random() * index * 54239} className={classes.listClass}><Message {...ele} /></li>
-                        )) : <ChatSkeleton />}
+                        )) : <ChatSkeleton /> : ""} */}
                         <Text ref={targetRef}></Text>
                     </ol>
                 </ScrollArea>

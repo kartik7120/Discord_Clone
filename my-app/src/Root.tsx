@@ -47,9 +47,9 @@ function Root() {
                                     </Route>
                                     <Route path=':channel'>
                                         <Route path=':id' element={<Channel />}>
-                                            <Route path='friends'>
+                                            {/* <Route path='friends'>
                                                 <Route path=':id' element={<MiddleColumn />} />
-                                            </Route>
+                                            </Route> */}
                                             <Route path=':channelName/:roomId' element={<MiddleColumn />}>
                                                 <Route index element={<RightColumn />} />
                                             </Route>
