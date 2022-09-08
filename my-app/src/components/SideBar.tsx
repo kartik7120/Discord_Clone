@@ -18,7 +18,7 @@ import fetchChannel from "./interfaces/interfaces";
 const useStyles = createStyles((theme, _params, getRef) => ({
     createServerButton: {
         marginTop: "2rem",
-        backgroundColor: theme.colorScheme === "dark" ? theme.colors.discord_palette[0] : theme.white,
+        backgroundColor: theme.colorScheme === "light" ? theme.colors.discord_palette[0] : theme.white,
         '&:hover': {
             backgroundColor: theme.fn.darken(theme.colors.discord_palette[0], 0.2)
         }
