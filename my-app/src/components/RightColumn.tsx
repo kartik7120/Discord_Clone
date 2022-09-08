@@ -42,7 +42,8 @@ function RightColumn() {
                         <Indicator position="bottom-end" inline withBorder offset={6} size={9} color="green">
                             <Avatar src={user?.userPicture} alt="username" size="lg" radius="xl" />
                         </Indicator>
-                        <Text size="sm" color={theme.colorScheme === "dark" ? theme.white : theme.black} style={{ alignSelf: "center" }}>{user?.userName}</Text>
+                        <Text size="lg" color={theme.colorScheme === "dark" ? theme.white : theme.black}
+                            style={{ alignSelf: "center" }}>{user?.userName}</Text>
                     </div>
                 })
             }
