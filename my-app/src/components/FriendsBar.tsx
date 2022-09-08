@@ -7,7 +7,7 @@ import { useLocalStorage } from "@mantine/hooks";
 import { friend } from "./interfaces/interfaces";
 const useStyles = createStyles((theme, _params, getRef) => ({
     left_column_class: {
-        backgroundColor: theme.colors.discord_palette[2],
+        backgroundColor: theme.colorScheme === "dark" ? theme.colors.discord_palette[2] : theme.fn.darken(theme.white,0.1),
         display: "flex",
         flexDirection: "column",
         justifyContent: "flex-start",

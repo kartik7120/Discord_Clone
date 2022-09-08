@@ -25,7 +25,7 @@ import { MdOutlineError } from "react-icons/md";
 import JoinChannelPortal from "./joinChannelPortal";
 const useStyles = createStyles((theme, _params, getRef) => ({
     left_column_class: {
-        backgroundColor: theme.colors.discord_palette[2],
+        backgroundColor: theme.colorScheme === "dark" ? theme.colors.discord_palette[2] : theme.fn.darken(theme.white, 0.1),
         display: "flex",
         flexDirection: "column",
         alignItems: "center",
@@ -35,7 +35,7 @@ const useStyles = createStyles((theme, _params, getRef) => ({
         width: "100%",
         backgroundColor: theme.colorScheme === "dark" ? "#42464d" : "#f2f3f5",
         '&:hover': {
-            backgroundColor: theme.fn.darken("#42464d", 0.3)
+            backgroundColor: theme.colorScheme === "dark" ? theme.fn.darken("#42464d", 0.3) : theme.fn.darken(theme.white, 0.2),
         },
         textDecoration: "none",
         borderRadius: theme.radius.md,
@@ -56,6 +56,12 @@ const useStyles = createStyles((theme, _params, getRef) => ({
         right: "2%",
         top: "7%",
         bottom: "0%"
+    },
+    hash_class: {
+        display: "flex",
+        flexDirection: "row",
+        justifyContent: "flex-start",
+        alignItems: "center"
     }
 }))
 async function fetchRooms({ queryKey }: any) {
@@ -148,8 +154,9 @@ function LeftColumn() {
                         <Anchor className={classes.leftColumn_channel_button}
                             component={Link} to={`${room.roomName}/${room._id}`} align="left" variant="text" size="md"
                             onClick={(e: any) => handleClick(e, room._id)}>
-                            <div style={{ alignSelf: "flex-start" }}>
-                                <HiHashtag color={theme.colors.discord_palette[6]} style={{ margin: "0.1em" }} />
+                            <div style={{ alignSelf: "flex-start" }} className={classes.hash_class}>
+                                <HiHashtag color={theme.colorScheme === "dark" ?
+                                    theme.colors.discord_palette[6] : theme.black} style={{ margin: "0.1em" }} />
                                 {room.roomName}
                             </div>
                         </Anchor>

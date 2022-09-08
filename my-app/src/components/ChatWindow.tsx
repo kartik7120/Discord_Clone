@@ -7,6 +7,7 @@ const useStyles = createStyles((theme, _params, getRef) => ({
         display: "flex",
         justifyContent: "center",
         alignItems: "center",
+        backgroundColor: theme.colorScheme === "dark" ? theme.colors.discord_palette[1] : theme.white,
     }
 }))
 function ChatWindow() {

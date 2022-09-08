@@ -5,7 +5,7 @@ import { FiAlertTriangle } from "react-icons/fi";
 import { FaCompass } from "react-icons/fa";
 import { BsPlus } from "react-icons/bs";
 import { useNavigate } from "react-router-dom";
-import { Box, Text, Title, TextInput, Button, ScrollArea } from "@mantine/core";
+import { Box, Text, Title, TextInput, Button, ScrollArea, clsx } from "@mantine/core";
 import { Tooltip } from "@mantine/core";
 import { Modal } from '@mantine/core';
 import { createStyles } from "@mantine/core";
@@ -18,9 +18,43 @@ import fetchChannel from "./interfaces/interfaces";
 const useStyles = createStyles((theme, _params, getRef) => ({
     createServerButton: {
         marginTop: "2rem",
-        backgroundColor: theme.colors.discord_palette[0],
+        backgroundColor: theme.colorScheme === "light" ? theme.colors.discord_palette[0] : theme.white,
         '&:hover': {
             backgroundColor: theme.fn.darken(theme.colors.discord_palette[0], 0.2)
+        }
+    },
+    sideBar: {
+        backgroundColor: theme.colorScheme === "dark" ? theme.colors.discord_palette[3] : theme.fn.darken(theme.white, 0.15),
+        top: 0,
+        left: 0,
+        height: "100vh",
+        width: "5.5rem",
+        display: "flex",
+        flexDirection: "column",
+        margin: 0,
+        color: "white"
+    },
+    sidebarIcon: {
+        position: "relative",
+        display: "flex",
+        justifyContent: "center",
+        padding: "0.5em",
+        alignItems: "center",
+        height: "3rem",
+        width: "3rem",
+        marginTop: "0.5rem",
+        marginBottom: "0.5em",
+        backgroundColor: theme.colorScheme === "dark" ? "#424549" : theme.white,
+        color: "rgba(74, 222, 128, 0.888)",
+        borderRadius: "2rem",
+        cursor: "pointer",
+        marginLeft: "auto",
+        marginRight: "auto",
+        boxShadow: "0 10px 15px - 3px rgb(0 0 0 / 0.1), 0 4px 6px - 4px rgb(0 0 0 / 0.1)",
+        '&:hover': {
+            borderRadius: "0.75rem",
+            color: "white",
+            backgroundColor: "rgb(22 163 74)",
         }
     }
 }))
@@ -57,6 +91,7 @@ async function sendUserData({ userSub, userPicture, userName }: any) {
 }
 
 function SideBar() {
+    const { classes } = useStyles();
     const { isAuthenticated, user } = useAuth0();
     const [setChannels] = useLocalStorage({ key: "discordChannels", defaultValue: [""] });
     const { isError, data, error, isSuccess } = useQuery(["channels", user?.sub], fetchChannels);
@@ -68,7 +103,7 @@ function SideBar() {
     // if (isSuccess) {
     //     mutate({ userSub: user?.sub, userPicture: user?.picture, userName: user?.name });
     // }
-    return <div className="sidebar">
+    return <div className={clsx(classes.sideBar)}>
         <ScrollArea style={{ height: "100%" }} scrollHideDelay={300}>
             <Tooltip label="Home" position="right" withArrow arrowSize={5}
             >
@@ -122,6 +157,7 @@ async function fetchCreateRoom({ value, userSub }: createRoomInterface) {
 }
 
 function SidebarIcon({ icon, label, channelId }: any) {
+    const { classes } = useStyles();
     const navigate = useNavigate();
     function handleClick() {
         if (label === "Explore") {
@@ -133,7 +169,7 @@ function SidebarIcon({ icon, label, channelId }: any) {
             else
                 navigate("../");
     }
-    return <Box component="div" className="sidebar-icon" onClick={handleClick}>
+    return <Box component="div" className={clsx("sidebar-icon", classes.sidebarIcon)} onClick={handleClick}>
         {icon}
     </Box>
 }
@@ -187,7 +223,7 @@ function SideBarAddIcon({ icon, label, setChannels }: any) {
                 Create Server
             </Button>}
         </Modal>
-        <Box component="div" className="sidebar-icon" onClick={handleClick}>
+        <Box component="div" className={clsx("sidebar-icon", classes.sidebarIcon)} onClick={handleClick}>
             {icon}
         </Box>
     </>

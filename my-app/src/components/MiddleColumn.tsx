@@ -28,7 +28,7 @@ import ChatSkeleton from "./ChatSkeleton";
 import { TiTickOutline } from "react-icons/ti";
 const useStyles = createStyles((theme, _params, getRef) => ({
     middle_column_class: {
-        backgroundColor: theme.colors.discord_palette[1],
+        backgroundColor: theme.colorScheme === "dark" ? theme.colors.discord_palette[1] : theme.white,
         padding: "1em",
         position: "relative",
         fontFamily: 'Nunito',
@@ -46,6 +46,9 @@ const useStyles = createStyles((theme, _params, getRef) => ({
     rightSectionClass: {
         display: "flex",
         justifyContent: "space-between"
+    },
+    orderListClass:{
+        marginBottom:"3em"
     }
 }))
 async function fetchRoomMessage({ queryKey }: any) {
@@ -114,7 +117,7 @@ async function uploadFile({ file, category }: any) {
     }
 }
 function MiddleColumn() {
-    const [file, setFile] = useState<File | null>(null)
+    const [file, setFile] = useState<File | null>(null);
     const queryClient = useQueryClient();
     const { user } = useAuth0();
     const { scrollIntoView, targetRef, scrollableRef } = useScrollIntoView<HTMLDivElement>({ axis: "y" });
@@ -123,7 +126,6 @@ function MiddleColumn() {
     const { classes } = useStyles();
     const [state, setState] = useState("");
     const [, setChosenEmoji] = useState(null);
-    // const [users, setUsers] = useLocalStorage<string[]>({ key: `${channelName}-${id}-${roomId}`, defaultValue: [] })
     const { isLoading, isError, error, data, isSuccess } = useQuery(["channel", id, "room", roomId], fetchRoomMessage, {
         refetchOnWindowFocus: false
     })
@@ -306,7 +308,7 @@ function MiddleColumn() {
         <>
             <div className={classes.middle_column_class} id="messages">
                 <ScrollArea type="hover" style={{ height: "40rem" }}>
-                    <ol >
+                    <ol className={classes.orderListClass}>
                         <Text ref={scrollableRef}></Text>
                         {isSuccess ? data ? data.map((ele: messageMutate, index: number) => (
                             <li key={Math.random() * index * 54239} className={classes.listClass}><Message {...ele} /></li>
