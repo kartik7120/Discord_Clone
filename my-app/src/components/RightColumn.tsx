@@ -7,8 +7,8 @@ import { ScrollArea } from "@mantine/core";
 import { socketContext } from "../globalImports";
 const useStyles = createStyles((theme, _params, getRef) => ({
     right_column_class: {
-        backgroundColor: theme.colors.discord_palette[1],
-        borderLeft: "2px solid white",
+        backgroundColor: theme.colorScheme === "dark" ? theme.colors.discord_palette[1] : theme.white,
+        borderLeft: theme.colorScheme === "dark" ? "2px solid white" : "3px solid black",
         display: "flex",
         flexDirection: "column",
         justifyContent: "flex-start",
