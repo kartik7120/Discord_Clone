@@ -7,13 +7,20 @@ import { useLocalStorage } from "@mantine/hooks";
 import { friend } from "./interfaces/interfaces";
 const useStyles = createStyles((theme, _params, getRef) => ({
     left_column_class: {
-        backgroundColor: theme.colorScheme === "dark" ? theme.colors.discord_palette[2] : theme.fn.darken(theme.white,0.1),
+        backgroundColor: theme.colorScheme === "dark" ? theme.colors.discord_palette[2] : theme.fn.darken(theme.white, 0.1),
         display: "flex",
         flexDirection: "column",
         justifyContent: "flex-start",
         alignItems: "center",
-        position: "relative"
+        position: "relative",
+        width:"20%"
     },
+    grid_wrapper: {
+        display: "grid",
+        gridTemplateColumns: "minmax(0,3fr) minmax(0,1fr)",
+        width: "100%",
+        height: "100vh"
+    }
 }))
 function FriendsBar() {
     const { user } = useAuth0();
@@ -26,7 +33,6 @@ function FriendsBar() {
             }) : ""}
             <ProfileComponent />
         </div>
-
         <Outlet />
     </>
 }

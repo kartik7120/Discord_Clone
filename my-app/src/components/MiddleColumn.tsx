@@ -26,6 +26,7 @@ import { messageMutate } from "./interfaces/interfaces";
 import { useQueryClient } from "@tanstack/react-query";
 import ChatSkeleton from "./ChatSkeleton";
 import { TiTickOutline } from "react-icons/ti";
+import { useLocalStorage } from "@mantine/hooks";
 const useStyles = createStyles((theme, _params, getRef) => ({
     middle_column_class: {
         backgroundColor: theme.colorScheme === "dark" ? theme.colors.discord_palette[1] : theme.white,
@@ -47,8 +48,8 @@ const useStyles = createStyles((theme, _params, getRef) => ({
         display: "flex",
         justifyContent: "space-between"
     },
-    orderListClass:{
-        marginBottom:"3em"
+    orderListClass: {
+        marginBottom: "3em"
     }
 }))
 async function fetchRoomMessage({ queryKey }: any) {
@@ -117,6 +118,7 @@ async function uploadFile({ file, category }: any) {
     }
 }
 function MiddleColumn() {
+    // const [state, setState] = useLocalStorage<string>({ key: "message", defaultValue: "" });
     const [file, setFile] = useState<File | null>(null);
     const queryClient = useQueryClient();
     const { user } = useAuth0();
@@ -318,7 +320,7 @@ function MiddleColumn() {
                 </ScrollArea>
                 <form action="" method="get">
                     <Textarea className={classes.TextAreaClass} value={state} onChange={handleChange}
-                        placeholder="Enter your message"
+                        placeholder="Enter your message" maxRows={6}
                         autosize minRows={1} size={"xl"} onKeyDown={getHotkeyHandler([
                             ["Enter", handleMessageSubmit]
                         ])} rightSectionWidth={120} rightSection={

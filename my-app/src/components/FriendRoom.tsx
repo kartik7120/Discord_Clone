@@ -33,7 +33,7 @@ function FriendChannel(props: friend) {
     }
 
     function handleClick2() {
-        navigate(`/friend/${props.user_id}`);
+        navigate(`/friend/${props._id}`);
     }
 
     return <div className={classes.wrapper} onClick={handleClick2}>
