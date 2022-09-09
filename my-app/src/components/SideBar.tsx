@@ -5,7 +5,7 @@ import { FiAlertTriangle } from "react-icons/fi";
 import { FaCompass } from "react-icons/fa";
 import { BsPlus } from "react-icons/bs";
 import { useNavigate } from "react-router-dom";
-import { Box, Text, Title, TextInput, Button, ScrollArea, clsx } from "@mantine/core";
+import { Box, Text, Title, TextInput, Button, ScrollArea, clsx, Skeleton } from "@mantine/core";
 import { Tooltip } from "@mantine/core";
 import { Modal } from '@mantine/core';
 import { createStyles } from "@mantine/core";
@@ -18,7 +18,7 @@ import fetchChannel from "./interfaces/interfaces";
 const useStyles = createStyles((theme, _params, getRef) => ({
     createServerButton: {
         marginTop: "2rem",
-        backgroundColor: theme.colors.discord_palette[0] ,
+        backgroundColor: theme.colors.discord_palette[0],
         '&:hover': {
             backgroundColor: theme.fn.darken(theme.colors.discord_palette[0], 0.2)
         }
@@ -56,6 +56,11 @@ const useStyles = createStyles((theme, _params, getRef) => ({
             color: "white",
             backgroundColor: "rgb(22 163 74)",
         }
+    },
+    skeleton: {
+        display: "flex",
+        flexDirection: "column",
+        alignItems: "center"
     }
 }))
 
@@ -128,7 +133,12 @@ function SideBar() {
                     >
                         <SidebarIcon icon={<GiPistolGun size="20" />} channelId={channel._id} label={channel.channelName} />
                     </Tooltip>
-                }) : ""
+                }) : <div className={classes.skeleton}>
+                    <Skeleton circle={true} height={60} mb="xl" />
+                    <Skeleton circle={true} height={60} mb="xl" />
+                    <Skeleton circle={true} height={60} mb="xl" />
+                    <Skeleton circle={true} height={60} mb="xl" />
+                </div>
             }
         </ScrollArea>
     </div>

@@ -1,4 +1,3 @@
-import ReactDOM from 'react-dom/client';
 import React from "react"
 import './index.css';
 import App from './App';
@@ -19,7 +18,7 @@ import Home from "./components/Home"
 const queryClient = new QueryClient();
 
 function Root() {
-    const [colorSchema, setColorSchema] = React.useState<ColorScheme>("light");
+    const [colorSchema, setColorSchema] = React.useState<ColorScheme>("dark");
     const toggleColorScheme = (value?: ColorScheme) => setColorSchema(value || (colorSchema === "dark" ? "light" : "dark"));
     return <Auth0Provider domain='dev-6mnzakh2.us.auth0.com'
         clientId='TrpH2owRNMhbMYK860wtxBnWYS2ZPnnv' redirectUri='http://localhost:3000'
