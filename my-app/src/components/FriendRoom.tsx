@@ -11,8 +11,8 @@ const useStyles = createStyles((theme, _params, getRef) => ({
         justifyContent: "space-evenly",
         alignItems: "center",
         '&:hover': {
-            backgroundColor: theme.colorScheme === "dark" ? 
-            theme.fn.lighten(theme.colors.discord_palette[2], 0.1) : theme.fn.lighten(theme.white, 0.1)
+            backgroundColor: theme.colorScheme === "dark" ?
+                theme.fn.lighten(theme.colors.discord_palette[2], 0.1) : theme.fn.lighten(theme.white, 0.1)
         },
         cursor: "pointer"
     }
@@ -33,7 +33,7 @@ function FriendChannel(props: friend) {
     }
 
     function handleClick2() {
-        navigate(`${user?.name}/${user?.sub}/friends/${props._id}`);
+        navigate(`/friend/${props.user_id}`);
     }
 
     return <div className={classes.wrapper} onClick={handleClick2}>

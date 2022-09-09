@@ -15,6 +15,7 @@ import { NotificationsProvider } from '@mantine/notifications';
 import { ColorSchemeProvider, ColorScheme } from '@mantine/core';
 import ExploreComponents from './components/exploreChannel';
 import Home from "./components/Home"
+import FriendMiddle from "./components/FriendMiddle";
 const queryClient = new QueryClient();
 
 function Root() {
@@ -42,6 +43,7 @@ function Root() {
                                 <Route path='/' element={<App />}>
                                     <Route element={<FriendsBar />}>
                                         <Route index element={<ChatWindow />} />
+                                        <Route path="friend/:id" element={<FriendMiddle />} />
                                         <Route path='explore' element={<ExploreComponents />} />
                                     </Route>
                                     <Route path=':channel'>
