@@ -22,9 +22,9 @@ const useStyles = createStyles((theme, _params, getRef) => ({
     },
     button_div: {
         display: "flex",
-        justifyContent: "space-evenly",
+        justifyContent: "space-between",
         alignItems: "center",
-        width: "10%"
+        width: "100%"
     },
     name_div: {
         display: "flex",
@@ -52,7 +52,7 @@ async function cancelRequest({ user_id, _id, friendSub, friend_id }: any) {
     }
 }
 
-async function addRequest({ user_id, _id }: any) {
+async function addRequest({ user_id, _id, friendSub, friend_id }: any) {
     const URL = `${process.env.REACT_APP_API_URL}namespace/friends`;
     const config = {
         method: "POST",
@@ -60,7 +60,7 @@ async function addRequest({ user_id, _id }: any) {
             "Content-Type": "application/json",
             "Accept": "application/json"
         },
-        body: JSON.stringify({ userSub: user_id, _id })
+        body: JSON.stringify({ userSub: user_id, _id, friendSub, friend_id })
     }
     try {
         const response = await fetch(URL, config);
@@ -105,11 +105,14 @@ function FriendRequestData(props: friendRequest) {
     return <div className={classes.wrapper}>
         <div className={classes.name_div}>
             <Avatar src={props.picture} alt="Friend request image" />
-            <Text size="lg">{props.user_id}</Text>
+            <Text size="lg">{props.username}</Text>
         </div>
         <div className={classes.button_div}>
             <ActionIcon variant="outline" color="green"
-                onClick={() => mutate2({ user_id: user?.sub, _id: props._id, friendSub: props.user_id, friend_id: props._id })}>
+                onClick={() => mutate2({
+                    user_id: user?.sub, _id: props._id,
+                    friendSub: props.user_id, friend_id: props._id
+                })}>
                 <TiTickOutline size={30} />
             </ActionIcon>
             <ActionIcon variant="outline" onClick={() => mutate({ user_id: user?.sub, _id: props._id })}

@@ -33,7 +33,7 @@ const useStyles = createStyles((theme, _params, getRef) => ({
     }
 }))
 
-async function removeFriend({ user_id, _id }: any) {
+async function removeFriend({ user_id, _id, friend_id, friendSub }: any) {
     console.log(`UserSub = ${user_id} and _id of friend = ${_id}`);
     const URL = `${process.env.REACT_APP_API_URL}namespace/friends/deleteFriend`;
     const config = {
@@ -42,7 +42,7 @@ async function removeFriend({ user_id, _id }: any) {
             "Content-Type": "application/json",
             "Accept": "application/json"
         },
-        body: JSON.stringify({ userSub: user_id, _id })
+        body: JSON.stringify({ userSub: user_id, _id, friendSub, friend_id })
     }
     try {
         const response = await fetch(URL, config);
@@ -59,9 +59,9 @@ function UserFriend(props: friend) {
     const { classes } = useStyles();
     const [friends, setFriends] = useLocalStorage<friend[]>({ key: `${user?.sub}-friends`, defaultValue: [] })
     const { isLoading, isError, error, mutate } = useMutation(["friends", user?.sub], removeFriend, {
-        // onSuccess(data, variables, context) {
-        //     queryClient.setQueryData(["Friends", user?.sub], data);
-        // },
+        onSuccess(data, variables, context) {
+            queryClient.setQueryData(["Friends", user?.sub], data);
+        },
     });
 
     if (isError) {
@@ -94,7 +94,10 @@ function UserFriend(props: friend) {
             <Text size="lg">{props.username}</Text>
         </div>
         <div className={classes.button_div}>
-            <ActionIcon variant="outline" onClick={() => mutate({ user_id: user?.sub, _id: props._id })}
+            <ActionIcon variant="outline" onClick={() => mutate({
+                user_id: user?.sub, _id: props._id,
+                friend_id: props._id, friendSub: props.user_id
+            })}
                 color="red"><ImCross />
             </ActionIcon>
         </div>

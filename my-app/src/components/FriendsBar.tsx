@@ -1,5 +1,5 @@
 import { Outlet } from "react-router-dom";
-import { clsx, createStyles, Text } from "@mantine/core";
+import { clsx, createStyles, Skeleton, Text, ThemeIcon, useMantineTheme } from "@mantine/core";
 import ProfileComponent from "./ProfileComponent";
 import { socket } from "../globalImports";
 import { socketContext } from "../globalImports";
@@ -26,9 +26,15 @@ const useStyles = createStyles((theme, _params, getRef) => ({
     },
     text_class: {
         color: theme.colorScheme === "dark" ? theme.white : theme.black
+    },
+    wrapper: {
+        display: "flex",
+        justifyContent: "space-between",
+        alignItems: "center"
     }
 }))
 function FriendsBar() {
+    const theme = useMantineTheme();
     const { user } = useAuth0();
     const { classes } = useStyles();
     const [friends] = useLocalStorage<friend[]>({ key: `${user?.sub}-friends`, defaultValue: [] });
@@ -48,7 +54,7 @@ function FriendsBar() {
         <socketContext.Provider value={socket}>
             <div className={clsx(classes.left_column_class, "Friends-bar")}>
                 <Text size="xl" className={classes.text_class}>Direct Messages</Text>
-                {friends ? friends.map((friend, index: number) => {
+                {friends && friends.length > 0 ? friends.map((friend, index: number) => {
                     return <FriendChannel {...friend} key={Math.random() * 565 * index} />
                 }) : ""}
                 <ProfileComponent />

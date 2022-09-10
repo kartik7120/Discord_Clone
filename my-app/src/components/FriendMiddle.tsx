@@ -55,8 +55,9 @@ const useStyles = createStyles((theme, _params, getRef) => ({
 }))
 
 async function fetchRoomMessage({ queryKey }: any) {
-    const [, , _key4] = queryKey;
-    const URL = `${process.env.REACT_APP_API_URL}namespace/friends/messages/${_key4}`;
+    const [, , , _key4] = queryKey;
+    console.log(`_key4 in friendMiddle = ${_key4}`);
+    const URL = `${process.env.REACT_APP_API_URL}namespace/friend/message/${_key4}`;
     try {
         const response = await fetch(URL);
         const result = await response.json();
@@ -67,7 +68,7 @@ async function fetchRoomMessage({ queryKey }: any) {
 }
 
 async function fetchUpdateMessages({ userSub, category, message_content, userPicture, userName, roomId }: messageMutate) {
-    const URL = `${process.env.REACT_APP_API_URL}namespace/friend/messages/${roomId}`;
+    const URL = `${process.env.REACT_APP_API_URL}namespace/friends/messages/${roomId}`;
     const config = {
         method: "POST",
         headers: {
@@ -126,16 +127,17 @@ function FriendMiddle() {
     const { scrollIntoView, targetRef, scrollableRef } = useScrollIntoView<HTMLDivElement>({ axis: "y" });
     const socket = React.useContext(socketContext);
     const { id, channelName, roomId } = useParams();
+    console.log(`id in friendMiddle = ${id}`);
     const { classes } = useStyles();
     const [state, setState] = useState("");
     const [, setChosenEmoji] = useState(null);
-    const { isLoading, isError, error, data, isSuccess } = useQuery(["friends", "messages", id], fetchRoomMessage, {
+    const { isLoading, isError, error, data, isSuccess } = useQuery(["friends", "messages", "room", id], fetchRoomMessage, {
         refetchOnWindowFocus: false
     })
-    const { isLoading: isLoading2, isError: isError2, mutate } = useMutation(["channel", id, "room", roomId, "message"],
+    const { isLoading: isLoading2, isError: isError2, mutate } = useMutation(["friend", id, "room", "message"],
         fetchUpdateMessages, {
         onSuccess: (data, varaibles, context) => {
-            queryClient.setQueryData(["channel", id, "room", roomId], data);
+            queryClient.setQueryData(["friends", "messages", "room", id], data);
         }
     })
     const { isError: isError3, mutate: mutateFile, error: error3, isLoading: isLoading3, isSuccess: isSuccess3, reset }
@@ -218,15 +220,16 @@ function FriendMiddle() {
             color: "red"
         })
     }
-    // if (isError) {
-    //     console.log(`Error occured while fetching messages = ${error}`);
-    //     showNotification({
-    //         title: "Error",
-    //         message: "Error occured while fetching messages",
-    //         icon: <BiError />,
-    //         color: "red"
-    //     })
-    // }
+
+    if (isError) {
+        console.log(`Error occured while fetching messages = ${error}`);
+        showNotification({
+            title: "Error",
+            message: "Error occured while fetching messages",
+            icon: <BiError />,
+            color: "red"
+        })
+    }
     function handleChange(e: any) {
         const message: string = e.target.value;
         setState(message);
@@ -244,7 +247,7 @@ function FriendMiddle() {
                     message_content: state,
                     userSub: user?.sub!,
                     userPicture: user?.picture!, userName: user?.name!,
-                    category: "text", roomId: roomId!, channelId: id!
+                    category: "text", roomId: id!, channelId: id!
                 }
             )
             scrollIntoView({ alignment: "end" });
@@ -314,9 +317,9 @@ function FriendMiddle() {
                 <ScrollArea type="hover" style={{ height: "40rem" }}>
                     <ol className={classes.orderListClass}>
                         <Text ref={scrollableRef}></Text>
-                        {isSuccess ? data ? data.map((ele: messageMutate, index: number) => (
+                        {isSuccess ? data && data.length > 0 && data.map((ele: messageMutate, index: number) => (
                             <li key={Math.random() * index * 54239} className={classes.listClass}><Message {...ele} /></li>
-                        )) : <ChatSkeleton /> : ""}
+                        )) : <ChatSkeleton />}
                         <Text ref={targetRef}></Text>
                     </ol>
                 </ScrollArea>

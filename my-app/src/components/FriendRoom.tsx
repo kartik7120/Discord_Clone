@@ -33,12 +33,14 @@ function FriendChannel(props: friend) {
     }
 
     function handleClick2() {
-        navigate(`/friend/${props._id}`);
+        navigate(`/friend/${props.user_id}`);
     }
 
-    return <div className={classes.wrapper} onClick={handleClick2}>
-        <Avatar src={props.picture} alt="Friend profile pic" />
-        <Text size="md" color={theme.colorScheme === "dark" ? theme.white : theme.black}>{props.username}</Text>
+    return <div className={classes.wrapper} >
+        <div onClick={handleClick2} className={classes.wrapper}>
+            <Avatar src={props.picture} alt="Friend profile pic" />
+            <Text size="md" color={theme.colorScheme === "dark" ? theme.white : theme.black}>{props.username}</Text>
+        </div>
         <ActionIcon onClick={handleClick}>
             <IoClose size={45} />
         </ActionIcon>
