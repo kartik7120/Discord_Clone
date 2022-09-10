@@ -33,7 +33,7 @@ const useStyles = createStyles((theme, _params, getRef) => ({
     }
 }))
 
-async function cancelRequest({ user_id, _id }: any) {
+async function cancelRequest({ user_id, _id, friendSub, friend_id }: any) {
     try {
         const URL = `${process.env.REACT_APP_API_URL}namespace/friends/friendRequest`;
         const config = {
@@ -42,7 +42,7 @@ async function cancelRequest({ user_id, _id }: any) {
                 "Content-Type": "application/json",
                 "Accept": "application/json"
             },
-            body: JSON.stringify({ userSub: user_id, _id })
+            body: JSON.stringify({ userSub: user_id, _id, friendSub, friend_id })
         }
         const response = await fetch(URL, config);
         const result = await response.json();
@@ -109,7 +109,7 @@ function FriendRequestData(props: friendRequest) {
         </div>
         <div className={classes.button_div}>
             <ActionIcon variant="outline" color="green"
-                onClick={() => mutate2({ user_id: user?.sub, _id: props._id })}>
+                onClick={() => mutate2({ user_id: user?.sub, _id: props._id, friendSub: props.user_id, friend_id: props._id })}>
                 <TiTickOutline size={30} />
             </ActionIcon>
             <ActionIcon variant="outline" onClick={() => mutate({ user_id: user?.sub, _id: props._id })}

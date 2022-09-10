@@ -34,7 +34,7 @@ const useStyles = createStyles((theme, _params, getRef) => ({
         position: "relative",
         fontFamily: 'Nunito',
         color: theme.colorScheme === "dark" ? "white" : "black",
-        width:"100%"
+        width: "100%"
     },
     TextAreaClass: {
         position: "absolute",
@@ -55,8 +55,8 @@ const useStyles = createStyles((theme, _params, getRef) => ({
 }))
 
 async function fetchRoomMessage({ queryKey }: any) {
-    const [, , , _key4] = queryKey;
-    const URL = `${process.env.REACT_APP_API_URL}namespace/messages/${_key4}`;
+    const [, , _key4] = queryKey;
+    const URL = `${process.env.REACT_APP_API_URL}namespace/friends/messages/${_key4}`;
     try {
         const response = await fetch(URL);
         const result = await response.json();
@@ -67,12 +67,12 @@ async function fetchRoomMessage({ queryKey }: any) {
 }
 
 async function fetchUpdateMessages({ userSub, category, message_content, userPicture, userName, roomId }: messageMutate) {
-    const URL = `${process.env.REACT_APP_API_URL}namespace/messages/${roomId}`;
+    const URL = `${process.env.REACT_APP_API_URL}namespace/friend/messages/${roomId}`;
     const config = {
         method: "POST",
         headers: {
             "Content-Type": "application/json",
-            "Accept": "application/jsons"
+            "Accept": "application/json"
         },
         body: JSON.stringify({
             userSub, category, message_content, userPicture, userName
@@ -125,13 +125,13 @@ function FriendMiddle() {
     const { user } = useAuth0();
     const { scrollIntoView, targetRef, scrollableRef } = useScrollIntoView<HTMLDivElement>({ axis: "y" });
     const socket = React.useContext(socketContext);
-    const { channelName, id, roomId } = useParams();
+    const { id, channelName, roomId } = useParams();
     const { classes } = useStyles();
     const [state, setState] = useState("");
     const [, setChosenEmoji] = useState(null);
-    // const { isLoading, isError, error, data, isSuccess } = useQuery(["channel", id, "room", roomId], fetchRoomMessage, {
-    //     refetchOnWindowFocus: false
-    // })
+    const { isLoading, isError, error, data, isSuccess } = useQuery(["friends", "messages", id], fetchRoomMessage, {
+        refetchOnWindowFocus: false
+    })
     const { isLoading: isLoading2, isError: isError2, mutate } = useMutation(["channel", id, "room", roomId, "message"],
         fetchUpdateMessages, {
         onSuccess: (data, varaibles, context) => {
@@ -160,54 +160,54 @@ function FriendMiddle() {
                 })
             }
         })
-    // React.useEffect(() => {
-    //     scrollIntoView({ alignment: "end" });
-    //     socket.on("messages", (message: string, { userSub,
-    //         userPicture, userName,
-    //         category, roomId, channelId }: messageMutate) => {
-    //         queryClient.setQueryData(["channel", id, "room", roomId], (old: any): any => {
-    //             return [...old, {
-    //                 category,
-    //                 message_content: message,
-    //                 message_bearer: {
-    //                     username: userName,
-    //                     picture: userPicture,
-    //                     sub_id: userSub
-    //                 }
-    //             }]
-    //         });
-    //     })
-    //     socket.on("gif", (gifURL: string, { userSub,
-    //         userPicture, userName,
-    //         category, roomId, channelId }: messageMutate) => {
-    //         queryClient.setQueryData(["channel", id, "room", roomId], (old: any): any => {
-    //             return [...old, {
-    //                 category,
-    //                 message_content: gifURL,
-    //                 message_bearer: {
-    //                     username: userName,
-    //                     picture: userPicture,
-    //                     sub_id: userSub
-    //                 }
-    //             }]
-    //         });
-    //     })
-    //     socket.on("sticker", (stickerURL: string, { userSub,
-    //         userPicture, userName,
-    //         category, roomId, channelId }: messageMutate) => {
-    //         queryClient.setQueryData(["channel", id, "room", roomId], (old: any): any => {
-    //             return [...old, {
-    //                 category,
-    //                 message_content: stickerURL,
-    //                 message_bearer: {
-    //                     username: userName,
-    //                     picture: userPicture,
-    //                     sub_id: userSub
-    //                 }
-    //             }]
-    //         })
-    //     })
-    // }, [])
+    React.useEffect(() => {
+        scrollIntoView({ alignment: "end" });
+        socket.on("messages", (message: string, { userSub,
+            userPicture, userName,
+            category, roomId, channelId }: messageMutate) => {
+            queryClient.setQueryData(["channel", id, "room", roomId], (old: any): any => {
+                return [...old, {
+                    category,
+                    message_content: message,
+                    message_bearer: {
+                        username: userName,
+                        picture: userPicture,
+                        sub_id: userSub
+                    }
+                }]
+            });
+        })
+        socket.on("gif", (gifURL: string, { userSub,
+            userPicture, userName,
+            category, roomId, channelId }: messageMutate) => {
+            queryClient.setQueryData(["channel", id, "room", roomId], (old: any): any => {
+                return [...old, {
+                    category,
+                    message_content: gifURL,
+                    message_bearer: {
+                        username: userName,
+                        picture: userPicture,
+                        sub_id: userSub
+                    }
+                }]
+            });
+        })
+        socket.on("sticker", (stickerURL: string, { userSub,
+            userPicture, userName,
+            category, roomId, channelId }: messageMutate) => {
+            queryClient.setQueryData(["channel", id, "room", roomId], (old: any): any => {
+                return [...old, {
+                    category,
+                    message_content: stickerURL,
+                    message_bearer: {
+                        username: userName,
+                        picture: userPicture,
+                        sub_id: userSub
+                    }
+                }]
+            })
+        })
+    }, [])
 
     if (isError3) {
         console.log(`Error occured while uploading filr = ${error3}`);
@@ -314,9 +314,9 @@ function FriendMiddle() {
                 <ScrollArea type="hover" style={{ height: "40rem" }}>
                     <ol className={classes.orderListClass}>
                         <Text ref={scrollableRef}></Text>
-                        {/* {isSuccess ? data ? data.map((ele: messageMutate, index: number) => (
+                        {isSuccess ? data ? data.map((ele: messageMutate, index: number) => (
                             <li key={Math.random() * index * 54239} className={classes.listClass}><Message {...ele} /></li>
-                        )) : <ChatSkeleton /> : ""} */}
+                        )) : <ChatSkeleton /> : ""}
                         <Text ref={targetRef}></Text>
                     </ol>
                 </ScrollArea>

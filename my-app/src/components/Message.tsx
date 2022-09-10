@@ -30,7 +30,7 @@ async function sendFriendRequest({ userSub, friendSub, friendPicture, friendName
         method: "POST",
         headers: {
             "Content-Type": "application/json",
-            "Accept": "application/jsonf"
+            "Accept": "application/json"
         },
         body: JSON.stringify({ userSub, friendSub, friendName, friendPicture })
     }
