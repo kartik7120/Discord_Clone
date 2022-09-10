@@ -1,4 +1,4 @@
-import { useMantineTheme, createStyles, ActionIcon, Avatar, Text } from "@mantine/core";
+import { createStyles, ActionIcon, Avatar, Text } from "@mantine/core";
 import { TiTickOutline } from "react-icons/ti";
 import { friendRequest } from "./interfaces/interfaces";
 import { ImCross } from "react-icons/im";

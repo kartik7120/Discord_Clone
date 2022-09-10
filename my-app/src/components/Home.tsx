@@ -6,6 +6,7 @@ import homeImg from "../images/home_background.webp";
 import { BackgroundImage } from "@mantine/core";
 import { Button, createStyles } from "@mantine/core";
 import MiddleHome from "./MiddleHome";
+import { useAuth0 } from "@auth0/auth0-react";
 const useStyles = createStyles((theme, _params, getRef) => ({
     home_wrapper: {
         color: theme.colorScheme === "dark" ? theme.white : theme.black,
@@ -19,14 +20,20 @@ const useStyles = createStyles((theme, _params, getRef) => ({
     }
 }))
 function Home() {
+    const { isAuthenticated } = useAuth0();
     const { classes } = useStyles();
     const navigate = useNavigate();
+    // React.useEffect(() => {
+    //     if (isAuthenticated) {
+    //         navigate("/home", { replace: true });
+    //     }
+    // }, [])
     return (
         <div className={classes.home_wrapper}>
             {/* <BackgroundImage src={homeImg}> */}
             <UpperHome />
             <MiddleHome />
-            <Button size="xl" onClick={() => navigate("/")} className={classes.button_class} variant="gradient"
+            <Button size="xl" onClick={() => navigate("/home")} className={classes.button_class} variant="gradient"
                 gradient={{ from: 'indigo', to: 'cyan' }}>Get Started</Button>
             <BottomHome />
             {/* </BackgroundImage> */}

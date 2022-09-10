@@ -1,4 +1,4 @@
-import { Text } from "@mantine/core";
+import { Text, Loader } from "@mantine/core";
 import { createStyles } from "@mantine/core";
 const useStyles = createStyles((theme, _params, getRef) => ({
     loading_wrapper: {
@@ -14,7 +14,7 @@ const useStyles = createStyles((theme, _params, getRef) => ({
 function LoadingScreen() {
     const { classes } = useStyles();
     return <div className={classes.loading_wrapper}>
-        <span>Loading ...</span>
+        <Loader variant="bars" />
     </div>
 }
 export default LoadingScreen;

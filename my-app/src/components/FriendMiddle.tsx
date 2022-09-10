@@ -68,6 +68,7 @@ async function fetchRoomMessage({ queryKey }: any) {
 }
 
 async function fetchUpdateMessages({ userSub, category, message_content, userPicture, userName, roomId }: messageMutate) {
+    console.log(`roomId in sending messages = ${roomId}`);
     const URL = `${process.env.REACT_APP_API_URL}namespace/friends/messages/${roomId}`;
     const config = {
         method: "POST",
@@ -137,6 +138,7 @@ function FriendMiddle() {
     const { isLoading: isLoading2, isError: isError2, mutate } = useMutation(["friend", id, "room", "message"],
         fetchUpdateMessages, {
         onSuccess: (data, varaibles, context) => {
+            console.log(`Data recieved from mutate message = ${data}`);
             queryClient.setQueryData(["friends", "messages", "room", id], data);
         }
     })
@@ -240,7 +242,7 @@ function FriendMiddle() {
                 message_content: state,
                 userSub: user?.sub!,
                 userPicture: user?.picture!, userName: user?.name!,
-                category: "text", roomId: roomId!, channelId: id!, channelName
+                category: "text", roomId: id!, channelId: id!, channelName
             });
             mutate(
                 {
