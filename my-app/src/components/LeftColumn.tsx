@@ -7,6 +7,7 @@ import { useLocalStorage } from "@mantine/hooks";
 import ModalCreateChannel from "./CreateChannelModal";
 import { Anchor, Portal } from "@mantine/core";
 import { Link, useLocation } from "react-router-dom";
+import { useNavigate } from "react-router-dom";
 import { HiHashtag } from "react-icons/hi";
 import { useParams } from "react-router-dom";
 import { useAuth0 } from "@auth0/auth0-react";
@@ -76,6 +77,7 @@ async function fetchRooms({ queryKey }: any) {
     }
 }
 function LeftColumn() {
+    const navigate = useNavigate();
     const { user } = useAuth0();
     const location = useLocation();
     const { ref } = useHover();

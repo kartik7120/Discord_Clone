@@ -21,9 +21,9 @@ const queryClient = new QueryClient();
 function Root() {
     const [colorSchema, setColorSchema] = React.useState<ColorScheme>("dark");
     const toggleColorScheme = (value?: ColorScheme) => setColorSchema(value || (colorSchema === "dark" ? "light" : "dark"));
-    return <Auth0Provider domain='dev-6mnzakh2.us.auth0.com'
-        clientId='TrpH2owRNMhbMYK860wtxBnWYS2ZPnnv' redirectUri='http://localhost:3000'
-        audience='https://dev-6mnzakh2.us.auth0.com/api/v2/'
+    return <Auth0Provider domain={`${process.env.REACT_APP_AUTH_DOMAIN}`}
+        clientId={`${process.env.REACT_APP_CLIEND_ID}`} redirectUri={`${process.env.REACT_APP_REDIRECT_URI}`}
+        audience={`${process.env.REACT_APP_AUDIENCE}`}
         scope='read:current_user update:current_user_metadata'
     >
         <QueryClientProvider client={queryClient}>
