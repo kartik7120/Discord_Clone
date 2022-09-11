@@ -1,10 +1,10 @@
-import { Button, createStyles, FileInput, Text } from "@mantine/core";
+import { Button, createStyles, FileInput, Portal, Text } from "@mantine/core";
 import { Textarea } from "@mantine/core";
 import { ScrollArea } from "@mantine/core";
 import { socketContext } from "../globalImports";
 import { getHotkeyHandler } from "@mantine/hooks";
 import React, { useState } from "react";
-import { useParams } from "react-router-dom";
+import { useLocation, useParams } from "react-router-dom";
 import { Outlet } from "react-router-dom";
 import { updateNotification } from "@mantine/notifications";
 import { MdInsertEmoticon } from "react-icons/md";
@@ -27,6 +27,7 @@ import { useQueryClient } from "@tanstack/react-query";
 import ChatSkeleton from "./ChatSkeleton";
 import { TiTickOutline } from "react-icons/ti";
 import { useLocalStorage } from "@mantine/hooks";
+import JoinChannelPortal from "./joinChannelPortal";
 const useStyles = createStyles((theme, _params, getRef) => ({
     middle_column_class: {
         backgroundColor: theme.colorScheme === "dark" ? theme.colors.discord_palette[1] : theme.white,
@@ -121,10 +122,11 @@ function MiddleColumn() {
     // const [state, setState] = useLocalStorage<string>({ key: "message", defaultValue: "" });
     const [file, setFile] = useState<File | null>(null);
     const queryClient = useQueryClient();
+    const location = useLocation();
     const { user } = useAuth0();
     const { scrollIntoView, targetRef, scrollableRef } = useScrollIntoView<HTMLDivElement>({ axis: "y" });
     const socket = React.useContext(socketContext);
-    const { channelName, id, roomId } = useParams();
+    const { channelName, id, roomId, channel } = useParams();
     const { classes } = useStyles();
     const [state, setState] = useState("");
     const [, setChosenEmoji] = useState(null);
@@ -319,7 +321,7 @@ function MiddleColumn() {
                     </ol>
                 </ScrollArea>
                 <form action="" method="get">
-                    <Textarea className={classes.TextAreaClass} value={state} onChange={handleChange}
+                    <Textarea disabled={location.state ? true : false} className={classes.TextAreaClass} value={state} onChange={handleChange}
                         placeholder="Enter your message" maxRows={6}
                         autosize minRows={1} size={"xl"} onKeyDown={getHotkeyHandler([
                             ["Enter", handleMessageSubmit]
@@ -382,6 +384,9 @@ function MiddleColumn() {
                         } />
                 </form>
             </div>
+            {/* {location.state ? <Portal target="#portalDiv">
+                <JoinChannelPortal channelId={id!} channelName={channel!} />
+            </Portal> : ""} */}
             <Outlet />
         </>
     )

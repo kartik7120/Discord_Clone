@@ -59,7 +59,6 @@ function ModalCreateChannel(props: createProps) {
         onSuccess: onSuccessFunction
     })
     const socket = React.useContext(socketContext);
-    const navigate = useNavigate();
     const { classes } = useStyles();
     const theme = useMantineTheme();
     const [inputState, setInputState] = React.useState("");
@@ -67,7 +66,7 @@ function ModalCreateChannel(props: createProps) {
     if (isError) {
         console.log("Error in mutation = ", error);
         showNotification({
-            title: "Room not created ❌",
+            title: "Room not created",
             message: "Error occured while creating a new room",
             color: "red",
             autoClose: 2000,
@@ -77,7 +76,7 @@ function ModalCreateChannel(props: createProps) {
 
     if (isSuccess) {
         showNotification({
-            title: "Room created ✅",
+            title: "Room created",
             message: "Room successfully created",
             color: "violet",
             autoClose: 2000,
@@ -96,7 +95,6 @@ function ModalCreateChannel(props: createProps) {
         socket.emit("joinRoom", { roomName: inputState }, (response: string) => {
             console.log("Response on joining room = ", response);
         })
-        navigate(`./${inputState}`, { replace: true });
         props.setOpened(false);
     }
     return (

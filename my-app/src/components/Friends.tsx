@@ -43,8 +43,10 @@ function Friends() {
         })
     }
 
-    if (!data) {
-        return <h1>No friends</h1>
+    if (!data || Array.isArray(data) === false) {
+        return <Center>
+        <Text variant="text" color="dimmed" size="xl">No friends</Text>
+    </Center>
     }
     else
         if (data.length === 0)
@@ -53,7 +55,7 @@ function Friends() {
             </Center>
 
     return <div className={classes.wrapper}>
-        {isSuccess ? data.map((friend: friend, index: number) => {
+        {isSuccess ? data && Array.isArray(data) && data.map((friend: friend, index: number) => {
             console.log(friend);
             return <UserFriend key={Math.random() * 889 * index} {...friend} />
         }) : ""}

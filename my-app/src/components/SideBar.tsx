@@ -1,7 +1,8 @@
-import React from "react";
+import React, { createRef } from "react";
 import { SiDiscord } from "react-icons/si";
 import { GiPistolGun } from "react-icons/gi";
 import { FiAlertTriangle } from "react-icons/fi";
+import { forwardRef } from "react";
 import { FaCompass } from "react-icons/fa";
 import { BsPlus } from "react-icons/bs";
 import { useNavigate } from "react-router-dom";
@@ -15,6 +16,7 @@ import { useLocalStorage } from "@mantine/hooks";
 import { useAuth0 } from "@auth0/auth0-react";
 import createRoomInterface from "./interfaces/createRoomInterface";
 import fetchChannel from "./interfaces/interfaces";
+import { JsxElement } from "typescript";
 const useStyles = createStyles((theme, _params, getRef) => ({
     createServerButton: {
         marginTop: "2rem",
@@ -61,6 +63,28 @@ const useStyles = createStyles((theme, _params, getRef) => ({
         display: "flex",
         flexDirection: "column",
         alignItems: "center"
+    },
+    sidebar_tooltip: {
+        position: "absolute",
+        width: 'auto',
+        padding: '0.5rem',
+        margin: '0.5rem',
+        minWidth: 'max-content',
+        left: "3.5rem",
+        borderRadius: "0.375rem",
+        boxShadow: "0 4px 6px -1px rgb(0 0 0 / 0.1), 0 2px 4px -2px rgb(0 0 0 / 0.1)",
+        color: "rgb(255 255 255)",
+        backgroundColor: "rgb(17 24 39)",
+        fontSize: "0.75rem",
+        lineHeight: "1rem",
+        transitionProperty: "all",
+        transitionTimingFunction: "cubic-bezier(0.4, 0, 0.2, 1)",
+        transitionDuration: "300ms",
+        transform: "scale(0)",
+        transformOrigin: "left",
+        '&:hover': {
+            transform: "scale(1)"
+        }
     }
 }))
 
@@ -99,7 +123,7 @@ function SideBar() {
     const { classes } = useStyles();
     const { isAuthenticated, user } = useAuth0();
     const [setChannels] = useLocalStorage({ key: "discordChannels", defaultValue: [""] });
-    const { isError, data, error, isSuccess } = useQuery(["channels", user?.sub], fetchChannels);
+    const { isError, data, error, isLoading, isSuccess } = useQuery(["channels", user?.sub], fetchChannels);
     const { mutate } = useMutation(["userInfo"], sendUserData);
     if (isError) {
         console.log("Error occurred while fetching namespaces");
@@ -110,8 +134,7 @@ function SideBar() {
     // }
     return <div className={clsx(classes.sideBar)}>
         <ScrollArea style={{ height: "100%" }} scrollHideDelay={300}>
-            <Tooltip label="Home" position="right" withArrow arrowSize={5}
-            >
+            <Tooltip color="blue" label="Home" position="right" >
                 <SidebarIcon icon={<SiDiscord size={32} color={"#5663F7"} />} label="Home" />
             </Tooltip>
             <Tooltip label="Add a Server" position="right" withArrow arrowSize={5}
@@ -120,7 +143,6 @@ function SideBar() {
                 <SideBarAddIcon setChannels={setChannels} icon={<BsPlus size={32} />} />
             </Tooltip>
             <Tooltip label="Explore Servers" position="right" withArrow arrowSize={5}
-
             >
                 <SidebarIcon icon={<FaCompass size="20" />} label="Explore" />
             </Tooltip>
@@ -131,14 +153,15 @@ function SideBar() {
                     return <Tooltip key={Math.random() * 10 * index * 52} label={channel.channelName} position="right"
                         withArrow arrowSize={5}
                     >
-                        <SidebarIcon icon={<GiPistolGun size="20" />} channelId={channel._id} label={channel.channelName} />
+                        <SidebarIcon key={Math.random() * 4522 * index} icon={<GiPistolGun size="20" />}
+                            channelId={channel._id} label={channel.channelName} />
                     </Tooltip>
-                }) : <div className={classes.skeleton}>
+                }) : isLoading ? <div className={classes.skeleton}>
                     <Skeleton circle={true} height={60} mb="xl" />
                     <Skeleton circle={true} height={60} mb="xl" />
                     <Skeleton circle={true} height={60} mb="xl" />
                     <Skeleton circle={true} height={60} mb="xl" />
-                </div>
+                </div> : ""
             }
         </ScrollArea>
     </div>
@@ -166,7 +189,7 @@ async function fetchCreateRoom({ value, userSub }: createRoomInterface) {
     }
 }
 
-function SidebarIcon({ icon, label, channelId }: any) {
+function SidebarIcon({ icon, label, channelId, ref }: any) {
     const { classes } = useStyles();
     const navigate = useNavigate();
     function handleClick() {
@@ -179,9 +202,9 @@ function SidebarIcon({ icon, label, channelId }: any) {
             else
                 navigate("../");
     }
-    return <Box component="div" className={clsx("sidebar-icon", classes.sidebarIcon)} onClick={handleClick}>
+    return <div className={clsx("sidebar-icon", classes.sidebarIcon)} onClick={handleClick}>
         {icon}
-    </Box>
+    </div>
 }
 
 function SideBarAddIcon({ icon, label, setChannels }: any) {

@@ -42,7 +42,7 @@ function FriendRequest() {
         },
     });
 
-    if (!data) {
+    if (!data || Array.isArray(data) === false) {
         return <Center>
             <Text variant="text" color="dimmed" size="xl">No friend requests</Text>
         </Center>
@@ -55,7 +55,7 @@ function FriendRequest() {
 
     return <>
 
-        {isSuccess ? data.map((user: friendRequest) => (
+        {isSuccess ? Array.isArray(data) && data.map((user: friendRequest) => (
             <FriendRequestData {...user} />
         )) : ""}
     </>

@@ -93,7 +93,9 @@ function LeftColumn() {
             onSuccess(data) {
                 const roomName = data[0].roomName;
                 const roomId = data[0]._id;
-                navigate(`${roomName}/${roomId}`);
+                navigate(`${roomName}/${roomId}`,{
+                    state: location.state
+                });
             },
         });
     async function fetchUserRoomDelete({ roomId }: any) {
