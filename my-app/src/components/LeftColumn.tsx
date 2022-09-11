@@ -88,7 +88,14 @@ function LeftColumn() {
     const theme = useMantineTheme();
     const [users, setUsers] = useLocalStorage<string[]>({ key: `${channel}-${id}`, defaultValue: [] })
     const { data, isSuccess } = useQuery(["namespace", channel, id, "rooms"], fetchRooms,
-        { refetchOnWindowFocus: false });
+        {
+            refetchOnWindowFocus: false,
+            onSuccess(data) {
+                const roomName = data[0].roomName;
+                const roomId = data[0]._id;
+                navigate(`${roomName}/${roomId}`);
+            },
+        });
     async function fetchUserRoomDelete({ roomId }: any) {
         const URL = `${process.env.REACT_APP_API_URL}namespace/deleteRooms/${id}/rooms/${roomId}`;
         const config = {
