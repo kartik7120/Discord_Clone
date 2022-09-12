@@ -147,7 +147,7 @@ function SideBar() {
                 <SidebarIcon icon={<FaCompass size="20" />} label="Explore" />
             </Tooltip>
             {
-                isSuccess ? data.map((channel: fetchChannel, index: number) => {
+                isSuccess ? data && Array.isArray(data) && data.map((channel: fetchChannel, index: number) => {
                     if (channel)
                         console.log(channel._id);
                     return <Tooltip key={Math.random() * 10 * index * 52} label={channel.channelName} position="right"
@@ -218,9 +218,9 @@ function SideBarAddIcon({ icon, label, setChannels }: any) {
     React.useEffect(function () {
         if (isSuccess) {
             setState(false);
-            setChannels(function (oldChannels: string[]) {
-                return [...oldChannels, value]
-            })
+            // setChannels(function (oldChannels: string[]) {
+            //     return [...oldChannels, value]
+            // })
             navigate(`/${value}`, { replace: true });
         }
     }, [isSuccess])

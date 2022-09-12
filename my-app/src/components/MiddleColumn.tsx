@@ -11,6 +11,7 @@ import { MdInsertEmoticon } from "react-icons/md";
 import { ActionIcon } from "@mantine/core";
 import EmojiPicker from "emoji-picker-react";
 import { Popover } from '@mantine/core';
+import { BsCloudUpload } from "react-icons/bs"
 import { FiUpload } from "react-icons/fi";
 import { AiOutlineGif } from "react-icons/ai";
 import SearchExperience from "./GiphyComponents/SearchExperience";
@@ -108,7 +109,7 @@ async function uploadFile({ file, category }: any) {
     try {
         const config = {
             method: "POST",
-            body: formData
+            body: formData,
         }
         const response = await fetch(URL, config);
         const result = await response.json();
@@ -158,7 +159,26 @@ function MiddleColumn() {
                 userSub: user?.sub!,
                 userPicture: user?.picture!
             })
-        }
+            updateNotification({
+                id: 'load-data',
+                color: 'teal',
+                title: 'File uploaded',
+                message: 'File uploaded successfully',
+                icon: <TiTickOutline size={16} />,
+                autoClose: 2000,
+            });
+            reset();
+        },
+        onError(error, variables, context) {
+            updateNotification({
+                id: 'load-data',
+                color: 'red',
+                title: 'Error occured',
+                message: 'Error occured while uploading file',
+                icon: <BiError size={16} />,
+                autoClose: 2000,
+            });
+        },
     })
     React.useEffect(() => {
         scrollIntoView({ alignment: "end" });
@@ -261,17 +281,6 @@ function MiddleColumn() {
             disallowClose: true,
         });
     }
-    if (isSuccess3) {
-        updateNotification({
-            id: 'load-data',
-            color: 'teal',
-            title: 'File uploaded',
-            message: 'File uploaded successfully',
-            icon: <TiTickOutline size={16} />,
-            autoClose: 2000,
-        });
-        reset();
-    }
     async function handleUpload(e: any) {
         let category: messageMutate["category"];
         if (file !== null) {
@@ -340,6 +349,7 @@ function MiddleColumn() {
                                             withAsterisk
                                             value={file}
                                             onChange={setFile}
+                                            icon={<BsCloudUpload />}
                                         />
                                         <Button variant="filled" color="violet" onClick={handleUpload}>Upload</Button>
                                     </Popover.Dropdown>
