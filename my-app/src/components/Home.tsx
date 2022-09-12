@@ -23,20 +23,13 @@ function Home() {
     const { isAuthenticated } = useAuth0();
     const { classes } = useStyles();
     const navigate = useNavigate();
-    // React.useEffect(() => {
-    //     if (isAuthenticated) {
-    //         navigate("/home", { replace: true });
-    //     }
-    // }, [])
     return (
         <div className={classes.home_wrapper}>
-            {/* <BackgroundImage src={homeImg}> */}
             <UpperHome />
             <MiddleHome />
-            <Button size="xl" onClick={() => navigate("/home")} className={classes.button_class} variant="gradient"
+            <Button size="xl" onClick={() => navigate("/")} className={classes.button_class} variant="gradient"
                 gradient={{ from: 'indigo', to: 'cyan' }}>Get Started</Button>
             <BottomHome />
-            {/* </BackgroundImage> */}
         </div>
     )
 }

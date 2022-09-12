@@ -47,7 +47,6 @@ function MiddleHome() {
                 </div>
                 <img src={img2} alt="discord 2" />
             </div>
-
         </div>
     )
 

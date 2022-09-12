@@ -3,7 +3,9 @@ import { Indicator, Menu } from "@mantine/core";
 import { useAuth0 } from "@auth0/auth0-react";
 import { BsFillGearFill, BsFillMoonFill, BsFillSunFill } from "react-icons/bs";
 import { HiOutlineLogout } from "react-icons/hi";
+import {AiOutlineInfoCircle} from "react-icons/ai";
 import { AiOutlineUser } from "react-icons/ai";
+import { useNavigate } from "react-router-dom";
 const useStyles = createStyles((theme, _params, getRef) => ({
     Profile_wrapper: {
         backgroundColor: theme.colorScheme === "dark" ? theme.colors.discord_palette[3] : theme.white,
@@ -25,6 +27,7 @@ function ProfileComponent() {
     const dark = colorScheme === 'dark';
     const { user, isAuthenticated, logout, loginWithRedirect } = useAuth0();
     const { classes } = useStyles();
+    const navigate = useNavigate();
     return <>
 
         <div className={classes.Profile_wrapper}>
@@ -45,6 +48,9 @@ function ProfileComponent() {
                     </Menu.Item> : <Menu.Item icon={<HiOutlineLogout />} onClick={() => logout()} color="red">
                         Logout
                     </Menu.Item>}
+                    <Menu.Item icon={<AiOutlineInfoCircle />} onClick={() => navigate("/home")}>
+                        About
+                    </Menu.Item>
                     <ActionIcon
                         size="xl"
                         variant="gradient"
