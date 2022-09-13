@@ -22,7 +22,7 @@ function Root() {
     const [colorSchema, setColorSchema] = React.useState<ColorScheme>("dark");
     const toggleColorScheme = (value?: ColorScheme) => setColorSchema(value || (colorSchema === "dark" ? "light" : "dark"));
     return <Auth0Provider domain={`${process.env.REACT_APP_AUTH_DOMAIN}`}
-        clientId={`${process.env.REACT_APP_CLIEND_ID}`} redirectUri={`${process.env.REACT_APP_REDIRECT_URI}`}
+        clientId={`${process.env.REACT_APP_CLIEND_ID}`} redirectUri={`${process.env.REACT_APP_VERCEL_URL}`}
         audience={`${process.env.REACT_APP_AUDIENCE}`}
         scope='read:current_user update:current_user_metadata'
     >
