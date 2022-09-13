@@ -20,7 +20,6 @@ const queryClient = new QueryClient();
 
 function Root() {
     const [colorSchema, setColorSchema] = React.useState<ColorScheme>("dark");
-    console.log(`Deployment url = ${process.env.REACT_APP_VERCEL_URL}`);
     const toggleColorScheme = (value?: ColorScheme) => setColorSchema(value || (colorSchema === "dark" ? "light" : "dark"));
     return <Auth0Provider domain={`${process.env.REACT_APP_AUTH_DOMAIN}`}
         clientId={`${process.env.REACT_APP_CLIEND_ID}`} redirectUri={`https://discord-clone-virid.vercel.app/`}
