@@ -13,3 +13,4 @@ A (Minimum Viable Product) chat app using Discord app UI
 - Users can join channels on specific topics
 
 I got the idea for this app from this [GitHub Repo](https://github.com/florinpop17/app-ideas/blob/master/Projects/3-Advanced/Chat-App.md)
+Here is the url for the app : [Chat App](https://discord-clone-virid.vercel.app/)
