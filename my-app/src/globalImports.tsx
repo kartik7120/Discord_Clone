@@ -1,6 +1,6 @@
 import { io } from "socket.io-client";
 import { createContext } from "react";
-const socket = io("http://localhost:4000/", {
+const socket = io(`${process.env.REACT_APP_API_URL}`, {
     auth: {
         userName: "kaartik shukla",
         userSub: "123456",
@@ -11,7 +11,7 @@ const socket = io("http://localhost:4000/", {
 // const channelSocket = io("http://localhost:4000/channel");
 const socketContext: React.Context<any> = createContext(null);
 function connectNamespace(namespace: string, userSub: string, userPicture: string, userName: string) {
-    const nsp = io(`http://localhost:4000/`, {
+    const nsp = io(`${process.env.REACT_APP_API_URL}`, {
         auth: {
             userName,
             userSub,
