@@ -2,6 +2,8 @@
 
 A (Minimum Viable Product) chat app using Discord app UI
 
+Real-time chat interface where multiple users can interact with each other by sending messages.
+
 ## Features
 
 - The messages will be visible to all the Users that are in the chat app (using WebSockets)
