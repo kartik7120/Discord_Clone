@@ -14,6 +14,5 @@ Real-time chat interface where multiple users can interact with each other by se
 - Users can chat in private
 - Users can join channels on specific topics
 
-I got the idea for this app from this [GitHub Repo](https://github.com/florinpop17/app-ideas/blob/master/Projects/3-Advanced/Chat-App.md)
 
 Here is the url for the app : [Chat App](https://discord-clone-virid.vercel.app/)
